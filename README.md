@@ -1,6 +1,6 @@
 <div align="center">
 
-![LMU Computer Science](https://img.shields.io/badge/LMU%20Computer%20Science-FFFFFF.svg?style=for-the-badge&labelColor=8C1515&color=004B87)
+# LMU Computer Science
 
 <br>
 

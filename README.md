@@ -1,13 +1,16 @@
 <div align="center">
 
-# LMU Computer Science
+![LMU Computer Science](https://img.shields.io/badge/LMU%20Computer%20Science-FFFFFF.svg?style=for-the-badge&labelColor=8C1515&color=004B87)
+
+<br>
+
 ![Python](https://img.shields.io/badge/-Python-blue?logo=python&logoColor=white&style=flat)
 ![Java](https://img.shields.io/badge/-Java-red?logo=java&logoColor=white&style=flat)
 ![JavaScript](https://img.shields.io/badge/-JavaScript-yellow?logo=javascript&logoColor=black&style=flat)
 ![HTML](https://img.shields.io/badge/-HTML-orange?logo=html5&logoColor=white&style=flat)
 ![CSS](https://img.shields.io/badge/-CSS-blue?logo=css3&logoColor=white&style=flat)
 ![C](https://img.shields.io/badge/-C-lightgrey?logo=c&logoColor=blue&style=flat)
-![Assembly](https://img.shields.io/badge/-Assembly-green?logo=assemblyscript&logoColor=white&style=flat)  
+![Assembly](https://img.shields.io/badge/-Assembly-green?logo=assemblyscript&logoColor=white&style=flat)
 ![Rust](https://img.shields.io/badge/-Rust-darkgrey?logo=rust&logoColor=white&style=flat)
 ![Swift](https://img.shields.io/badge/-Swift-orange?logo=swift&logoColor=white&style=flat)
 ![OCaml](https://img.shields.io/badge/-OCaml-yellowgreen?logo=ocaml&logoColor=white&style=flat)

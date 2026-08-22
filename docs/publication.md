@@ -130,45 +130,37 @@ No LMU email addresses are tracked; a scan of every tracked file for
 
 Credential-shaped strings **are** tracked. See below.
 
-## Committed credentials: a blocker on publication
+## Committed credentials: found, and removed
 
-Found 2026-08-22 by review, after the sentence above had claimed the opposite for as
-long as it existed. It claimed that because `scripts/check-ai-config.sh` said so, and the
-check was wrong: it matched `sk-`, `ghp_` and `AKIA` only, and only inside `*.json`,
-`*.toml` and `*.md`. None of those three shapes is what a Firebase project leaves behind.
+Found 2026-08-22 by review, after this file had claimed the opposite for as long as it
+existed. It claimed that because `scripts/check-ai-config.sh` said so, and the check was
+wrong: it matched `sk-`, `ghp_` and `AKIA` only, and only inside `*.json`, `*.toml` and
+`*.md`. None of those three shapes is what a Firebase project leaves behind.
+
 The check now scans every tracked file for private-key blocks, service-account
-`private_key` fields, provider tokens, and API keys pasted into request headers, and it
-fails on all three items below. **It fails on `main` today.** That is the honest state of
-the tree, not a regression introduced by the check.
+`private_key` fields, provider tokens, and API keys pasted into request headers.
 
-The repository is still private and has not been pushed publicly, so none of this has
-been exposed by *this* archive. That is the only reason these are blockers rather than
-incidents. They must be settled before the repository is made public.
-
-| Item | Where | What it is |
+| Item | Where it was | Disposition |
 |---|---|---|
-| Google service-account private key | `src/courses/cmsi-4072/Pathfinder/backend/serviceAccountKey.json` | RSA private key for `firebase-adminsdk-fbsvc@pathfinder-cae4f.iam.gserviceaccount.com`. Firebase Admin SDK credentials bypass Firestore and Storage Security Rules entirely. |
-| RapidAPI key | `src/courses/cmsi-4072/Pathfinder/backend/functions/index.js`, lines 16 and 39 | One billable key, hardcoded twice, behind `cors({origin: true})`. |
-| Firebase Web API keys | `src/courses/cmsi-2021/Blog-Application`, `src/courses/cmsi-2021/myGainz`, `src/courses/cmsi-4072/Pathfinder/frontend` | Not secrets. Google ships these in every web bundle; they are guarded by Security Rules and API-key restrictions. Reported by the check, never failed. |
+| Google service-account private key | `Pathfinder/backend/serviceAccountKey.json` | File removed from the working tree and purged from every commit |
+| RapidAPI key | `Pathfinder/backend/functions/index.js` | Replaced with `REVOKED-RAPIDAPI-KEY` across all history; the file itself is coursework and stays |
+| Firebase Web API keys | three front ends | Kept. Not secrets — Google ships them in every web bundle, guarded by Security Rules and API-key restrictions. Reported by the check, never failed. |
 
-Rotation is the remedy, and it is the only part that is not optional. Deleting the files
-does not undo a key that has already been written down: `serviceAccountKey.json` entered
-this repository in `9cfd959` and is in the history of the upstream `pathfinder`
-repository too. Revoke the service-account key in the `pathfinder-cae4f` Google Cloud
-console and regenerate the RapidAPI key; after that the tracked copies are inert strings
-and the question of what to do with them becomes an archive question rather than a
-security one.
+The repository was private throughout, so neither credential was ever published by it.
 
-That archive question is genuinely open, and it is the author's call for the same reason
-the two items above are. Three ways to settle it, and the ordering rule in this file does
-not reach any of them:
+The history rewrite reverses this repository's former rule against rewriting history. That
+was a deliberate decision, taken because a credential written into a commit is not undone
+by deleting the file in a later one.
 
-1. **Delete from `HEAD`, keep the history.** One commit. Consistent with "history is
-   preserved, not rewritten", inconsistent with "the archive holds the work as submitted".
-2. **Delete from `HEAD` and purge from history.** Removes the strings, and contradicts
-   the rule in `AGENTS.md` that this archive does not rewrite history.
-3. **Keep both, having rotated.** The archive stays faithful; the check stays red unless
-   an allowlist is added, and an allowlist is exactly the mechanism this repository
-   refuses elsewhere for hiding files.
+**Rotation is still the part that matters, and it is not something a rewrite accomplishes.**
+The service-account key also exists in the history of the upstream `pathfinder` repository.
+Revoke it in the `pathfinder-cae4f` Google Cloud console and regenerate the RapidAPI key;
+until that is done, these strings being absent from this tree proves nothing about whether
+the credentials still work.
 
-Nothing here recommends one over the others. Revoke first; the rest can wait.
+### A consequence worth knowing
+
+`Pathfinder/backend/index.js` does `require("./serviceAccountKey.json")`. That file no
+longer exists, so the Pathfinder backend will not start from a clean clone until you supply
+your own. This is a real change to submitted coursework, accepted knowingly as the cost of
+the purge, and it is why the apps page lists Pathfinder as needing your own keys.

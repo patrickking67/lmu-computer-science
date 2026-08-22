@@ -99,14 +99,16 @@ submitted; everything outside it is normal, maintained code.
 ## Coding and security
 
 - Follow existing patterns before creating new abstractions.
-- Never commit secrets. Two are already committed, in CMSI 4072 coursework: a
-  Google service-account private key at
-  `src/courses/cmsi-4072/Pathfinder/backend/serviceAccountKey.json` and a RapidAPI key hardcoded
-  twice in `src/courses/cmsi-4072/Pathfinder/backend/functions/index.js`. They block making this
-  repository public and `scripts/check-ai-config.sh` fails on them today. Do not delete
-  them to make the check pass; the remedy is rotation, and what happens to the files
-  afterwards is the author's call. See `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front
-  ends are not secrets and are reported rather than failed.
+- Never commit secrets. Two were committed in CMSI 4072 coursework and were removed on
+  2026-08-22: a Google service-account private key (file deleted and purged from every
+  commit) and a RapidAPI key (replaced with `REVOKED-RAPIDAPI-KEY` across all history).
+  Rotation in the respective consoles is the part a rewrite cannot do. See
+  `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front ends are not
+  secrets and are reported rather than failed.
+- History was rewritten once, on 2026-08-22, to remove those credentials. That is the only
+  sanctioned reason to do it again.
+- `src/courses/cmsi-4072/Pathfinder/backend/index.js` requires a `serviceAccountKey.json`
+  that no longer exists. Do not fabricate one; supply your own to run it.
 - A check that reports "no credentials" is worth exactly what its pattern list covers.
   The one here asserted a clean tree for as long as it existed while a private key sat in
   a tracked `.json`, because it matched three token shapes none of which a Firebase

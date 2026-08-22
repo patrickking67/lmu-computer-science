@@ -1,7 +1,7 @@
 # Vendoring pass, 2026-08-22
 
 Second and final pass, adding course material that existed only in iCloud. The first
-pass (`CONSOLIDATION-REVIEW.md`) drew from local git clones and covered code. This pass
+pass drew from local git clones and covered code. This pass
 covers lecture decks, syllabi, exams, and deliverable PDFs.
 
 ## Source
@@ -28,11 +28,11 @@ questions in [`publication.md`](publication.md); the 13 removed are recorded und
 
 | Course | Committed | Removed | Held | Size |
 |---|---|---|---|---|
-| `CMSI-3300/` | 45 | 0 | 8 | 31.1 MB |
-| `CMSI-3801/` | 9 | 0 | 0 | 3.6 MB |
-| `CMSI-3802/` | 37 | 8 | 0 | 69.8 MB |
-| `CMSI-3920/` | 0 | 0 | 1 | 0.1 MB |
-| `CMSI-4072/` | 7 | 5 | 0 | 7.2 MB |
+| `src/courses/cmsi-3300/` | 45 | 0 | 8 | 31.1 MB |
+| `src/courses/cmsi-3801/` | 9 | 0 | 0 | 3.6 MB |
+| `src/courses/cmsi-3802/` | 37 | 8 | 0 | 69.8 MB |
+| `src/courses/cmsi-3920/` | 0 | 0 | 1 | 0.1 MB |
+| `src/courses/cmsi-4072/` | 7 | 5 | 0 | 7.2 MB |
 
 98 files, 111.7 MB. Largest single file 19.3 MB. Nothing approaches GitHub's 100 MB
 limit.
@@ -41,14 +41,14 @@ limit.
 
 | Course | Added |
 |---|---|
-| `CMSI-3300/` | 28 lecture decks, classwork solutions, homework specs and grading record, final exam cheat sheet, syllabus. The four Berkeley Ghostbusters solution sets are held. |
-| `CMSI-3801/` | `Coursework/`: syllabus plus answer keys for three exams and five homeworks |
-| `CMSI-3802/` | Two `Coursework` trees: assignment specs, condensed notes, 16 instructor decks, exam preparation, 4 HW1 AST diagrams |
-| `CMSI-3920/` | One course reading, held |
-| `CMSI-4072/` | The seven-document senior project deliverable set, under names that say what each document is |
+| `src/courses/cmsi-3300/` | 28 lecture decks, classwork solutions, homework specs and grading record, final exam cheat sheet, syllabus. The four Berkeley Ghostbusters solution sets are held. |
+| `src/courses/cmsi-3801/` | `Coursework/`: syllabus plus answer keys for three exams and five homeworks |
+| `src/courses/cmsi-3802/` | Two `Coursework` trees: assignment specs, condensed notes, 16 instructor decks, exam preparation, 4 HW1 AST diagrams |
+| `src/courses/cmsi-3920/` | One course reading, held |
+| `src/courses/cmsi-4072/` | The seven-document senior project deliverable set, under names that say what each document is |
 
-`CMSI-3801/`'s new `Coursework/` directory is documented here rather than in that
-course's README, because `CMSI-3801/README.md` is an original student-authored artifact
+`src/courses/cmsi-3801/`'s new `Coursework/` directory is documented here rather than in that
+course's README, because `src/courses/cmsi-3801/README.md` is an original student-authored artifact
 that `AGENTS.md` requires be left as written.
 
 ## Bundles from this pass
@@ -70,7 +70,7 @@ repositories. Full inventory and evidence: [`archive.md`](archive.md).
 
 ### Math 251
 
-`CMSI-3802/Coursework (from LMU)/Class Files/` contained a `Math 251/` folder holding 66
+`src/courses/cmsi-3802/Coursework (from LMU)/Class Files/` contained a `Math 251/` folder holding 66
 files, 33 of them instructor solutions. It is excluded. This repository is an archive of
 computer science coursework, and `docs/publication.md` accepted publishing *CS*
 instructor material, not a blanket waiver for anything that happened to be filed in a CS
@@ -92,8 +92,8 @@ already tracked. Both misses came from checks that were narrower than they looke
 
 | Removed | Files | Why it got in | Why it went out |
 |---|---|---|---|
-| `CMSI-3802/Coursework (from LMU)/New Folder With Items/` | 8 | The Math 251 exclusion matched a directory *named* `Math 251`. These eight were misfiled under a generic folder name and the rule never saw them. | All eight are consecutive pages of one document: "LMU MATH 251: Applied Linear Algebra – PRACTICE FINAL EXAM (Rev. 9)". Same course, same scope rule. |
-| `CMSI-4072/Coursework/Final Product Delivery/` | 5 | SHA-256 dedup ran *within* the candidate set, not against files already tracked here. | Byte-identical to `CMSI-4072/Pathfinder/Final Product Delivery/`, right down to the directory name. No information gained. |
+| `src/courses/cmsi-3802/Coursework (from LMU)/New Folder With Items/` | 8 | The Math 251 exclusion matched a directory *named* `Math 251`. These eight were misfiled under a generic folder name and the rule never saw them. | All eight are consecutive pages of one document: "LMU MATH 251: Applied Linear Algebra – PRACTICE FINAL EXAM (Rev. 9)". Same course, same scope rule. |
+| `src/courses/cmsi-4072/Coursework/Final Product Delivery/` | 5 | SHA-256 dedup ran *within* the candidate set, not against files already tracked here. | Byte-identical to `src/courses/cmsi-4072/Pathfinder/Final Product Delivery/`, right down to the directory name. No information gained. |
 
 The lesson generalises past this pass. A name-based exclusion only catches material that
 was filed under that name, and a dedup that compares candidates to each other will not
@@ -115,8 +115,8 @@ Two sets of byte-identical files remain, both retained for a reason:
 
 | Path | Duplicate of | Why kept |
 |---|---|---|
-| `CMSI-4072/Senior Project Deliverables/` (7 PDFs) | `CMSI-4072/Pathfinder/Deliverables/` | The names differ even though the bytes do not. `SDD Revised.pdf` becomes `Pathfinder Software Design Document.pdf`. `CMSI-4071/README.md` points here for the cross-semester set. Fourteen filenames, seven documents. |
-| `CMSI-3802/Coursework (from Classes)/Homework1.pdf` | `CMSI-3802/cloudscribe/assignments/Homework 1.pdf` | 19.3 MB, the largest file in the vendor set. Kept because `cloudscribe/` is a snapshot of a separate repository, not this archive's filing, and the author's own tree should be readable without it. |
+| `src/courses/cmsi-4072/Senior Project Deliverables/` (7 PDFs) | `src/courses/cmsi-4072/Pathfinder/Deliverables/` | The names differ even though the bytes do not. `SDD Revised.pdf` becomes `Pathfinder Software Design Document.pdf`. `src/courses/cmsi-4071/README.md` points here for the cross-semester set. Fourteen filenames, seven documents. |
+| `src/courses/cmsi-3802/Coursework (from Classes)/Homework1.pdf` | `src/courses/cmsi-3802/cloudscribe/assignments/Homework 1.pdf` | 19.3 MB, the largest file in the vendor set. Kept because `cloudscribe/` is a snapshot of a separate repository, not this archive's filing, and the author's own tree should be readable without it. |
 
 ## Courses with no vendored material
 
@@ -127,8 +127,8 @@ iCloud held only the stub README. This is a real gap in the archive, not an over
 
 CMSI 4071 is a special case: Senior Project I and II produced one continuous set of
 Pathfinder deliverables, all exported together on 2025-05-07. They are vendored under
-`CMSI-4072/Senior Project Deliverables/` because nothing distinguishes which semester
-produced which document. `CMSI-4071/README.md` points there.
+`src/courses/cmsi-4072/Senior Project Deliverables/` because nothing distinguishes which semester
+produced which document. `src/courses/cmsi-4071/README.md` points there.
 
 ## iCloud eviction
 

@@ -1,0 +1,1046 @@
+[
+  {
+    "name": "Beginner Workout",
+    "days": [
+      {
+        "name": "Upper Back",
+        "exercises": [
+          {
+            "id": "3292",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3297",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0497",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3304",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Legs",
+        "exercises": [
+          {
+            "id": "1759",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1473",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "2812",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3552",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1489",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1604",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Abs and Cardio",
+        "exercises": [
+          {
+            "id": "3303",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3318",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3224",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3637",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0083",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3433",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Triceps",
+        "exercises": [
+          {
+            "id": "0471",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0677",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3291",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1744",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "3302",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Glutes",
+        "exercises": [
+          {
+            "id": "0053",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1559",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0544",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0551",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0624",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "2567",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0760",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Rest",
+        "exercises": []
+      },
+      {
+        "name": "Rest",
+        "exercises": []
+      }
+    ]
+  },
+  {
+    "name": "Push Pull Legs",
+    "days": [
+      {
+        "name": "Chest, Triceps, Shoulders",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0025",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0314",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1755",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0405",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1720",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0201",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0308",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0334",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Back, Biceps",
+        "exercises": [
+          {
+            "id": "0416",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0198",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0031",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0861",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0313",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0406",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0380",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0651",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Legs",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0599",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Chest, Triceps, Shoulders",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0025",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0314",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1755",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0405,",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1720",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0201",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0308",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0334",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Back, Biceps",
+        "exercises": [
+          {
+            "id": "0198",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0031",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0293",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0298",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0199",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0406",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0285",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0380",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0651",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Legs",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0599",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Rest",
+        "exercises": []
+      }
+    ]
+  },
+  {
+    "name": "ARNOLD",
+    "days": [
+      {
+        "name": "Chest, Back",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0651",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0314",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0861",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1755",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0198",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0308",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0293",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0406",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Triceps, Biceps, Shoulders",
+        "exercises": [
+          {
+            "id": "0416",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0405",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0313",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1720",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0031",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0201",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0334",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0298",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Legs",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0599",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Chest, Back",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0651",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0314",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0861",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1755",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0198",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0308",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0293",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0406",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Triceps, Biceps, Shoulders",
+        "exercises": [
+          {
+            "id": "0416",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0405",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0313",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1720",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0031",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0201",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0334",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0298",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Legs",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0599",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Rest",
+        "exercises": []
+      }
+    ]
+  },
+  {
+    "name": "Powerlifting Split",
+    "days": [
+      {
+        "name": "Bench",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1457",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0047",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1731",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Squat",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0054",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Rest",
+        "exercises": [
+          {
+            "id": "",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Deadlift",
+        "exercises": [
+          {
+            "id": "0032",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0027",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0293",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1400",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0599",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Bench",
+        "exercises": [
+          {
+            "id": "1311",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1457",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0047",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "1731",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Squat and Deadlift",
+        "exercises": [
+          {
+            "id": "0043",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0032",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0085",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0739",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0585",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          },
+          {
+            "id": "0417",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      },
+      {
+        "name": "Rest",
+        "exercises": [
+          {
+            "id": "",
+            "reps": 0,
+            "sets": 0,
+            "weight": 0
+          }
+        ]
+      }
+    ]
+  }
+]

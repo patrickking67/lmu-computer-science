@@ -1,0 +1,60 @@
+
+Continuing Group Project
+Documentation Feedback ~ Deliverable #4
+Updated Software Design Document
+CMSI 4072 Spring 2025
+==========================================
+
+DETAILED CLASS/MODULE DESCRIPTIONS:
+   New classes/modules added 2nd semester [y/n] n
+   New classes/modules details adequate
+      or addressed that nothing new added [y/n] n
+
+DETAILED INTERFACE DESCRIPTIONS:
+   New interfaces added 2nd semester [y/n]      n
+   New interfaces details adequate
+      or addressed that nothing new added [y/n] n
+
+DETAILED DATA STRUCTURE DESCRIPTIONS:
+   New data structures added 2nd semester [y/n] n
+   New data structure details adequate
+      or addressed that nothing new added [y/n] n
+
+DETAILED DESIGN DIAGRAMS:
+   New diagrams added 2nd semester [y/n]        n
+   New diagrams adequate
+      or addressed that nothing new added [y/n] n
+
+DATABASE DESIGN AND DESCRIPTION:
+   New ERD/diagrams added 2nd semester [y/n]    n
+   New ERD/diagrams adequate
+      or addressed that nothing new added [y/n] n
+
+
+----------------------------------------------
+OVERALL ASSESSMENT:
+   Category                          Points
+   CSC/CSU Descriptions:                1 of  2
+   Class Descriptions:                  1 of  3
+   Interface Descriptions:              1 of  3
+   Data structure Descriptions:         1 of  1
+   Design diagrams:                     1 of  4
+   Database design/descriptions:        1 of  2
+                                     ===========
+   Subtotal                             6 of 15
+   ------------------------------------------------------
+   Total Percentage:  6/15 = 40% which is an F on this deliverable
+
+I can see you've done a new document, but you've missed the point of the
+deliverable.  You were supposed to add to the SDD from last semester so that
+it containes the design for the additional parts of the software you are
+adding this semester.  I don't see that in this document.
+
+You need to regroup and do this part again.  Start with the document you had
+last semester, then go through and *ADD IN* whatever new parts you are doing
+this semester for 4072.  The one you had last semester was VERY GOOD, so use
+that one as a basis.  This should only take an hour or two for you to finish
+and commit.
+
+Get that done by the next submission and you'll be good.  I gave you some
+partial credit so it won't be a total loss if you decide not to do anything.

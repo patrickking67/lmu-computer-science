@@ -1,0 +1,11 @@
+{
+  "name": "exercises",
+  "version": "1.0.0",
+  "main": "exercises.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test exercises.test.js"
+  },
+  "license": "ISC",
+  "description": "JavaScript Homework Solutions"
+}

@@ -1,0 +1,16 @@
+Weekly Status Report (Weekend included)
+Pathfinder  
+Date: April 27, 2025  
+Team: Patrick King, Nicolas Ortiz, Thomas Powell, Maddie McDowell +Sam
+
+
+Accomplishments:
+1. Prompt testing on resume and general chatbot	usage 
+2. Completed document revisions to meet requirements
+3. Completed poster due for poster session
+
+Scheduled Tasks:
+1. Continue UI improvement now that backend is complete
+2. Continue fine-tuning AI prompts for best feedback
+3. Try to output direct pdf/docx from AI feedback
+3. Prepare for poster session by having team review session

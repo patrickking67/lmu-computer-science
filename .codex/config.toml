@@ -1,5 +1,3 @@
-# Project-scoped Codex config for lmu-cs.
-# This repo is a portfolio index for LMU coursework; mostly documentation.
-# Loaded only when this project is trusted in ~/.codex/config.toml.
-
-# No project-specific overrides; inherit user defaults.
+# Project-scoped Codex configuration for lmu-cs.
+# Guidance lives in AGENTS.md, which Codex reads directly. Do not duplicate it here.
+# No credentials, user preferences, or MCP servers.

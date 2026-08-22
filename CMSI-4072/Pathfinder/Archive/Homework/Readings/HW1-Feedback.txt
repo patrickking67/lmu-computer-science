@@ -1,0 +1,33 @@
+
+Essay Feedback
+Homework Assignment #1
+CMSI 4071 Fall 2024
+======================
+
+SUMMARY:
+   Good synopsis of the article.  All the major points were described.
+
+CRITICAL THINKING:
+   Relation to S/W engineering:
+      These two sections are GREAT!  You did a wonderful job on this writeup
+      and have LOTS of details here.  There are some excellent points you
+      brought out about using outside libraries and third-party software.
+      These are the kinds of things that must be invenstigated when using
+      open source software!
+
+   Thoughts/opinions presented:
+      These two sections were effectively combined. Nice work!
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Summary of article                  25
+   Relation to S/W engineering         25
+   Thoughts/opinions presented         25
+   Spelling/Grammar                    25
+                                     -----
+   Subtotal                           100
+   ------------------------------------------------------
+   Total Percentage:   100 out of 100 which is an A-plus
+
+Very complete job on this assignment.  Keep up the good work!
+

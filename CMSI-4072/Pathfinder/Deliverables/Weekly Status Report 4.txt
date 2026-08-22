@@ -1,0 +1,19 @@
+Weekly Status Report (Sunday As Well)
+Pathfinder  
+Date: April 6, 2025  
+Team: Patrick King, Nicolas Ortiz, Thomas Powell, Maddie McDowell
+
+Note:
+Instead of attending our regular Wednesday class meeting, the team met on Sunday to align on progress/tasks. Emailed Professor so we don't lose attendance.
+
+Accomplishments:
+1. Integrated AI into the back-end
+2. Reviewed documents we lost points on, began revisions
+3. Enhanced back-end and overall code
+4. Created initial structure and assets for poster (re-working last semester's)
+
+Scheduled Tasks:
+1. Finalize and submit the test procedure document this week.
+2. Continue fine-tuning AI prompts and functionality.
+3. Submit revisions
+4. Complete ABCDR presentation

@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "team": "Blue Rockets",
+        "statistics": "Games: 100, Goals: 30, Assists: 50",
+        "public": true
+    },
+    {
+        "id": 2,
+        "name": "Jane Smith",
+        "team": "Red Warriors",
+        "statistics": "Games: 150, Goals: 65, Assists: 40",
+        "public": false
+    }
+]

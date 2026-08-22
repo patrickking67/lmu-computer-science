@@ -1,0 +1,42 @@
+CMSI 4072 Spring 2025
+Project Proposal Feedback
+Project: Pathfinder
+=========================
+Proposal Document [2 points]:
+   Not done.  You were supposed to include a new proposal document that says
+   what you are adding to your existing project this semester.
+
+   REVISED 2025-02-11
+   OK, now THAT'S a proposal document!  This is very well done with all the
+   sections and subsections.  The explanations are clear and justifications
+   make total sense.  I like the comparison list and the key features being
+   listed out gives the reader a good perspective of what the application
+   will look like.  Including the maintenance plan is a nice touch, as is
+   the timeline in the justification section.
+
+Proposal Presentation [3 points]:
+   Not done.  You were supposed to have a copy of your presentation in here
+   as well.
+
+   You did a good job of presenting, for the most part.  Try a little harder
+   NOT to read from the slides, just using the computer screen for 'prompter'
+   purposes.  You all knew who was talking about what, and there was not any
+   latency in the talk.  Nice work.
+
+   REVISED 2025-02-11
+   Very nice presentation slides.  I like the blue background ~ easy on the
+   eye.  The graphics are good and helpful to explain the project.  The
+   focus on what you did and what you will do is perfect for this kind of
+   presentation.
+
+
+Summary:
+--------
+Total:  0% out of 5% for this deliverable.
+
+Get this things posted to your repository and it'll boost the percentage.
+
+REVISED 2025-02-11
+Updates done and evaluated as above.  Nice work!
+
+Total:  5% out of 5% for this deliverable.

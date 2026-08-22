@@ -1,0 +1,57 @@
+
+Documentation Feedback ~ Deliverable #2
+Software Requirements Specification
+Initial Development Schedule
+CMSI 4071 Fall 2024
+=======================================
+
+COMPONENT BREAKDOWN:
+   I don't see a component breakdown section as was specified on the webpage
+   for the requirements.
+
+FUNCTIONAL REQUIREMENTS:
+   I like the way you have numbered the requirements ~ a bit unconventional,
+   but still gets the point across and is trace-able which is what is needed
+   for proving requirements are met.
+
+   I think, however, that for an application of this size and complexity,
+   you need more requirements overall, especially functional ones.  You need
+   quite a bit more detail in all the "FR" requirements; for example in FR5
+   you specify an AI chatbot assistant but that top-level requirement is the
+   only specifier for that component.  There are a number of questions about
+   that piece that need requirements, such as:
+
+      Where will the chatbot appear?
+      How will the user interact with it?
+      What type of algorithm will be used?
+      What is the definition of "career-related"?
+      Where will the responses come from ~ a database?
+      etc.
+
+   There needs to be significant thought put into the requirements so that
+   these and other questions and the responses get written down.
+
+PERFORMANCE REQUIREMENTS:
+   You've followed the 'industry standard' outline for this document so you
+   don't have a section for performance requirements.  That's OK, you did a
+   lot more with this than was required.
+
+ENVIRONMENT REQUIREMENTS:
+   This is fine in this context.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Component Breakdown                 0/1
+   Functional Requirements             3/4
+   Performance Requirements            2/2
+   Environment Requirements            1/1
+                                     =====
+   Subtotal                            6/8
+   Preliminary Schedule                2/2
+   ------------------------------------------------------
+   Total Percentage:   8/10 = 80% which is a B
+
+Good work on this!  Make the suggested changes above and re-commit by the end
+of the semester for full credit on this assignment.
+
+Updated 2024-12-16: apparent modifications made so full credit

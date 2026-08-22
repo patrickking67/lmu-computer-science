@@ -1,0 +1,64 @@
+
+Continuing Group Project
+Documentation Feedback ~ Deliverable #3
+Initial Test Procedure Document
+CMSI 4072 Spring 2025
+=======================================
+
+LIST OF REQUIREMENTS/ACCEPTANCE CRITERIA:
+   Not done.
+
+SOFTWARE START-UP PROCEDURE:
+   Not done.
+
+TEST STEP FOR EACH REQUIREMENT/CRITERIA:
+   Not done.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Requirements/Criteria List          1/2
+   Software start-up procedure         1/2
+   Test step ea. requirement/crit.     3/6
+                                     =====
+   Subtotal                           5/10
+   ------------------------------------------------------
+   Total Percentage:   5/10 = 50% which is an F on this deliverable.
+
+This is not a test *procedure* document, it is a test *plan* document.  You
+will need to do the full document for this deliverable and submit it to your
+repository for deliverable #5 to get the credit for the document.  Be sure
+to do a *TEST PROCEDURE* document, not a test plan.  I have said several
+times in class that is what's required, and have explained the difference.
+
+You can turn this document into what is required by simply adding the parts
+that are listed above.  Make a bullet list of the requirements you are going
+to test at the start of the document [just a listing, no explanations or any
+thing else needed].  Then write a short set of steps that show how to start
+the software.  Then follow that with a section that lists the actual steps
+to follow, like a checklist.
+
+Put all that together for deliverable #5 to get credit for both submissions.
+
+----------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+----------------------------------------------------------------------------
+
+Documentation Feedback ~ Deliverable #5
+Test Procedure Document Complete
+============================================
+
+OVERALL ASSESSMENT:
+           Category                                Points
+   Comments from first submission incorporated       7/8
+   Spelling and Grammar in document acceptable       2/2
+                                                   =====
+   Subtotal                                          9/10
+   ------------------------------------------------------
+   Total Percentage:   9/10 = 90% which is an A-minus
+
+Looks like the revised document fills the bill.  You have specific tests so
+that the tester can see what to do in a step-wise manner.  The only thing
+missing is a list of requirements that each test will verify.
+
+Well done on the second go-round!

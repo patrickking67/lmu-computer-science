@@ -1,0 +1,16 @@
+Weekly Status Report #2
+Pathfinder
+Date: March 12, 2025
+Team: Patrick King, Nicolas Ortiz, Thomas Powell, Maddie McDowell
+
+Accomplishments/Statuses:
+1. Currently restructing the code to improve structure and efficiency.
+2. Setup a new Firebase hosting (back-end).
+3. Working around a storage-related blocker in Firebase, solution will most likely be pay the fee.
+4. Re-doing front-end, same figma/UI design.
+5. Exploring alternative AI apis to replace ChatGPT due to cost concerns.
+
+Scheduled Tasks:
+1. Deep dive development sessions planned for 3/16, goal is to make significant back-end process and begin front-end
+2. Identify and integrate a cost-effective AI AAPI alternative or seek funding from the school, over the next 2 weeks
+3. Committed to regaining momentum after the break and making good progress. #Pathfinder

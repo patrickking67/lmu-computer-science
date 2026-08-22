@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+._*
+
+# Build artifacts
+target/
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+.venv/
+
+# History bundles live outside the repo; see docs/archive.md
+*.bundle
+
+# Local agent configuration, never committed
+CLAUDE.local.md
+.claude/settings.local.json

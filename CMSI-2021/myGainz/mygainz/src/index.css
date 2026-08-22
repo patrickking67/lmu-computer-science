@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    overscroll-behavior-y: none;
+    @apply bg-slate-50;
+    @apply scrollbar-hide;
+  }
+
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-32 md:w-40 rounded-md p-2 bg-blue-500 text-white font-sans flex justify-center items-center gap-2;
+  }
+
+  .modal {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .btn-animate {
+    @apply transform transition duration-200 hover:scale-[102%] hover:brightness-[110%];
+  }
+
+  .page-header {
+    @apply select-none text-3xl font-bold text-gray-800;
+  }
+
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+

@@ -1,0 +1,23 @@
+Weekly Status Report #3  
+Pathfinder  
+Date: March 26, 2025  
+Team: Patrick King, Nicolas Ortiz, Thomas Powell, Maddie McDowell
++Sam
+
+Accomplishments:
+1. Backend restructure is almost done, Thomas made good progress, Patrick set it up.
+2. Tried out some different AI APIs (Gemini, OpenAI, Claude, etc.) — free ones aren’t cutting it. We weren't able to fully test them since we haven't bought it.
+3. Still messing with Firebase — config mostly working, but hitting limits.
+4. Nick and Maddie are working on the front-end rebuild, front-end looks great.
+5. Sam has been helping out on the backend too.
+
+Scheduled Tasks:
+1. Decide and buy an AI API — free options aren’t good enough.
+2. Upgrade Firebase — we’ll probably need to pay for storage.
+3. Finish integrating everything (frontend + backend).
+4. Work on UI polish and resume tool.
+5. Potentially grow other fields once we lock in all core features and front-end.
+6. Start on presentation/poster.
+
+Notes:
+Almost, just need to pay for services and tie things together. Team’s making good progress.

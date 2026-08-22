@@ -1,0 +1,42 @@
+
+Continuing Group Project
+Documentation Feedback ~ Deliverable #2
+Updated Software Requirements Specification
+   Initial Development Schedule
+CMSI 4072 Spring 2025
+===========================================
+
+COMPONENT BREAKDOWN:
+   Not required for this semester's exercise
+
+FUNCTIONAL REQUIREMENTS:
+   You have a nice new format for the document, but it is still the same set
+   of requirements as before.  You were supposed to write NEW requirements
+   to cover what you are adding on this semester, plus you were supposed to
+   add more requirements to last semester's document to more fully specify
+   your ORIGINAL work.  None of this was done.  See last semester's feedback
+   for more information.
+
+PERFORMANCE REQUIREMENTS:
+   You've followed the 'industry standard' outline for this document so you
+   don't have a section for performance requirements.  That's OK, you did a
+   lot more with this than was required.
+
+ENVIRONMENT REQUIREMENTS:
+   This is fine in this context.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Component Breakdown                 2/2
+   Functional Requirements             3/5
+   Performance Requirements            2/2
+   Environment Requirements            1/1
+                                     =====
+   Subtotal                           8/10
+   ------------------------------------------------------
+   Total Percentage:   8/10 = 80% which is a B
+
+I like the new format of the document, and I still like the way you have the
+requirements numbered.  You still need to add some requirements.  If you do
+that by the end of the semester you can still get full credit for this
+deliverable.

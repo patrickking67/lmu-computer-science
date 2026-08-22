@@ -1,0 +1,48 @@
+
+Documentation Feedback ~ Deliverable #4
+Software Design Document ~ Detailed Design
+CMSI 4071 Fall 2024
+==========================================
+
+DETAILED CSC AND CSU DESCRIPTIONS:
+   Adequate on this section ~ nothing to add here.
+
+DETAILED CLASS DESCRIPTIONS:
+   Adequate on this section ~ nothing to add here.
+
+DETAILED INTERFACE DESCRIPTIONS:
+   Barely adequate on this section.  At the detailed design level you need a
+   set of descriptions of what the actual interfaces are, what they will be
+   used for, and what parts of the system participate in the interactions.
+
+DETAILED DATA STRUCTURE DESCRIPTIONS:
+   Barely adequate on this section.  At this level you also need to describe
+   the specific members/fields of the data structures you'll be using in the
+   interactions you've described in the previous section.
+
+DETAILED DESIGN DIAGRAMS:
+   Nothing here except a description of what is supposed to be here.
+
+DATABASE DESIGN AND DESCRIPTION:
+   Nothing here except a description of what is supposed to be here.
+   This really should be an "Entity-Relationship Diagram" or "ERD".  However
+   since we are close to the end of the semester, I'm not going to make you
+   do this part again.  The verbal descriptions are pretty good, since you
+   talk about what the entities [tables] will be.
+
+----------------------------------------------
+OVERALL ASSESSMENT:
+   Category                          Points
+   CSC/CSU Descriptions:                2 of  2
+   Class Descriptions:                  3 of  3
+   Interface Descriptions:            2.5 of  3
+   Data structure Descriptions:       0.5 of  1
+   Design diagrams:                     0 of  4
+   Database design/descriptions:        0 of  2
+                                     ===========
+   Subtotal                             8 of 15
+   ------------------------------------------------------
+   Total Percentage:  8/15 = 53.33% which is not the greatest....
+
+
+

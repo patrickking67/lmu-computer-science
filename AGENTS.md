@@ -1,13 +1,65 @@
-# lmu-cs
+# Repository agent instructions
 
-Portfolio index for LMU Computer Science coursework. Each course links to its own repository.
+## Purpose
 
-## Scope
+Archive of Patrick King's LMU Computer Science coursework, BS 2025. One directory per
+course. The coursework itself lives here; this is not an index of links.
 
-This repo is **documentation only** — there is no build, no tests, no code. It serves as a single landing page that points to the active coursework repos (`cmsi3801`, `cmsi3802`, `pathfinder`) and the archived ones (everything else).
+## Repository map
 
-## When updating
+- `CMSI-1010/` … `CMSI-4072/`: one directory per course, named by catalog number
+- `docs/archive.md`: git bundle inventory and restore procedure
+- `docs/reference.md`: instructor course material, links only
+- `CONSOLIDATION-REVIEW.md`: record of the 2026-08-22 consolidation
 
-- Keep the badge row honest — only include languages actually used in linked work.
-- Keep the "Active Coursework" and "Archived Coursework" tables in sync with the actual GitHub state. If a repo is renamed, unarchived, or removed, update the table.
-- Markdown only. No JavaScript, no GitHub Pages — the rendered README on GitHub is the deliverable.
+## Setup and validation
+
+No build, no test suite, no dependencies at the repository level. Individual course
+projects carry their own toolchains and are archived, not maintained. Do not add a
+repository-level build.
+
+- Validation: `scripts/check-ai-config.sh`
+
+## Architecture
+
+This is an archive. The governing rule is that history is preserved, not rewritten.
+
+- Course directories are historical records. Do not refactor, reformat, modernize, or
+  lint archived coursework. Broken or dated code is the correct state.
+- Original student-authored READMEs in `CMSI-3550/` and `CMSI-3801/` are artifacts.
+  Leave them as written.
+- Thirteen upstream repositories were deleted from GitHub. Their commit histories exist
+  only as git bundles in `~/Backups/lmu-cs-history-2026-08-22/`, outside this repository
+  and outside GitHub. Never delete that directory. See `docs/archive.md`.
+- `CMSI-3802/cloudscribe/` is a course-era snapshot at commit `25b48f1`, diverged 46
+  commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
+  Never push it to that remote.
+- Work that continues outside the archive is referenced, never vendored. `pathfinder` and
+  `myGainz` are live repositories.
+
+## Coding and security
+
+- Follow existing patterns before creating new abstractions.
+- Never commit secrets.
+- Do not commit build artifacts. `target/`, `node_modules/`, and `dist/` are ignored.
+- Do not commit `*.bundle`. The largest exceeds GitHub's file size limit.
+
+## Generated files
+
+None. Nothing in this repository is generated.
+
+## AI configuration maintenance
+
+- This `AGENTS.md` is canonical. `CLAUDE.md`, `.github/copilot-instructions.md`, and
+  `.codex/config.toml` are thin adapters and must not duplicate it.
+- Update it only when durable repository knowledge changes.
+- Repository-shared files only. No user-local or secret-bearing files.
+- Run `scripts/check-ai-config.sh` before completion.
+
+## Definition of done
+
+- Requested behavior is complete.
+- No archived coursework was modified as a side effect.
+- Durable documentation is current.
+- `scripts/check-ai-config.sh` passes.
+- Commands run and unresolved risks are reported.

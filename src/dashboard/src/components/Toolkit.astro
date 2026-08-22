@@ -1,0 +1,20 @@
+---
+import { toolkit } from '../data/courses';
+// Weight is depth, not decoration: three tiers, sized and coloured so the
+// languages actually worked in read louder than the ones touched once.
+const size = { 3: 'text-2xl sm:text-3xl', 2: 'text-lg sm:text-xl', 1: 'text-sm sm:text-base' };
+---
+<figure class="toolkit mt-14">
+  <ul class="flex flex-wrap items-baseline gap-x-5 gap-y-3">
+    {toolkit.map((t, i) => (
+      <li
+        class={`stratum display leading-none ${size[t.weight]}`}
+        style={`animation-delay:${i * 38}ms; color:${t.weight === 3 ? 'var(--patina)' : t.weight === 2 ? 'var(--ink)' : 'var(--muted)'}; font-variation-settings:'SOFT' ${t.weight * 20}, 'WONK' 1, 'opsz' 32`}
+        title={t.where}
+      >{t.name}</li>
+    ))}
+  </ul>
+  <figcaption class="mt-6 text-xs" style="color: var(--muted)">
+    Sized by how much I actually wrote in each.
+  </figcaption>
+</figure>

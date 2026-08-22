@@ -2,12 +2,14 @@
 
 ## Purpose
 
-Archive of Patrick King's LMU Computer Science coursework, BS 2025. One directory per
-course. The coursework itself lives here; this is not an index of links.
+Patrick King's LMU computer science coursework, Fall 2021 – Spring 2025, plus the site
+that presents it. The code itself lives here; this is not an index of links.
 
 ## Repository map
 
 - `src/courses/cmsi-1010/` … `src/courses/cmsi-4072/`: one directory per course, named by catalog number
+- `src/dashboard/`: the site (Astro + Tailwind), deployed to GitHub Pages
+- `src/packages/lmucs/`: Python package that reads and verifies `docs/record.md`
 - `docs/archive.md`: git bundle inventory and restore procedure
 - `docs/reference.md`: instructor course material, links only
 - `docs/record.md`: authoritative course, term, title, grade, and credit record
@@ -19,48 +21,49 @@ course. The coursework itself lives here; this is not an index of links.
 
 ## Setup and validation
 
-No build, no test suite, no dependencies at the repository level. Individual course
-projects carry their own toolchains and are archived, not maintained. Do not add a
-repository-level build.
+No build at the repository root. `src/dashboard` and `src/packages/lmucs` carry their
+own, and each course project carries its own toolchain. Course projects are not
+maintained. Do not add a repository-level build that spans them.
 
 - Validation: `scripts/check-ai-config.sh`
 
 The check runs in GitHub Actions on every push to `main` and on pull requests. It
-warns rather than fails when the bundle archive is absent, because the archive is
-expected to live off-machine and no runner will ever see it. A warning there means
-"confirm your backup", not "the repository is broken".
+warns rather than fails when the git bundles are absent, because they live off-machine
+and no runner will ever see them. A warning there means "confirm your backup", not
+"the repository is broken".
 
 ## Architecture
 
-This is an archive. The governing rule is that history is preserved, not rewritten.
+Coursework in `src/courses/` is submitted work. The governing rule is that it stays as
+submitted; everything outside it is normal, maintained code.
 
-- Never repair submitted coursework to make a test pass. A failing test that fails
-  because the submitted code was wrong is the archive working correctly, and "fixing" it
-  contradicts the grade recorded in `docs/record.md`. CMSI 3300's Homework 2 harness
+- Never repair submitted coursework to make a test pass. A test that fails because the
+  original code was wrong is telling you something true, and editing it to pass just
+  deletes the information — it also contradicts the grade in `docs/record.md`. CMSI 3300's Homework 2 harness
   scores 7 of 19 against a homework the gradebook marks 51%, and four of those failures
   are a real bug: `ad_agent.py:44` calls `map_query` on a `pgmpy` `CausalInference`, which
   has never had that method. Record such defects in `docs/building.md`; do not edit them
   out. Fix the environment freely, never the answers.
-- Before concluding that archived code is broken, confirm the toolchain and the pins.
+- Before concluding that course code is broken, confirm the toolchain and the pins.
   `docs/building.md` records four separate dependency breakages in the CMSI 3300 stack
   that all look like broken coursework and are not. `/usr/bin/javac` exists on macOS as a
   stub that only prints an install prompt, so `command -v javac` succeeding does not mean
   a JDK is present.
-- Course directories are historical records. Do not refactor, reformat, modernize, or
-  lint archived coursework. Broken or dated code is the correct state.
-- Original student-authored READMEs in `src/courses/cmsi-3550/` and `src/courses/cmsi-3801/` are artifacts.
-  Leave them as written.
+- Do not refactor, reformat, modernize, or lint anything under `src/courses/`. Dated
+  code is the correct state there.
+- Original student-authored READMEs in `src/courses/cmsi-3550/` and `src/courses/cmsi-3801/`
+  are part of the submitted work. Leave them as written.
 - Thirteen upstream repositories were deleted from GitHub. Their commit histories exist
   only as git bundles in `~/Backups/lmu-cs-history-2026-08-22/`, outside this repository
   and outside GitHub. Never delete that directory. See `docs/archive.md`.
 - `src/courses/cmsi-3802/cloudscribe/` is a course-era snapshot at commit `25b48f1`, diverged 46
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
-- Work that continues outside the archive is referenced, never vendored.
-- Fifteen computer science courses, not thirteen. The count grew twice: CMSI 1900 is a
-  zero-unit seminar that left no repository, and CMSI 3920 was only in the course audit.
-  An inventory built from repositories alone will undercount. `docs/record.md` is
-  authoritative for courses, terms, and titles.
+- Work that continues in its own repository is referenced, never copied in.
+- Fifteen computer science courses, not thirteen. CMSI 1900 is a zero-unit seminar with
+  no repository, and CMSI 3920 appears only in the course audit, so an inventory built
+  from directories alone undercounts. `docs/record.md` is authoritative for courses,
+  terms, and titles; `lmucs verify` checks the tree against it in both directions.
 - Course terms come from the author's course audit. Instructor course pages document
   whichever offering is currently published; all four checked disagreed with the
   enrollment term. Never take a term from a course-page URL.
@@ -84,10 +87,10 @@ This is an archive. The governing rule is that history is preserved, not rewritt
   instructor material, answer keys, exam solutions, and grades. `docs/publication.md`
   records what that decision accepted. Do not re-open it; do not quietly remove
   material it covers.
-- Vendored coursework carries its own `.gitignore` files whose rules apply here.
-  They have already dropped files that upstream tracked. Use `git add -f` for
-  coursework, and never add a `.gitignore` rule that could match one. `pathfinder` and
-  `myGainz` are live repositories.
+- Course projects carry their own `.gitignore` files whose rules apply here. They have
+  already dropped files that upstream tracked. Use `git add -f` for coursework, and never
+  add a `.gitignore` rule that could match one. `pathfinder` and `myGainz` are live
+  repositories.
 - The check enforces that rule mechanically: it lists every ignored-but-present file
   and fails on anything that is not a build artifact. So `.gitignore` cannot be used
   to drop coursework quietly, including material held pending a publication decision.
@@ -96,13 +99,13 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 ## Coding and security
 
 - Follow existing patterns before creating new abstractions.
-- Never commit secrets. Two are already committed, in vendored CMSI 4072 coursework: a
+- Never commit secrets. Two are already committed, in CMSI 4072 coursework: a
   Google service-account private key at
   `src/courses/cmsi-4072/Pathfinder/backend/serviceAccountKey.json` and a RapidAPI key hardcoded
   twice in `src/courses/cmsi-4072/Pathfinder/backend/functions/index.js`. They block making this
   repository public and `scripts/check-ai-config.sh` fails on them today. Do not delete
-  them to make the check pass; the remedy is rotation, and the archive question is the
-  author's. See `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front
+  them to make the check pass; the remedy is rotation, and what happens to the files
+  afterwards is the author's call. See `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front
   ends are not secrets and are reported rather than failed.
 - A check that reports "no credentials" is worth exactly what its pattern list covers.
   The one here asserted a clean tree for as long as it existed while a private key sat in
@@ -133,7 +136,7 @@ None. Nothing in this repository is generated.
 ## Definition of done
 
 - Requested behavior is complete.
-- No archived coursework was modified as a side effect.
+- No coursework under `src/courses/` was modified as a side effect.
 - Durable documentation is current.
 - `scripts/check-ai-config.sh` passes.
 - Commands run and unresolved risks are reported.

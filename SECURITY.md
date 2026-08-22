@@ -1,28 +1,27 @@
 # Security policy
 
-This repository is an archive of university coursework, wrapped in a site that presents
-it. It ships no product and has no releases, so the usual "supported versions" table does
-not apply: there is one branch, `main`, and it is the only thing that is maintained.
+This repository holds university coursework and the site that presents it. It ships no
+product and cuts no releases, so the usual "supported versions" table does not apply:
+there is one branch, `main`, and it is the only thing maintained.
 
 | What | Maintained |
 |---|---|
 | `main` | Yes — the site, the checks, and the tooling |
-| `src/courses/**` | No, by design. Archived as submitted; see below |
-| Git bundles (off-machine) | Frozen historical artifacts |
+| `src/courses/**` | No, by design — submitted work, kept as submitted |
+| Git bundles (off-machine) | Frozen |
 
-## Archived coursework is not maintained
+## Coursework is not maintained
 
-Course directories are historical records. Vulnerable, dated, or plainly wrong code in
-`src/courses/` is the correct state — repairing it would falsify the record and contradict
-the grades in `docs/record.md`. Reports about archived coursework are welcome as
-*information*, and will be recorded in `docs/building.md` rather than patched out.
+`src/courses/` is submitted student work. Dated, vulnerable, or plainly wrong code in
+there is the correct state — editing it would contradict the record in `docs/record.md`
+and delete the information the failure carries. Reports about it are welcome as
+*information* and get recorded in `docs/building.md` rather than patched out.
 
 The one exception is credentials. Those get rotated, always.
 
 ## Known exposure
 
-`src/courses/cmsi-4072/Pathfinder/backend/` contains, in vendored senior-project
-coursework:
+`src/courses/cmsi-4072/Pathfinder/backend/` contains, in senior-project coursework:
 
 - a Google service-account private key (`serviceAccountKey.json`)
 - a RapidAPI key, hardcoded twice in `functions/index.js`
@@ -30,7 +29,7 @@ coursework:
 The repository is private, so neither has been published. Both are tracked as a blocker on
 making it public, and `scripts/check-ai-config.sh` fails on them on every run rather than
 letting the tree look clean. See `docs/publication.md` for the remediation and the open
-archive question.
+question of what happens to the files afterwards.
 
 Firebase *Web* API keys (`AIza…`) appear in three front ends. Those are not secrets —
 Google ships them in every web bundle and they are guarded by Security Rules and API-key
@@ -51,5 +50,5 @@ What to expect:
 | Fix, or a recorded decision not to | Tracked in `docs/publication.md` |
 
 A report about a live credential is treated as urgent regardless of where it sits in the
-tree. A report about archived coursework being outdated will be acknowledged and recorded,
-not fixed — that is the archive working as intended, not a declined vulnerability.
+tree. A report that coursework is outdated will be acknowledged and recorded rather than
+fixed — that is the policy above, not a declined vulnerability.

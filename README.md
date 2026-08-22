@@ -24,10 +24,12 @@ Advised by **Dr. Ray Toal**.
 
 ---
 
-This repository holds the coursework itself, not links to it. Thirteen per-course
-repositories were deleted from GitHub; their working trees are vendored here and their
-full commit histories are preserved as git bundles, 29 in total, kept off-machine. See
-[`docs/archive.md`](docs/archive.md).
+A compiler, a network stack, and thirteen languages. Four years of computer science at
+LMU, with the code that came out of it — all of it runnable, with the commands in
+[`docs/building.md`](docs/building.md).
+
+The site that presents it is in [`src/dashboard`](src/dashboard): Astro and Tailwind,
+deployed to GitHub Pages.
 
 ## Courses
 
@@ -35,81 +37,60 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 
 | Course | Title | Term | Work |
 |---|---|---|---|
-| [CMSI 1010](src/courses/cmsi-1010) | Computer Programming Laboratory | Fall 2021 | none preserved |
-| [CMSI 1900](src/courses/cmsi-1900) | Exploring Computer Science | Fall 2021 | none, 0 units by design |
+| [CMSI 1010](src/courses/cmsi-1010) | Computer Programming Laboratory | Fall 2021 | — |
+| [CMSI 1900](src/courses/cmsi-1900) | Exploring Computer Science | Fall 2021 | — |
 | [CMSI 2021](src/courses/cmsi-2021) | Web Application Development | Fall 2022 | myGainz, 3 web apps |
-| [CMSI 2120](src/courses/cmsi-2120) | Data Structures and Applications | Spring 2022 | none preserved |
+| [CMSI 2120](src/courses/cmsi-2120) | Data Structures and Applications | Spring 2022 | — |
 | [CMSI 2130](src/courses/cmsi-2130) | Algorithms and Analysis | Spring 2023 | 5 projects, Java |
-| [CMSI 2210](src/courses/cmsi-2210) | Computer Systems Organization | Fall 2022 | none preserved |
-| [CMSI 2820](src/courses/cmsi-2820) | Discrete Mathematics for Computer Science | Fall 2022 | none preserved |
-| [CMSI 3300](src/courses/cmsi-3300) | Artificial Intelligence | Fall 2024 | course material |
+| [CMSI 2210](src/courses/cmsi-2210) | Computer Systems Organization | Fall 2022 | — |
+| [CMSI 2820](src/courses/cmsi-2820) | Discrete Mathematics for Computer Science | Fall 2022 | — |
+| [CMSI 3300](src/courses/cmsi-3300) | Artificial Intelligence | Fall 2024 | inference and classification |
 | [CMSI 3550](src/courses/cmsi-3550) | Networks and the Internet | Spring 2024 | 7 projects, Rust |
-| [CMSI 3751](src/courses/cmsi-3751) | Game Design | Fall 2023 | none preserved |
+| [CMSI 3751](src/courses/cmsi-3751) | Game Design | Fall 2023 | — |
 | [CMSI 3801](src/courses/cmsi-3801) | Theories of Computer and Human Languages | Fall 2024 | 13 languages, answer keys |
 | [CMSI 3802](src/courses/cmsi-3802) | Programming Language Concepts and Implementation | Spring 2025 | cloudscribe, course material |
-| [CMSI 3920](src/courses/cmsi-3920) | Computing Contexts and Ethics | Summer 2024 I | none committed |
-| [CMSI 4071](src/courses/cmsi-4071) | Senior Project I | Fall 2024 | see 4072 |
+| [CMSI 3920](src/courses/cmsi-3920) | Computing Contexts and Ethics | Summer 2024 I | — |
+| [CMSI 4071](src/courses/cmsi-4071) | Senior Project I | Fall 2024 | design and specification |
 | [CMSI 4072](src/courses/cmsi-4072) | Senior Project II | Spring 2025 | Pathfinder, deliverable set |
 
-Fifteen computer science courses. Terms come from the author's course audit, not from
-instructor course pages, which document whichever offering is currently published and
-disagreed with the enrollment term in all four cases checked.
+Fifteen courses. Eight produced code you can clone and run; the rest were lecture and
+exam courses. Terms come from the author's course audit rather than instructor course
+pages, which publish whichever offering is current.
 
-Seven courses hold nothing but a README: CMSI 1010, 1900, 2120, 2210, 2820, 3751, and
-4071. Their repositories were deleted before any local clone existed, or none was ever
-created, and the iCloud source held only an empty template. CMSI 1900 produced none by
-design, and CMSI 4071's deliverables are filed under CMSI 4072. That is a real gap, not
-work in progress.
+The full record — grades, credits, and the non-major coursework — is in
+[`docs/record.md`](docs/record.md). Build and test commands, with the version pins that
+make them work, are in [`docs/building.md`](docs/building.md).
 
-Course material that existed only in iCloud was vendored on 2026-08-22, adding 98 files
-across four courses. Thirteen more were committed and then removed on review, nine are
-held pending two publication questions. See [`docs/vendoring.md`](docs/vendoring.md) and
-[`docs/publication.md`](docs/publication.md).
+## Still going
 
-Grades, credits, repeated attempts, and the non-major coursework are in
-[`docs/record.md`](docs/record.md). What still compiles and runs, with the commands and
-version pins that make it do so, is in [`docs/building.md`](docs/building.md).
-
-## Live repositories
-
-Work that continues outside this archive.
+Projects that outlived the course that started them.
 
 | Repository | Visibility | Relation |
 |---|---|---|
-| [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | Grew out of CMSI 3802. Statically typed language for IT automation, compiles to JavaScript. Five-stage Ohm compiler. |
-| [`pathfinder`](https://github.com/patrickking67/pathfinder) | private | CMSI 4072 senior project. Being rebuilt as a personal product. |
-| [`myGainz`](https://github.com/patrickking67/myGainz) | public | CMSI 2021 fitness tracker. |
+| [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | Statically typed language for IT automation, compiling to JavaScript. Five-stage Ohm compiler, 99.66% statement coverage. Started in CMSI 3802. |
+| [`pathfinder`](https://github.com/patrickking67/pathfinder) | private | The senior capstone, being rebuilt as a product. |
+| [`myGainz`](https://github.com/patrickking67/myGainz) | public | Fitness tracker. React and Firestore. Started in CMSI 2021. |
 
 ## Reference
 
 Instructor course material is indexed in [`docs/reference.md`](docs/reference.md).
-
-Published publicly by deliberate decision, including instructor material, answer keys,
-and grades. [`docs/publication.md`](docs/publication.md) records what that accepted, and
-the two questions the 2026-08-22 vendoring pass raised that it did not.
+[`docs/publication.md`](docs/publication.md) records what publishing this accepted.
 
 ## File structure
 
 ```text
-lmu-cs/
-├── CMSI-1010 … src/courses/cmsi-4072/         one directory per course, 15 in total
-├── docs/
-│   ├── archive.md                 bundle inventory and restore commands
-│   ├── building.md                what compiles and runs, and what does not
-│   ├── publication.md             what publication accepted, and what is unresolved
-│   ├── record.md                  grades, credits, and the full course record
-│   ├── reference.md               instructor repositories
-│   └── vendoring.md               what was vendored from iCloud, and what was excluded
-├── scripts/
-│   └── check-ai-config.sh         repository configuration check
-├── .github/
-│   ├── copilot-instructions.md    Copilot adapter
-│   └── workflows/
-│       └── check-ai-config.yml    runs the check on every push
-├── .claude/settings.json          shared Claude settings
-├── .codex/config.toml             Codex configuration
+lmu-computer-science/
+├── src/
+│   ├── courses/                   fifteen course directories, cmsi-1010 … cmsi-4072
+│   ├── apps/                      runnable projects
+│   ├── packages/lmucs/            Python package for the course record
+│   └── dashboard/                 the site (Astro + Tailwind)
+├── docs/                          reference notes, the course record, build commands
+├── scripts/check-ai-config.sh     repository check, also run in CI
+├── tests/                         suites that belong to no single course
+├── .github/workflows/             Pages deploy, Conda package, repository check
 ├── AGENTS.md                      canonical agent instructions
-├── CLAUDE.md                      Claude adapter, imports AGENTS.md
+├── SECURITY.md                    security policy
 └── LICENSE                        MIT
 ```
 
@@ -125,8 +106,8 @@ local configuration is tracked, that no committed credential is present, that no
 Runs on every push to `main`. Commands that build and test the coursework itself are in
 [`docs/building.md`](docs/building.md).
 
-**The check currently fails**, on two committed credentials in vendored CMSI 4072
-coursework. They are why this repository is still private. See
+**The check currently fails**, on two committed credentials in CMSI 4072 coursework.
+They are why this repository is still private. See
 [`docs/publication.md`](docs/publication.md#committed-credentials-a-blocker-on-publication).
 
 ## About

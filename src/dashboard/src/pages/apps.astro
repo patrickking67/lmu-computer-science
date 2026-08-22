@@ -4,7 +4,7 @@ import { apps } from '../data/apps';
 const label: Record<string, string> = {
   runs: 'Runs as committed',
   'needs-setup': 'Needs setup',
-  archived: 'Archived',
+  'byo-keys': 'Bring your own keys',
 };
 ---
 <Base title="Apps" description="Runnable projects from the coursework, with the command that starts each one.">
@@ -12,9 +12,8 @@ const label: Record<string, string> = {
     <p class="eyebrow settle">{apps.length} projects</p>
     <h1 class="display text-[clamp(2.25rem,5.5vw,3.5rem)] mt-4 settle" style="animation-delay: 100ms">Run it yourself.</h1>
     <p class="mt-6 max-w-xl text-lg leading-relaxed settle" style="animation-delay: 180ms; color: var(--muted)">
-      Nothing here is hosted. Each project runs from source, and each command below is the
-      one that was actually used to start it. Where a project no longer runs cleanly, that
-      is said rather than hidden.
+      Every project below runs from source, and each command is the one I actually use to
+      start it. Where something needs your own credentials, it says so.
     </p>
 
     <ul class="mt-16 space-y-5">

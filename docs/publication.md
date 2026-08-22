@@ -125,5 +125,50 @@ of any kind will see a name inside a screenshot. Images have to be opened and lo
 The 2026-08-22 pass learned this the hard way; see
 [`vendoring.md`](vendoring.md#removed-on-review).
 
-No LMU email addresses are tracked. No credential-shaped strings are tracked;
-`scripts/check-ai-config.sh` asserts this on every run.
+No LMU email addresses are tracked; a scan of every tracked file for
+`@lmu.edu` and `@lion.lmu.edu` returns nothing.
+
+Credential-shaped strings **are** tracked. See below.
+
+## Committed credentials: a blocker on publication
+
+Found 2026-08-22 by review, after the sentence above had claimed the opposite for as
+long as it existed. It claimed that because `scripts/check-ai-config.sh` said so, and the
+check was wrong: it matched `sk-`, `ghp_` and `AKIA` only, and only inside `*.json`,
+`*.toml` and `*.md`. None of those three shapes is what a Firebase project leaves behind.
+The check now scans every tracked file for private-key blocks, service-account
+`private_key` fields, provider tokens, and API keys pasted into request headers, and it
+fails on all three items below. **It fails on `main` today.** That is the honest state of
+the tree, not a regression introduced by the check.
+
+The repository is still private and has not been pushed publicly, so none of this has
+been exposed by *this* archive. That is the only reason these are blockers rather than
+incidents. They must be settled before the repository is made public.
+
+| Item | Where | What it is |
+|---|---|---|
+| Google service-account private key | `CMSI-4072/Pathfinder/backend/serviceAccountKey.json` | RSA private key for `firebase-adminsdk-fbsvc@pathfinder-cae4f.iam.gserviceaccount.com`. Firebase Admin SDK credentials bypass Firestore and Storage Security Rules entirely. |
+| RapidAPI key | `CMSI-4072/Pathfinder/backend/functions/index.js`, lines 16 and 39 | One billable key, hardcoded twice, behind `cors({origin: true})`. |
+| Firebase Web API keys | `CMSI-2021/Blog-Application`, `CMSI-2021/myGainz`, `CMSI-4072/Pathfinder/frontend` | Not secrets. Google ships these in every web bundle; they are guarded by Security Rules and API-key restrictions. Reported by the check, never failed. |
+
+Rotation is the remedy, and it is the only part that is not optional. Deleting the files
+does not undo a key that has already been written down: `serviceAccountKey.json` entered
+this repository in `9cfd959` and is in the history of the upstream `pathfinder`
+repository too. Revoke the service-account key in the `pathfinder-cae4f` Google Cloud
+console and regenerate the RapidAPI key; after that the tracked copies are inert strings
+and the question of what to do with them becomes an archive question rather than a
+security one.
+
+That archive question is genuinely open, and it is the author's call for the same reason
+the two items above are. Three ways to settle it, and the ordering rule in this file does
+not reach any of them:
+
+1. **Delete from `HEAD`, keep the history.** One commit. Consistent with "history is
+   preserved, not rewritten", inconsistent with "the archive holds the work as submitted".
+2. **Delete from `HEAD` and purge from history.** Removes the strings, and contradicts
+   the rule in `AGENTS.md` that this archive does not rewrite history.
+3. **Keep both, having rotated.** The archive stays faithful; the check stays red unless
+   an allowlist is added, and an allowlist is exactly the mechanism this repository
+   refuses elsewhere for hiding files.
+
+Nothing here recommends one over the others. Revoke first; the rest can wait.

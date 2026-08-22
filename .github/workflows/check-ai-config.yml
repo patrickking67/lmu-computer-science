@@ -14,5 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The check only reads the tree. Leaving the job's token in
+          # .git/config lets any later step push with it.
+          persist-credentials: false
       - name: Validate repository configuration
         run: ./scripts/check-ai-config.sh

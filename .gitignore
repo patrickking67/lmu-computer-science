@@ -31,7 +31,9 @@ coverage/
 *.o
 *.obj
 
-# Secrets. Nothing here has ever held one; this is a guard, not a record.
+# Secrets. This guards against a future .env; it is not a statement that the
+# tree is clean. It is not: a Google service-account private key and a RapidAPI
+# key are tracked under CMSI-4072/Pathfinder/. See docs/publication.md.
 .env
 .env.*
 

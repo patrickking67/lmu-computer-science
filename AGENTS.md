@@ -97,7 +97,18 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 ## Coding and security
 
 - Follow existing patterns before creating new abstractions.
-- Never commit secrets.
+- Never commit secrets. Two are already committed, in vendored CMSI 4072 coursework: a
+  Google service-account private key at
+  `CMSI-4072/Pathfinder/backend/serviceAccountKey.json` and a RapidAPI key hardcoded
+  twice in `CMSI-4072/Pathfinder/backend/functions/index.js`. They block making this
+  repository public and `scripts/check-ai-config.sh` fails on them today. Do not delete
+  them to make the check pass; the remedy is rotation, and the archive question is the
+  author's. See `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front
+  ends are not secrets and are reported rather than failed.
+- A check that reports "no credentials" is worth exactly what its pattern list covers.
+  The one here asserted a clean tree for as long as it existed while a private key sat in
+  a tracked `.json`, because it matched three token shapes none of which a Firebase
+  project produces. Widen the patterns before trusting the verdict.
 - Do not commit build artifacts. `target/`, `node_modules/`, `dist/`, `build/`,
   `coverage/`, `.pytest_cache/`, `__pycache__/`, and `*.class` are ignored. A compiled
   binary with no extension is not caught by any of those; two were tracked from the first

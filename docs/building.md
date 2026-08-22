@@ -206,3 +206,6 @@ done
 Match on `Mach-O` and `ELF`, not on `executable`: `file` describes any script carrying a
 shebang as "script text executable", so a bare `*executable*` pattern flags half the
 Python in the repository.
+
+`scripts/check-ai-config.sh` now runs that scan itself, so the next tracked binary is
+caught without anyone remembering to type the loop above.

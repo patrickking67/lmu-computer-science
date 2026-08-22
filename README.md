@@ -120,10 +120,15 @@ lmu-cs/
 ./scripts/check-ai-config.sh
 ```
 
-Checks the required files, adapter wiring, that no build artifact or local
-configuration is tracked, that no `.gitignore` rule silently drops coursework, and that
-all fifteen courses are documented. Runs on every push to `main`. Commands that build and
-test the coursework itself are in [`docs/building.md`](docs/building.md).
+Checks the required files, adapter wiring, that no build artifact, compiled binary, or
+local configuration is tracked, that no committed credential is present, that no
+`.gitignore` rule silently drops coursework, and that all fifteen courses are documented.
+Runs on every push to `main`. Commands that build and test the coursework itself are in
+[`docs/building.md`](docs/building.md).
+
+**The check currently fails**, on two committed credentials in vendored CMSI 4072
+coursework. They are why this repository is still private. See
+[`docs/publication.md`](docs/publication.md#committed-credentials-a-blocker-on-publication).
 
 ## About
 

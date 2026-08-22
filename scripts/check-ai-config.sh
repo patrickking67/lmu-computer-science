@@ -98,10 +98,10 @@ fi
 echo
 echo "Course coverage"
 missing=0
-for c in 1010 2021 2120 2130 2210 2820 3300 3550 3751 3801 3802 4071 4072; do
+for c in 1010 1900 2021 2120 2130 2210 2820 3300 3550 3751 3801 3802 4071 4072; do
   if [ -f "CMSI-$c/README.md" ]; then :; else bad "CMSI-$c/README.md missing"; missing=1; fi
 done
-[ "$missing" -eq 0 ] && ok "all 13 course directories documented"
+[ "$missing" -eq 0 ] && ok "all 14 course directories documented"
 
 echo
 if [ "$fail" -eq 0 ]; then echo "PASS"; else echo "FAIL"; fi

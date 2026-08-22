@@ -17,7 +17,7 @@ repository. Executed in full.
 | 2 | Remove verified duplicate clones | Done. 13 root-level duplicates removed, each confirmed identical at HEAD first. |
 | 3 | Strip nested `.git` directories | Done. 12 stripped. Histories live in the bundles. |
 | 4 | Drop regenerable build artifacts | Done. 5 Rust `target/` trees, 43 MB. |
-| 5 | Scaffold all 13 course directories | Done. Every course has a README with its bulletin title. |
+| 5 | Scaffold all 14 course directories | Done. Every course has a README with its bulletin title. CMSI 1900 added 2026-08-22 after the author named it. |
 | 6 | Rewrite `README.md` | Done. 13 dead links removed. |
 | 7 | Adopt the AI agent repository standard | Done. `scripts/check-ai-config.sh` passes. |
 | 8 | Prune the stale worktree | Done. |

@@ -35,6 +35,7 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 | Course | Title | Term | Work |
 |---|---|---|---|
 | [CMSI 1010](CMSI-1010) | Computer Programming Laboratory | | none preserved |
+| [CMSI 1900](CMSI-1900) | Exploring Computer Science | | none preserved, 0 units |
 | [CMSI 2021](CMSI-2021) | Web Application Development | Fall 2022 | myGainz, 3 web apps |
 | [CMSI 2120](CMSI-2120) | Data Structures and Applications | | none preserved |
 | [CMSI 2130](CMSI-2130) | Algorithms and Analysis | | 5 projects, Java |
@@ -48,8 +49,13 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 | [CMSI 4071](CMSI-4071) | Senior Project I | Fall 2024 | see 4072 |
 | [CMSI 4072](CMSI-4072) | Senior Project II | Spring 2025 | Pathfinder |
 
-Six courses have no preserved work. Their repositories were deleted before any local clone
-existed, or none was ever created.
+Seven courses have no preserved work. Their repositories were deleted before any local
+clone existed, or none was ever created. CMSI 1900 is a zero-unit seminar and produced
+none by design.
+
+This table lists courses with evidence on this machine plus any the author has named. It
+is not a transcript. CMSI 1900 was missed by the original inventory because a zero-unit
+course leaves no repository behind, so other non-coding courses may still be absent.
 
 ## Live repositories
 

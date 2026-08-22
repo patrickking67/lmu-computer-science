@@ -1,6 +1,19 @@
 # macOS
 .DS_Store
 ._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.fseventsd
+Icon?
+
+# Editors
+.idea/
+*.swp
+*.swo
+*~
 
 # Build artifacts
 target/
@@ -12,7 +25,15 @@ __pycache__/
 .venv/
 .pytest_cache/
 coverage/
+.gradle/
+.ipynb_checkpoints/
 *.class
+*.o
+*.obj
+
+# Secrets. Nothing here has ever held one; this is a guard, not a record.
+.env
+.env.*
 
 # History bundles live outside the repo; see docs/archive.md
 *.bundle
@@ -20,3 +41,9 @@ coverage/
 # Local agent configuration, never committed
 CLAUDE.local.md
 .claude/settings.local.json
+
+# Deliberately NOT listed here: the files held pending the publication
+# questions in docs/publication.md. Ignoring them would hide them, and
+# scripts/check-ai-config.sh fails on any ignored file that is not a build
+# artifact precisely to stop coursework being dropped this way. They stay
+# untracked and visible in `git status`. Add coursework with `git add -f`.

@@ -43,7 +43,7 @@ Absent toolchains, not evidence of broken code. Nothing was concluded about thes
 | CMSI 3550 | 6 Rust crates | `cargo`, `rustc` |
 | CMSI 3801 | Rust `stack` crate | `cargo`, `rustc` |
 | CMSI 3801 | Go, Haskell, Kotlin, Lua, OCaml | `go`, `ghc`, `kotlinc`, `lua`, `ocaml` |
-| CMSI 2130 | 5 Java projects | a JDK, and a build file — see below |
+| CMSI 2130 | 5 Java projects | a JDK, and a build file (see below) |
 | CMSI 2021, 3550, 4072 | React and Vite front ends | not attempted |
 
 `/usr/bin/java` and `/usr/bin/javac` exist on macOS as stubs that only print an install
@@ -186,7 +186,7 @@ Not code that fails, but material that is incomplete. Recorded rather than repai
 | `CMSI-3300/Coursework/Lectures/` | Lecture 8.1 and 14.2 are missing; the set runs 1 – 15.2 otherwise |
 | CMSI 3300 homework | Only the Homework 4 specification survives. Homework 1 – 3 and 5 specs are gone. |
 
-`CMSI-3801/python/__init__.py` is also 0 bytes, which is correct — it is a package marker.
+`CMSI-3801/python/__init__.py` is also 0 bytes, which is correct: it is a package marker.
 
 ## Removed build artifacts
 

@@ -28,11 +28,11 @@ questions in [`publication.md`](publication.md); the 13 removed are recorded und
 
 | Course | Committed | Removed | Held | Size |
 |---|---|---|---|---|
-| `CMSI-3300/` | 45 | — | 8 | 31.1 MB |
-| `CMSI-3801/` | 9 | — | — | 3.6 MB |
-| `CMSI-3802/` | 37 | 8 | — | 69.8 MB |
-| `CMSI-3920/` | 0 | — | 1 | 0.1 MB |
-| `CMSI-4072/` | 7 | 5 | — | 7.2 MB |
+| `CMSI-3300/` | 45 | 0 | 8 | 31.1 MB |
+| `CMSI-3801/` | 9 | 0 | 0 | 3.6 MB |
+| `CMSI-3802/` | 37 | 8 | 0 | 69.8 MB |
+| `CMSI-3920/` | 0 | 0 | 1 | 0.1 MB |
+| `CMSI-4072/` | 7 | 5 | 0 | 7.2 MB |
 
 98 files, 111.7 MB. Largest single file 19.3 MB. Nothing approaches GitHub's 100 MB
 limit.
@@ -64,7 +64,7 @@ repositories. Full inventory and evidence: [`archive.md`](archive.md).
 |---|---|---|
 | Inside a nested git repository | 40,479 | Preserved as bundles; see `docs/archive.md` |
 | `Class Files/Math 251/` | 66 | Another department's material, including instructor solutions |
-| Build artifacts, `.DS_Store`, `._*`, `*.pyc` | — | Already covered by `.gitignore` |
+| Build artifacts, `.DS_Store`, `._*`, `*.pyc` | n/a | Already covered by `.gitignore` |
 | iCloud stub `README.md` | 15 | Empty templates; see below |
 | Duplicate content, by SHA-256 | 3 | Same bytes reachable by two paths in the source |
 

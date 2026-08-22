@@ -26,7 +26,8 @@ Advised by **Dr. Ray Toal**.
 
 This repository holds the coursework itself, not links to it. Thirteen per-course
 repositories were deleted from GitHub; their working trees are vendored here and their
-full commit histories are preserved as git bundles. See [`docs/archive.md`](docs/archive.md).
+full commit histories are preserved as git bundles, 29 in total, kept off-machine. See
+[`docs/archive.md`](docs/archive.md).
 
 ## Courses
 
@@ -91,22 +92,42 @@ the two questions the 2026-08-22 vendoring pass raised that it did not.
 
 ```text
 lmu-cs/
-├── CMSI-1010 … CMSI-4072/     one directory per course
+├── CMSI-1010 … CMSI-4072/         one directory per course, 15 in total
 ├── docs/
-│   ├── archive.md             bundle inventory and restore commands
-│   ├── building.md            what compiles and runs, and what does not
-│   ├── publication.md         what publication accepted, and what is unresolved
-│   ├── record.md              grades, credits, and the full course record
-│   ├── reference.md           instructor repositories
-│   └── vendoring.md           what was vendored from iCloud, and what was excluded
-├── AGENTS.md                  canonical agent instructions
-├── CLAUDE.md                  Claude adapter
-└── CONSOLIDATION-REVIEW.md    2026-08-22 consolidation record
+│   ├── archive.md                 bundle inventory and restore commands
+│   ├── building.md                what compiles and runs, and what does not
+│   ├── publication.md             what publication accepted, and what is unresolved
+│   ├── record.md                  grades, credits, and the full course record
+│   ├── reference.md               instructor repositories
+│   └── vendoring.md               what was vendored from iCloud, and what was excluded
+├── scripts/
+│   └── check-ai-config.sh         repository configuration check
+├── .github/
+│   ├── copilot-instructions.md    Copilot adapter
+│   └── workflows/
+│       └── check-ai-config.yml    runs the check on every push
+├── .claude/settings.json          shared Claude settings
+├── .codex/config.toml             Codex configuration
+├── AGENTS.md                      canonical agent instructions
+├── CLAUDE.md                      Claude adapter, imports AGENTS.md
+├── CONSOLIDATION-REVIEW.md        2026-08-22 consolidation record
+└── LICENSE                        MIT
 ```
+
+## Verification
+
+```bash
+./scripts/check-ai-config.sh
+```
+
+Checks the required files, adapter wiring, that no build artifact or local
+configuration is tracked, that no `.gitignore` rule silently drops coursework, and that
+all fifteen courses are documented. Runs on every push to `main`. Commands that build and
+test the coursework itself are in [`docs/building.md`](docs/building.md).
 
 ## About
 
-**Patrick King** — BS Computer Science, minor in Business Administration. CTO at Barkrow
+**Patrick King.** BS Computer Science, minor in Business Administration. CTO at Barkrow
 Systems.
 
 - LinkedIn: [linkedin.com/in/patrickgking03](https://www.linkedin.com/in/patrickgking03/)

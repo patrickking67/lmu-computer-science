@@ -15,6 +15,8 @@ course. The coursework itself lives here; this is not an index of links.
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
 - `docs/building.md`: what compiles and runs, with verified commands and version pins
 - `CONSOLIDATION-REVIEW.md`: record of the 2026-08-22 consolidation
+- `scripts/check-ai-config.sh`: the repository check, also run in CI
+- `.github/workflows/check-ai-config.yml`: runs that check on every push to `main`
 
 ## Setup and validation
 
@@ -23,6 +25,11 @@ projects carry their own toolchains and are archived, not maintained. Do not add
 repository-level build.
 
 - Validation: `scripts/check-ai-config.sh`
+
+The check runs in GitHub Actions on every push to `main` and on pull requests. It
+warns rather than fails when the bundle archive is absent, because the archive is
+expected to live off-machine and no runner will ever see it. A warning there means
+"confirm your backup", not "the repository is broken".
 
 ## Architecture
 
@@ -82,6 +89,10 @@ This is an archive. The governing rule is that history is preserved, not rewritt
   They have already dropped files that upstream tracked. Use `git add -f` for
   coursework, and never add a `.gitignore` rule that could match one. `pathfinder` and
   `myGainz` are live repositories.
+- The check enforces that rule mechanically: it lists every ignored-but-present file
+  and fails on anything that is not a build artifact. So `.gitignore` cannot be used
+  to drop coursework quietly, including material held pending a publication decision.
+  Held files stay untracked and visible in `git status`, never ignored.
 
 ## Coding and security
 

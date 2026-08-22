@@ -5,21 +5,21 @@ not vendored here.
 
 ## Dr. Andrew Forney ([`forns.lmu.build`](https://www.forns.lmu.build))
 
-Course pages, not repositories. The term in the URL is the offering the page currently
-documents, not the term the author took the course. Where the two are known to differ it
-is noted.
+Course pages, not repositories. The term in each URL is the offering that page currently
+documents, which is not the term the author took the course. Checked against the course
+audit, all four disagree, so the enrollment term is given separately.
 
-| Course | Page | Topics |
-|---|---|---|
-| CMSI 1900 | [fall-2024](https://www.forns.lmu.build/classes/fall-2024/cmsi-1900/cmsi-1900.html) | Guest lectures, advising, portfolio, 4+1 program |
-| CMSI 2120 | [fall-2021](https://www.forns.lmu.build/classes/fall-2021/cmsi-2120/cmsi-2120.html) | Java, lists, stacks, queues, trees, hashing, heaps, graphs, asymptotics |
-| CMSI 2130 | [spring-2026](https://www.forns.lmu.build/classes/spring-2026/cmsi-2130/cmsi-2130.html) | Informed search, adversarial search, dynamic programming, greedy, CSPs, local search |
-| CMSI 3300 | [fall-2025](https://www.forns.lmu.build/classes/fall-2025/cmsi-3300/cmsi-3300.html) | Propositional logic, Bayesian networks, HMMs, particle filters, perceptrons, neural networks |
+| Course | Taken | Page documents | Topics |
+|---|---|---|---|
+| CMSI 1900 | Fall 2021 | [fall-2024](https://www.forns.lmu.build/classes/fall-2024/cmsi-1900/cmsi-1900.html) | Guest lectures, advising, portfolio, 4+1 program |
+| CMSI 2120 | Spring 2022 | [fall-2021](https://www.forns.lmu.build/classes/fall-2021/cmsi-2120/cmsi-2120.html) | Java, lists, stacks, queues, trees, hashing, heaps, graphs, asymptotics |
+| CMSI 2130 | Spring 2023 | [spring-2026](https://www.forns.lmu.build/classes/spring-2026/cmsi-2130/cmsi-2130.html) | Informed search, adversarial search, dynamic programming, greedy, CSPs, local search |
+| CMSI 3300 | Fall 2024 | [fall-2025](https://www.forns.lmu.build/classes/fall-2025/cmsi-3300/cmsi-3300.html) | Propositional logic, Bayesian networks, HMMs, particle filters, perceptrons, neural networks |
 
-The CMSI 2130 page documents Spring 2026. The author's CMSI 2130 work commits date to
-2023-07-24, so that page is a later offering of the same course. Its published homework
-set still matches the preserved projects one for one, which is what establishes the
-course attribution in `CMSI-2130/README.md`.
+The CMSI 2130 page documents Spring 2026 while the work was done in Spring 2023 and
+commits on 2023-07-24. Its published homework set still matches the preserved projects
+one for one, which is what establishes the course attribution in `CMSI-2130/README.md`.
+The assignment set is stable across offerings; the term on the page is not.
 
 ## Dr. Ray Toal ([`rtoal`](https://github.com/rtoal))
 

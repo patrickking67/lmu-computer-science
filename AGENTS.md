@@ -35,8 +35,20 @@ This is an archive. The governing rule is that history is preserved, not rewritt
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
 - Work that continues outside the archive is referenced, never vendored.
-- Do not push to a public remote. Tracked deliverables name a group partner and
-  `CMSI-4072/Pathfinder/` came from a private upstream. See `docs/publication.md`.
+- Fifteen computer science courses, not thirteen. The count grew twice: CMSI 1900 is a
+  zero-unit seminar that left no repository, and CMSI 3920 was only in the course audit.
+  An inventory built from repositories alone will undercount. `docs/record.md` is
+  authoritative for courses, terms, and titles.
+- Course terms come from the author's course audit. Instructor course pages document
+  whichever offering is currently published; all four checked disagreed with the
+  enrollment term. Never take a term from a course-page URL.
+- Unvendored source material lives in iCloud at `Projects/Loyola Marymount University/`.
+  It is reorganized by hand and synced across devices, so verify it is settled before
+  copying from it. Never copy while `brctl status` shows active transfers.
+- This repository is published publicly by the author's explicit decision, including
+  instructor material, answer keys, exam solutions, and grades. `docs/publication.md`
+  records what that decision accepted. Do not re-open it; do not quietly remove
+  material it covers.
 - Vendored coursework carries its own `.gitignore` files whose rules apply here.
   They have already dropped files that upstream tracked. Use `git add -f` for
   coursework, and never add a `.gitignore` rule that could match one. `pathfinder` and

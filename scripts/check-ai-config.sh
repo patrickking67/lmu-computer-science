@@ -12,7 +12,7 @@ warn() { printf '  warn  %s\n' "$1"; }
 echo "Required files"
 for f in AGENTS.md CLAUDE.md README.md LICENSE .gitignore \
          .github/copilot-instructions.md .codex/config.toml .claude/settings.json \
-         docs/archive.md docs/reference.md docs/publication.md; do
+         docs/archive.md docs/reference.md docs/publication.md docs/record.md; do
   [ -f "$f" ] && ok "$f" || bad "$f missing"
 done
 
@@ -98,10 +98,10 @@ fi
 echo
 echo "Course coverage"
 missing=0
-for c in 1010 1900 2021 2120 2130 2210 2820 3300 3550 3751 3801 3802 4071 4072; do
+for c in 1010 1900 2021 2120 2130 2210 2820 3300 3550 3751 3801 3802 3920 4071 4072; do
   if [ -f "CMSI-$c/README.md" ]; then :; else bad "CMSI-$c/README.md missing"; missing=1; fi
 done
-[ "$missing" -eq 0 ] && ok "all 14 course directories documented"
+[ "$missing" -eq 0 ] && ok "all 15 course directories documented"
 
 echo
 if [ "$fail" -eq 0 ]; then echo "PASS"; else echo "FAIL"; fi

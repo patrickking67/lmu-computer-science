@@ -32,10 +32,15 @@ jobs:
           python-version: '3.12'
 
       - name: Install lmucs
-        run: python -m pip install --no-build-isolation -e src/packages/lmucs
+        # Build isolation on purpose: unlike the conda job, this runner has no
+        # setuptools of its own, so pip has to fetch the build backend itself.
+        run: python -m pip install -e src/packages/lmucs
 
       - name: Test
-        run: node --experimental-strip-types --test tests/
+        # A glob, not a directory: node --test <dir> tries to load the
+        # directory as a module and fails. Type stripping needs no flag on
+        # Node 22.18 and later, which is why the .ts data files import here.
+        run: node --test "tests/*.test.mjs"
 
       - name: Build the site
         working-directory: src/dashboard

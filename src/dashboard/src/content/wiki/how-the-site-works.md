@@ -73,8 +73,12 @@ files and checks them against the tree:
 Run them with:
 
 ```bash
-node --experimental-strip-types --test tests/
+node --test "tests/*.test.mjs"
 ```
+
+A glob rather than a directory: `node --test tests/` tries to load the
+directory itself as a module and fails. The tests import the site's TypeScript
+data files directly, which needs no flag on Node 22.18 and later.
 
 ## Where the numbers come from
 

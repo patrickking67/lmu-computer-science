@@ -27,7 +27,7 @@ own, and each course project carries its own toolchain. Course projects are not
 maintained. Do not add a repository-level build that spans them.
 
 - Validation: `scripts/check-ai-config.sh`
-- Site data: `node --experimental-strip-types --test tests/` (needs `lmucs` importable)
+- Site data: `node --test "tests/*.test.mjs"` (needs `lmucs` importable, Node 22.18+)
 - Package: `pytest` in `src/packages/lmucs`
 
 Running any of these leaves artifacts. `.pytest_cache/` and `lmucs.egg-info/` appear the

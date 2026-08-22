@@ -107,7 +107,7 @@ Three checks, all of them run in CI on every push to `main`.
 
 ```bash
 ./scripts/check-ai-config.sh                  # the repository itself
-node --experimental-strip-types --test tests/ # the site's claims about it
+node --test "tests/*.test.mjs"                # the site's claims about it
 pytest src/packages/lmucs/tests               # the record and the line counter
 ```
 

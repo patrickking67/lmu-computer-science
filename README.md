@@ -106,9 +106,6 @@ local configuration is tracked, that no committed credential is present, that no
 Runs on every push to `main`. Commands that build and test the coursework itself are in
 [`docs/building.md`](docs/building.md).
 
-**The check currently fails**, on two committed credentials in CMSI 4072 coursework.
-They are why this repository is still private. See
-[`docs/publication.md`](docs/publication.md#committed-credentials-a-blocker-on-publication).
 
 ## About
 

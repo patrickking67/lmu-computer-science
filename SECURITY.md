@@ -19,17 +19,17 @@ and delete the information the failure carries. Reports about it are welcome as
 
 The one exception is credentials. Those get rotated, always.
 
-## Known exposure
+## Credentials
 
-`src/courses/cmsi-4072/Pathfinder/backend/` contains, in senior-project coursework:
+Two credentials were committed in CMSI 4072 coursework and were removed on 2026-08-22: a
+Google service-account private key (file deleted, purged from every commit) and a RapidAPI
+key (replaced across all history). The repository was private throughout, so neither was
+published by it. Both still require rotation at the provider — a history rewrite does not
+revoke anything.
 
-- a Google service-account private key (`serviceAccountKey.json`)
-- a RapidAPI key, hardcoded twice in `functions/index.js`
-
-The repository is private, so neither has been published. Both are tracked as a blocker on
-making it public, and `scripts/check-ai-config.sh` fails on them on every run rather than
-letting the tree look clean. See `docs/publication.md` for the remediation and the open
-question of what happens to the files afterwards.
+`scripts/check-ai-config.sh` scans every tracked file on every run and fails on private-key
+blocks, service-account `private_key` fields, provider tokens, and API keys in request
+headers.
 
 Firebase *Web* API keys (`AIza…`) appear in three front ends. Those are not secrets —
 Google ships them in every web bundle and they are guarded by Security Rules and API-key

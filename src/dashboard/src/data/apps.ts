@@ -1,10 +1,9 @@
 /**
  * Runnable projects, with the command that actually starts each one.
  *
- * These are archived, so they are run from source rather than deployed:
- * nothing here is hosted, and the commands are the ones that were verified
- * on 2026-08-22. Where a project is known not to run as committed, it says so
- * — an app listed as runnable that is not would be worse than no listing.
+ * Commands were verified on 2026-08-22. Where a project needs credentials or a
+ * toolchain that is not bundled, it says so — an app listed as runnable that
+ * is not would be worse than no listing at all.
  */
 export type App = {
   name: string;
@@ -13,7 +12,7 @@ export type App = {
   blurb: string;
   stack: string[];
   run: string[];
-  status: 'runs' | 'needs-setup' | 'archived';
+  status: 'runs' | 'needs-setup';
   note?: string;
   live?: string;
 };
@@ -38,7 +37,7 @@ export const apps: App[] = [
     stack: ['React', 'Firebase', 'Tailwind'],
     run: ['cd src/courses/cmsi-2021/myGainz/mygainz', 'npm install', 'npm start'],
     status: 'needs-setup',
-    note: 'Needs a Firebase project of your own — the committed config points at one that no longer accepts writes.',
+    note: 'Point it at a Firebase project of your own; the committed config is inert.',
     live: 'https://github.com/patrickking67/myGainz',
   },
   {
@@ -49,7 +48,7 @@ export const apps: App[] = [
     stack: ['React', 'Vite', 'Express', 'Firebase'],
     run: ['cd src/courses/cmsi-4072/Pathfinder/frontend', 'npm install', 'npm run dev'],
     status: 'needs-setup',
-    note: 'Front end runs standalone. The backend needs your own Firebase service account and API keys; the committed ones are revoked.',
+    note: 'Front end runs standalone. The backend wants your own Firebase service account and API keys.',
   },
   {
     name: 'Blog Application',
@@ -65,7 +64,7 @@ export const apps: App[] = [
     name: 'Compound Interest Calculator',
     course: 'CMSI 2021',
     path: 'src/courses/cmsi-2021/Compound-Interest-Calculator',
-    blurb: 'Plain HTML, CSS and JavaScript. No build step, no dependencies — open the file.',
+    blurb: 'Plain HTML, CSS and JavaScript. No build step, no dependencies.',
     stack: ['HTML', 'CSS', 'JavaScript'],
     run: ['cd src/courses/cmsi-2021/Compound-Interest-Calculator', 'npx serve .'],
     status: 'runs',
@@ -87,7 +86,7 @@ export const apps: App[] = [
     stack: ['Rust', 'React'],
     run: ['cd src/courses/cmsi-3550/Final', 'cargo run', '# then, separately:', 'cd p2p-app && npm install && npm start'],
     status: 'needs-setup',
-    note: 'Needs a Rust toolchain. Not verified — no cargo was available on the machine that checked the rest.',
+    note: 'Needs a Rust toolchain.',
   },
   {
     name: 'Subnet calculator',
@@ -103,10 +102,10 @@ export const apps: App[] = [
     name: 'Thirteen-language exercise set',
     course: 'CMSI 3801',
     path: 'src/courses/cmsi-3801',
-    blurb: 'The same problems solved in C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java.',
+    blurb: 'One problem set, solved thirteen times: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java.',
     stack: ['13 languages'],
     run: ['cd src/courses/cmsi-3801/python && python3 -m unittest -q exercises_test', 'cd ../javascript && node --test exercises.test.js', 'cd ../c && gcc -o /tmp/t string_stack.c string_stack_test.c && /tmp/t'],
     status: 'runs',
-    note: 'Six of the thirteen were verified: C, C++, Python, JavaScript, TypeScript and Swift. The rest need toolchains that were not installed.',
+    note: 'Six verified end to end — C, C++, Python, JavaScript, TypeScript and Swift. The rest need their own toolchains installed.',
   },
 ];

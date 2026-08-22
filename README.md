@@ -75,7 +75,7 @@ Projects that outlived the course that started them.
 
 | Repository | Visibility | Relation |
 |---|---|---|
-| **CloudScribe** — [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | A statically typed language for the work that usually ends up in a fragile shell script. Five-stage Ohm compiler to JavaScript, 143 tests, 99.66% statement coverage. Started in CMSI 3802. |
+| **CloudScribe** — [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | A statically typed language for the work that usually ends up in a fragile shell script. Five-stage Ohm compiler to JavaScript. 143 tests at 99.66% statement coverage, over a back end with two defects the suite never reached — see `docs/building.md`. Started in CMSI 3802. |
 | **Pathfinder** — [`pathfinder`](https://github.com/patrickking67/pathfinder) | private | The senior capstone, being rebuilt as a product. |
 | **myGainz** — [`myGainz`](https://github.com/patrickking67/myGainz) | public | A training log that keeps the set-by-set history most workout apps discard. React and Firestore. Started in CMSI 2021. |
 

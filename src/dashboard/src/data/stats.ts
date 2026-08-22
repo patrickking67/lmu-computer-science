@@ -38,5 +38,5 @@ export const figures = [
   { value: '15', label: 'courses', note: 'Fall 2021 – Spring 2025' },
   { value: '18', label: 'languages', note: 'everything with a line count — HTML, CSS and assembly included' },
   { value: totalLines.toLocaleString('en-US'), label: 'lines of coursework', note: 'tracked files under src/courses' },
-  { value: '143', label: 'tests in CloudScribe', note: '99.66% statement coverage' },
+  { value: '143', label: 'tests in CloudScribe', note: '99.66% coverage, and still two defects in the back end' },
 ] as const;

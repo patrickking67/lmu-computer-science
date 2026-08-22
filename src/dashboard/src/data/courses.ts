@@ -123,12 +123,13 @@ export const courses: Course[] = [
   {
     code: 'CMSI 3802', slug: 'cmsi-3802', title: 'Programming Language Concepts and Implementation', term: 'Spring 2025',
     blurb:
-      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through five stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and the generator emits.',
+      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through five stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and a generator emits. The playground on the Programs page runs that compiler in your browser — including the two back-end defects a 99.66%-coverage test suite never caught.',
     work: 'CloudScribe compiler', stack: ['Ohm', 'JavaScript', 'Node', 'Mocha', 'c8'],
     highlights: [
       'Five stages: parse, analyse, optimise, generate, emit',
-      '143 tests holding 99.66% statement coverage',
-      'Seven example programs that compile and run',
+      '143 tests holding 99.66% statement coverage — over a back end that is broken',
+      'Seven example programs, all of which parse, analyse and optimise',
+      'None of which reach JavaScript: the generator has no case for task',
       'Still developed in its own repository, 46 commits past the course snapshot',
     ],
   },

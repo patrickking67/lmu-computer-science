@@ -175,6 +175,86 @@ Fix the *environment* freely: pins, toolchain versions, build files, documentati
 the *answers* alone. If a defect in submitted coursework is worth recording, record it
 here, next to the grade it earned.
 
+## CMSI 3802: the compiler's back end is broken, and the tests do not show it
+
+Found 2026-08-22 while building the browser playground on `src/dashboard`. Recorded
+here, not repaired — the rule in `AGENTS.md` applies: a test suite that passes over a
+real defect is telling you something true about the submitted work.
+
+`npm test` reports 143 passing and 99.66% statement coverage, and that number is honest
+as far as it goes. Both defects below sit in the gap the suite does not cover. Line
+coverage measures which lines ran, not whether what they produced was correct, and every
+one of these is a function that ran and returned the wrong thing.
+
+### Every example program fails to generate JavaScript
+
+All seven programs in `examples/` parse, analyse and optimise, and none of them reach
+JavaScript:
+
+```
+$ cd src/courses/cmsi-3802/cloudscribe && npm install
+$ node src/cloudscribe.js examples/network_monitoring.csc parsed
+Syntax is ok
+$ node src/cloudscribe.js examples/network_monitoring.csc js
+Error: generator: unhandled node kind TaskDeclaration
+```
+
+`generator.js` has no `TaskDeclaration` case, so it falls through to the `default` that
+throws. `task` is the language's headline construct and every example is wrapped in one.
+`analyzer.test.js` exercises `task` sixteen times; `generator.test.js` never does, which
+is exactly why 143 tests pass.
+
+### The optimiser damages exactly what it tries to optimise
+
+`visit()` at `optimizer.js:34` returns the node untouched when no visitor is registered
+for its kind. Four of the visitors that *are* registered compute their parts and then
+fall off the end, returning `undefined`: `foldBinary` (line 50) when the operands are not
+both literals, `UnaryExpression` (102), `Conditional` (115), and `WhileStatement` (74),
+which returns `null` only for a literal-`false` test.
+
+That `undefined` is then swallowed twice over:
+
+- in an expression position, `generator.js:13` opens `exp()` with `if (e == null) return ""`,
+  so it becomes an empty string rather than an error
+- in a statement position, `visitBlock` (`optimizer.js:40`) drops results with `r == null`,
+  which catches `undefined` as well as `null`, so the statement is deleted
+
+The result is that constructs the optimiser ignores survive intact, and constructs it
+handles are corrupted. Verified against the compiler on 2026-08-22:
+
+| Source | Generated JavaScript | |
+|---|---|---|
+| `t = t + i;` | `t_0 = t_0 + i_1;` | correct — no `Assignment` visitor |
+| `if x > 1 { … }` | `if (x_0 > 1) { … }` | correct — no `IfStatement` visitor |
+| `print(1 + 2);` | `console.log(3);` | correct — both operands are literals, so it folds |
+| `print(x + 1);` | `console.log();` | argument dropped |
+| `let y = x + 1;` | `let y_1 = ;` | not valid JavaScript |
+| `let y = -x;` | `let y_1 = ;` | same, via `UnaryExpression` |
+| `while n > 0 { … }` | *nothing* | the whole loop is deleted |
+| `while true { … }` | *nothing* | the whole program compiles to empty output |
+
+The last two are the serious ones. A dropped argument is visible the moment you look at
+the output; a deleted loop is not, and the program still runs.
+
+`print(1 + 2)` compiling correctly is the reason the suite does not catch any of this:
+the optimiser folds literal arithmetic before the generator ever sees a
+`BinaryExpression`, so generator tests written against constants pass.
+
+To reproduce, from `src/courses/cmsi-3802/cloudscribe` after `npm install`:
+
+```
+$ printf 'let n = 3;\nwhile n > 0 {\n  print("tick");\n  n--;\n}\nprint("end");\n' > /tmp/p.csc
+$ node src/cloudscribe.js /tmp/p.csc js
+let n_0 = 3;
+console.log("end");
+```
+
+The four working stages are worth seeing, so the dashboard's CloudScribe playground runs
+the real `analyzer.js`, `optimizer.js` and `generator.js` in the browser and shows the
+generator failing on the example programs rather than hiding it.
+`tests/site-data.test.mjs` pins these defects, so none can be quietly repaired or
+quietly regress without a test failing.
+
 ## Known content defects
 
 Not code that fails, but material that is incomplete. Recorded rather than repaired.

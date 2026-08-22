@@ -4,11 +4,12 @@
  *
  * `inline` reads the program's own files at build time and hands them to a
  * sandboxed iframe as srcdoc — nothing is copied into the repository and the
- * source stays the single copy. `container` boots a StackBlitz WebContainer,
- * which installs and runs the repository inside the browser tab; that costs
- * real memory, so it waits for a click rather than starting two at once.
+ * source stays the single copy. `playground` bundles a program's own compiler
+ * and runs it here. `external` sends you to a tab that can do what this page
+ * cannot; see the comment on the URL below for why.
  */
 import { readRepoText, readRepoDataUri } from '../lib/repo';
+import Playground from './Playground.astro';
 import type { Program } from '../data/programs';
 
 interface Props { program: Program }
@@ -34,9 +35,14 @@ function inlineDocument(dir: string): string {
 
 const srcdoc = program.embed === 'inline' ? inlineDocument(program.path) : '';
 
-const container = program.repo
-  ? `https://stackblitz.com/github/${program.repo}?embed=1&hideNavigation=1&hidedevtools=1` +
-    (program.file ? `&file=${encodeURIComponent(program.file)}` : '')
+// A new tab, not an iframe. WebContainers need the embedding document to be
+// cross-origin isolated; GitHub Pages cannot set headers, and StackBlitz's own
+// embed page loads third-party resources without CORP, so even hosts that can
+// set them hit the same error. Opening in a tab is StackBlitz's documented
+// workaround and works everywhere.
+const external = program.repo
+  ? `https://stackblitz.com/github/${program.repo}` +
+    (program.file ? `?file=${encodeURIComponent(program.file)}` : '')
   : '';
 const repoName = program.repo?.split('/')[1] ?? program.name;
 ---
@@ -53,44 +59,25 @@ const repoName = program.repo?.split('/')[1] ?? program.name;
   </div>
 )}
 
-{program.embed === 'container' && (
-  <div
-    class="container-embed rounded-2xl overflow-hidden border"
-    data-src={container}
-    style="border-color: var(--line); background: var(--surface)"
-  >
-    <div class="grid place-items-center text-center px-6" style="height: 30rem">
-      <div class="space-y-3 max-w-xs">
-        <p class="eyebrow">WebContainer</p>
-        <p class="text-sm leading-relaxed" style="color: var(--muted)">
-          Installs and runs <span class="font-mono text-[0.95em]">{repoName}</span> inside this tab.
-          Nothing is downloaded to your machine.
-        </p>
-        <button
-          type="button"
-          class="mt-1 px-5 py-2.5 rounded-full text-sm font-medium lift"
-          style="background: var(--ink); color: var(--paper)"
-        >Start it</button>
-      </div>
+{program.embed === 'playground' && <Playground />}
+
+{program.embed === 'external' && (
+  <div class="rounded-2xl border grid place-items-center text-center px-6 py-14"
+       style="border-color: var(--line); background: var(--surface)">
+    <div class="space-y-3 max-w-sm">
+      <p class="eyebrow">StackBlitz · new tab</p>
+      <p class="text-sm leading-relaxed" style="color: var(--muted)">
+        Installs and serves <span class="font-mono text-[0.95em]">{repoName}</span> in a
+        WebContainer, still with nothing on your machine. It opens in its own tab because a
+        WebContainer needs isolation headers this site cannot send.
+      </p>
+      <a
+        href={external}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-1 inline-block px-5 py-2.5 rounded-full text-sm font-medium lift"
+        style="background: var(--ink); color: var(--paper)"
+      >Open and run it →</a>
     </div>
   </div>
 )}
-
-<script>
-  // One container per click. Booting several WebContainers at once starves
-  // them all, so nothing loads until someone asks for it.
-  for (const box of document.querySelectorAll<HTMLElement>('.container-embed')) {
-    box.querySelector('button')?.addEventListener('click', () => {
-      const { theme } = document.documentElement.dataset;
-      const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-
-      const frame = document.createElement('iframe');
-      frame.src = `${box.dataset.src}&theme=${dark ? 'dark' : 'light'}`;
-      frame.title = 'Running program';
-      frame.className = 'w-full block';
-      frame.setAttribute('style', 'height: 34rem; border: 0');
-      frame.allow = 'cross-origin-isolated';
-      box.replaceChildren(frame);
-    });
-  }
-</script>

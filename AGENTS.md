@@ -51,6 +51,21 @@ submitted; everything outside it is normal, maintained code.
   are a real bug: `ad_agent.py:44` calls `map_query` on a `pgmpy` `CausalInference`, which
   has never had that method. Record such defects in `docs/building.md`; do not edit them
   out. Fix the environment freely, never the answers.
+- CMSI 3802's cloudscribe has two back-end defects that its own 143 passing tests at
+  99.66% statement coverage do not catch. Both are documented in `docs/building.md`,
+  pinned by tests in `tests/site-data.test.mjs`, described in
+  `src/dashboard/src/content/wiki/cloudscribe.md`, and visible in the playground. Do not
+  repair either one. First: `generator.js` has no case for `TaskDeclaration`, so every one
+  of the seven committed example programs dies at the `js` stage — `task` is the language's
+  reason to exist, `analyzer.test.js` exercises it sixteen times, `generator.test.js`
+  never does. Second: four visitors in `optimizer.js` (`foldBinary`, `WhileStatement`,
+  `UnaryExpression`, `Conditional`) fall off the end and return `undefined`, which
+  `exp()`'s `if (e == null) return ""` and `visitBlock`'s `r == null` filter then swallow
+  — so `print(x + 1)` emits `console.log()`, `let y = x + 1` emits `let y_1 = ;`, and a
+  `while` loop is deleted outright. The optimiser only breaks what it tries to optimise;
+  everything it has no visitor for passes through and works, which is why generator tests
+  written against literal arithmetic go green over all of it. Statement coverage measures
+  which lines ran, never what they returned.
 - Before concluding that course code is broken, confirm the toolchain and the pins.
   `docs/building.md` records four separate dependency breakages in the CMSI 3300 stack
   that all look like broken coursework and are not. `/usr/bin/javac` exists on macOS as a
@@ -98,13 +113,33 @@ submitted; everything outside it is normal, maintained code.
   instructor material, answer keys, exam solutions, and grades. `docs/publication.md`
   records what that decision accepted. Do not re-open it; do not quietly remove
   material it covers.
-- The dashboard runs programs in the page instead of printing commands to copy. Three
-  paths, and the distinction is not cosmetic: `inline` reads a program's own files at
-  build time and hands them to a sandboxed iframe as `srcdoc`; `container` boots a
-  StackBlitz WebContainer against a **public** GitHub repository; `source` is everything
-  else. StackBlitz cannot reach a private repository, so only `cloudscribe` and `myGainz`
-  can be containerized — this repository and `pathfinder` cannot, and no amount of
-  configuration changes that. Never mark a program runnable that will not boot.
+- The dashboard runs programs in the page instead of printing commands to copy. Four
+  paths in `src/dashboard/src/data/programs.ts`, and the distinction is not cosmetic:
+  `inline` reads a program's own files at build time and hands them to a sandboxed iframe
+  as `srcdoc`; `playground` compiles cloudscribe in the page; `external` links out to a
+  host that will boot it; `source` is everything else. Never mark a program runnable that
+  will not boot.
+- A StackBlitz WebContainer cannot be embedded on this site, and no configuration changes
+  that. Two independent blockers, either one fatal: a WebContainer needs cross-origin
+  isolation, which requires `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy`
+  response headers that GitHub Pages does not let you set; and StackBlitz's own embed page
+  serves `require-corp` while loading third-party resources that carry no CORP header, so
+  it fails even from a correctly isolated host. The symptom is the embed rendering
+  "Unable to run Embedded Project / Looks like this project is being embedded without
+  proper isolation headers." An `embed: 'container'` mode existed for one round and was
+  removed; a test in `tests/site-data.test.mjs` now fails if anything reintroduces it.
+  Open it in a new tab instead — that is StackBlitz's own documented workaround.
+- The cloudscribe playground (`src/dashboard/src/lib/cloudscribe.ts`) runs the submitted
+  compiler in the browser, not a reimplementation of it: `analyzer.js`, `optimizer.js` and
+  `generator.js` are imported from `src/courses/` unmodified. It substitutes exactly one
+  thing, and only because a browser cannot do it — `parser.js` loads the grammar with
+  `fs.readFileSync`, so the playground imports `cloudscribe.ohm` with Vite's `?raw` and
+  calls `ohm.grammar` itself. It also carries a local tree-printer in place of
+  `graph-stringify`. Anything beyond that substitution would make the page lie about what
+  it is running. Generated JavaScript executes in an opaque-origin sandboxed iframe that
+  posts its `console.log` output back; nothing is written to the coursework.
+- A `?raw` import only resolves inside a Vite build. `src/dashboard/src/data/cloudscribe-examples.ts`
+  therefore cannot be imported by plain Node, so the test that checks it reads it as text.
 - The inline embed reads out of `src/courses/` and writes nothing back. It also cannot
   resolve `Compound-Interest-Calculator/index.html`'s reference to `interest.jpg`, because
   the file is `Interest.jpeg` — a real defect in the submitted work. The embed rewrites
@@ -116,9 +151,10 @@ submitted; everything outside it is normal, maintained code.
 - The dashboard's data files make checkable claims — a path, a line range, a line count —
   and every one of them can rot without breaking the build. `tests/site-data.test.mjs`
   checks them against the tree instead: paths exist, quoted ranges are inside their file,
-  `courses.ts` and `src/courses/` agree both ways, no private repository is marked
-  containerizable, and the published counts match a fresh `lmucs stats --json`. Add a
-  test with any new claim rather than trusting the data file.
+  `courses.ts` and `src/courses/` agree both ways, no program claims to embed a
+  WebContainer, the cloudscribe defects below are still present, and the published counts
+  match a fresh `lmucs stats --json`. Add a test with any new claim rather than trusting
+  the data file.
 - Published numbers come from `lmucs stats`, never from a hand count. It counts tracked
   files only, so an untracked scratch file cannot inflate a total, and it excludes
   lockfiles.

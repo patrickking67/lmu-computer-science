@@ -1,17 +1,24 @@
 /**
- * The programs, and how each one runs in the browser.
+ * The programs, and how each one runs.
  *
  * `embed` is the honest part. A program is only marked runnable if it will
- * actually boot inside this page:
+ * actually work where it says it will:
  *
- *   inline      the whole thing is a few static files, so they are read at
- *               build time and handed to a sandboxed iframe as srcdoc
- *   container   a StackBlitz WebContainer boots the public repository and runs
- *               npm install and the dev server inside the browser tab
- *   source      nothing runs here — a native toolchain, a private repository,
- *               or credentials that are nobody's business but the owner's
+ *   inline      a few static files, read at build time and handed to a
+ *               sandboxed iframe as srcdoc
+ *   playground  the program's own compiler, bundled and run in this page
+ *   external    it runs, but in a new tab — see the note on WebContainers
+ *   source      nothing runs — a native toolchain, a private repository, or
+ *               credentials that are nobody's business but the owner's
  *
- * Nothing on this page asks you to clone anything.
+ * There was a `container` mode that embedded a StackBlitz WebContainer in the
+ * page. It never worked and could not: a WebContainer needs the embedding
+ * document to be cross-origin isolated, GitHub Pages cannot set response
+ * headers at all, and StackBlitz's own embed page pulls third-party resources
+ * without CORP, so even correctly isolated hosts hit the same wall. Opening in
+ * a new tab is StackBlitz's own documented workaround.
+ *
+ * Nothing here asks you to clone anything.
  */
 export type Program = {
   name: string;
@@ -19,10 +26,10 @@ export type Program = {
   path: string;
   blurb: string;
   stack: string[];
-  embed: 'inline' | 'container' | 'source';
-  /** owner/repo, for container embeds. The repository must be public. */
+  embed: 'inline' | 'playground' | 'external' | 'source';
+  /** owner/repo, for external embeds. The repository must be public. */
   repo?: string;
-  /** What the container should open on first paint. */
+  /** What the project should open on first paint. */
   file?: string;
   source?: string;
   note?: string;
@@ -34,13 +41,11 @@ export const programs: Program[] = [
     course: 'CMSI 3802',
     path: 'src/courses/cmsi-3802/cloudscribe',
     blurb:
-      'A statically typed language for the kind of work that usually ends up in a fragile shell script — provisioning, deployment, scheduled jobs. It compiles to JavaScript through five stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and the generator emits. 143 tests hold it to 99.66% statement coverage.',
+      'A statically typed language for the kind of work that usually ends up in a fragile shell script — provisioning, deployment, scheduled jobs. Five stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and a generator emits JavaScript. The playground below is the submitted compiler itself, bundled and run in your browser.',
     stack: ['Ohm', 'JavaScript', 'Node 20'],
-    embed: 'container',
-    repo: 'patrickking67/cloudscribe',
-    file: 'src/cloudscribe.js',
+    embed: 'playground',
     source: 'https://github.com/patrickking67/cloudscribe',
-    note: 'The container installs and runs the test suite. Give it a moment on first boot.',
+    note: 'The front end is solid — 143 tests, 99.66% statement coverage. The back end is not, and the playground shows it rather than hiding it: the generator has no case for task, so all seven committed examples throw before reaching JavaScript. Recorded in docs/building.md, and deliberately not repaired.',
   },
   {
     name: 'myGainz',
@@ -49,11 +54,11 @@ export const programs: Program[] = [
     blurb:
       'A training log that keeps the set-by-set history a workout app usually throws away. React on the front, Firebase Auth for accounts, Firestore underneath so the same log follows you between devices.',
     stack: ['React', 'Firebase', 'Tailwind'],
-    embed: 'container',
+    embed: 'external',
     repo: 'patrickking67/myGainz',
     file: 'src/App.js',
     source: 'https://github.com/patrickking67/myGainz',
-    note: 'The interface boots and browses. Signing in needs a Firebase project of your own — the committed config points nowhere.',
+    note: 'Opens in a new tab, where StackBlitz installs and serves it for real. The interface boots and browses; signing in needs a Firebase project of your own, because the committed config points nowhere.',
   },
   {
     name: 'Compound Interest Calculator',

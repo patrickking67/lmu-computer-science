@@ -37,13 +37,13 @@ test('every program names a course that exists', () => {
   }
 });
 
-test('only container programs carry a repo, and they all carry one', () => {
+test('only external programs carry a repo, and they all carry one', () => {
   for (const program of programs) {
-    if (program.embed === 'container') {
-      assert.ok(program.repo, `${program.name} is a container with no repo`);
+    if (program.embed === 'external') {
+      assert.ok(program.repo, `${program.name} opens externally with no repo`);
       assert.match(program.repo, /^[\w-]+\/[\w.-]+$/, `${program.name}: repo must be owner/name`);
     } else {
-      assert.equal(program.repo, undefined, `${program.name} is not a container but names a repo`);
+      assert.equal(program.repo, undefined, `${program.name} is not external but names a repo`);
     }
   }
 });
@@ -62,6 +62,87 @@ test('the calculator still has the broken image reference the embed rewrites', (
   const [inline] = programs.filter((p) => p.embed === 'inline');
   const html = fs.readFileSync(inRepo(`${inline.path}/index.html`), 'utf8');
   assert.ok(html.includes('src="interest.jpg"'), 'expected the original interest.jpg reference');
+});
+
+// ── CloudScribe back end ─────────────────────────────────────────────────
+// Two defects in the submitted compiler are documented in docs/building.md,
+// shown in the playground, and described on the site. They are deliberately
+// not repaired. These tests pin them: if the coursework is ever edited, or the
+// compiler swapped for the upstream one, the pages describing them become
+// wrong, and these fail rather than the site quietly lying.
+const cloudscribe = 'src/courses/cmsi-3802/cloudscribe';
+
+test("the generator still has no case for the language's own task construct", () => {
+  const generator = fs.readFileSync(inRepo(`${cloudscribe}/src/generator.js`), 'utf8');
+  assert.ok(
+    !generator.includes('TaskDeclaration'),
+    'generator.js now handles TaskDeclaration — the pages saying it does not are stale',
+  );
+  // The analyser was always the half that handled it: it builds the node via
+  // core.taskDeclaration, which is what stamps kind: "TaskDeclaration".
+  const analyzer = fs.readFileSync(inRepo(`${cloudscribe}/src/analyzer.js`), 'utf8');
+  assert.ok(analyzer.includes('core.taskDeclaration('), 'the analyser no longer builds a task node');
+});
+
+test('every committed example is wrapped in a task, which is why none of them generate', () => {
+  const dir = inRepo(`${cloudscribe}/examples`);
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.csc'));
+  assert.equal(files.length, 7, 'the site says seven example programs');
+  for (const file of files) {
+    const source = fs.readFileSync(path.join(dir, file), 'utf8');
+    assert.match(source, /\btask\s+\w+\s*\{/, `${file} no longer uses task`);
+  }
+});
+
+test('the optimiser visitor that falls through still falls through', () => {
+  // foldBinary computes both operands and then returns nothing when it cannot
+  // fold, which is what makes `let y = x + 1` emit `let y_1 = ;`.
+  const optimizer = fs.readFileSync(inRepo(`${cloudscribe}/src/optimizer.js`), 'utf8');
+  const fold = optimizer.slice(optimizer.indexOf('function foldBinary'));
+  const body = fold.slice(0, fold.indexOf('\n}'));
+  assert.ok(
+    !body.includes('core.binary'),
+    'foldBinary now rebuilds the node it declined to fold — the defect is fixed, so fix the docs',
+  );
+});
+
+test('the generator still swallows an undefined expression instead of failing', () => {
+  const generator = fs.readFileSync(inRepo(`${cloudscribe}/src/generator.js`), 'utf8');
+  assert.match(
+    generator,
+    /if \(e == null\) return ""/,
+    'exp() no longer turns undefined into an empty string — half the silent-output defect is gone',
+  );
+});
+
+test('the playground offers every committed example, plus one that is labelled as not one', () => {
+  // Read as text rather than imported: the module uses Vite's ?raw imports for
+  // the .csc files, which only resolve inside a Vite build.
+  const source = fs.readFileSync(inRepo('src/dashboard/src/data/cloudscribe-examples.ts'), 'utf8');
+  const onDisk = fs
+    .readdirSync(inRepo(`${cloudscribe}/examples`))
+    .filter((f) => f.endsWith('.csc'));
+  for (const file of onDisk) {
+    assert.ok(source.includes(`examples/${file}?raw`), `the playground is missing ${file}`);
+  }
+  assert.equal(
+    (source.match(/committed: true/g) ?? []).length,
+    onDisk.length,
+    'every committed example must be marked as one',
+  );
+  assert.equal(
+    (source.match(/committed: false/g) ?? []).length,
+    1,
+    'exactly one non-coursework sample, and it must be labelled as such',
+  );
+});
+
+test('no program claims to embed a WebContainer in the page', () => {
+  // It cannot work: GitHub Pages cannot send isolation headers, and StackBlitz's
+  // embed page loads third-party resources without CORP regardless.
+  for (const program of programs) {
+    assert.notEqual(program.embed, 'container', `${program.name} still uses the container mode`);
+  }
 });
 
 test('every snippet quotes lines that actually exist', () => {
@@ -135,13 +216,13 @@ test('live repositories are labelled with a visibility we can honour', () => {
   for (const live of liveRepos) {
     assert.ok(['public', 'private'].includes(live.visibility), `${live.name}: ${live.visibility}`);
   }
-  // A container embed against a private repository cannot boot, so the two
-  // must never disagree.
-  const containers = new Set(programs.filter((p) => p.embed === 'container').map((p) => p.repo));
+  // StackBlitz cannot open a private repository at all, so the two must
+  // never disagree.
+  const external = new Set(programs.filter((p) => p.embed === 'external').map((p) => p.repo));
   for (const live of liveRepos.filter((r) => r.visibility === 'private')) {
     assert.ok(
-      !containers.has(`patrickking67/${live.repo}`),
-      `${live.repo} is private but embedded as a container`,
+      !external.has(`patrickking67/${live.repo}`),
+      `${live.repo} is private but sent to StackBlitz, which cannot open it`,
     );
   }
 });

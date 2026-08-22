@@ -7,17 +7,25 @@ import { href, treeInRepo } from '../lib/site';
 
 const runnable = programs.filter((p) => p.embed !== 'source');
 const rest = programs.filter((p) => p.embed === 'source');
+const inPage = programs.filter((p) => p.embed === 'inline' || p.embed === 'playground').length;
+
+const badge: Record<string, string> = {
+  inline: 'Runs in the page',
+  playground: 'Runs in the page',
+  external: 'Runs in a new tab',
+};
 ---
 <Base
   title="Programs"
   description="Programs from the coursework, running in the page. Nothing to clone, nothing to install."
 >
   <div class="mx-auto max-w-4xl px-4 sm:px-6 py-20">
-    <p class="eyebrow settle">{runnable.length} running · {rest.length} by source</p>
+    <p class="eyebrow settle">{inPage} in the page · {runnable.length - inPage} in a tab · {rest.length} by source</p>
     <h1 class="display text-[clamp(2.25rem,5.5vw,3.5rem)] mt-4 settle" style="animation-delay: 100ms">Programs.</h1>
     <p class="mt-6 max-w-xl text-lg leading-relaxed settle" style="animation-delay: 180ms; color: var(--muted)">
-      The ones that can run in a browser tab do, right here — installed, built and
-      served inside the page. The rest want a native toolchain or credentials that
+      A calculator that runs inline, and a compiler that runs on your own input.
+      One more opens in its own tab, because the thing that boots it needs headers
+      this site cannot send. The rest want a native toolchain or credentials that
       are nobody else's business, and say so rather than pretending.
     </p>
 
@@ -28,7 +36,7 @@ const rest = programs.filter((p) => p.embed === 'source');
             <h2 class="display text-2xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 28">{p.name}</h2>
             <a href={href(`courses/${p.course.toLowerCase().replace(' ', '-')}`)} class="eyebrow hover:underline">{p.course}</a>
             <span class="ml-auto text-[11px] px-2.5 py-1 rounded-full border" style="border-color: var(--ink); color: var(--ink)">
-              {p.embed === 'inline' ? 'Runs inline' : 'Runs in a container'}
+              {badge[p.embed]}
             </span>
           </div>
 

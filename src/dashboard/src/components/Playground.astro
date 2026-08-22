@@ -1,0 +1,187 @@
+---
+/**
+ * The CloudScribe playground.
+ *
+ * Runs the submitted compiler in the reader's browser: pick a program, pick a
+ * stage, see what the real analyzer, optimizer and generator produce. Generated
+ * JavaScript runs in a sandboxed iframe, so `print` output appears here too.
+ *
+ * No WebContainer, no isolation headers, no third party. See src/lib/cloudscribe.ts
+ * for the one substitution the browser forces.
+ */
+import { examples } from '../data/cloudscribe-examples';
+import { STAGES } from '../lib/cloudscribe';
+import { inRepo } from '../lib/site';
+
+const initial = examples[0];
+---
+<div class="playground rounded-2xl border overflow-hidden" style="border-color: var(--line); background: var(--surface)">
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 sm:px-5 py-3 border-b" style="border-color: var(--line-soft)">
+    <label class="eyebrow" for="cs-example">Program</label>
+    <select
+      id="cs-example"
+      class="text-sm font-mono bg-transparent rounded-lg border px-2 py-1 max-w-full"
+      style="border-color: var(--line); color: var(--ink)"
+    >
+      {examples.map((example, i) => (
+        <option value={i}>{example.name}{example.committed ? '.csc' : ''}</option>
+      ))}
+    </select>
+    <span id="cs-origin" class="text-xs" style="color: var(--faint)"></span>
+  </div>
+
+  <div class="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x" style="border-color: var(--line-soft)">
+    <div>
+      <p class="eyebrow px-4 sm:px-5 pt-4">Source</p>
+      <textarea
+        id="cs-source"
+        spellcheck="false"
+        aria-label="CloudScribe source"
+        class="w-full bg-transparent font-mono text-[12.5px] leading-[1.65] px-4 sm:px-5 py-3 resize-y outline-none"
+        style="height: 22rem; color: var(--ink)"
+      >{initial.source}</textarea>
+    </div>
+
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-center gap-1 px-4 sm:px-5 pt-4" role="tablist" aria-label="Compiler stage">
+        {STAGES.map((stage, i) => (
+          <button
+            type="button"
+            role="tab"
+            data-stage={stage.id}
+            title={stage.hint}
+            aria-selected={i === 1 ? 'true' : 'false'}
+            class="cs-tab text-xs font-mono px-2.5 py-1 rounded-full transition-colors"
+          >{stage.label}</button>
+        ))}
+        <button
+          type="button"
+          id="cs-run"
+          class="ml-auto text-xs font-medium px-3 py-1 rounded-full lift"
+          style="background: var(--ink); color: var(--paper)"
+        >Run</button>
+      </div>
+
+      <div class="overflow-auto" style="height: 20.5rem">
+        <pre id="cs-output" class="px-4 sm:px-5 py-3 font-mono text-[12.5px] leading-[1.65] whitespace-pre-wrap break-words"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="cs-note" class="px-4 sm:px-5 py-3 border-t text-sm leading-relaxed hidden" style="border-color: var(--line-soft); color: var(--muted)"></div>
+  <iframe id="cs-sandbox" sandbox="allow-scripts" title="CloudScribe output sandbox" class="hidden" aria-hidden="true"></iframe>
+</div>
+
+<script>
+  import { compile, type Stage } from '../lib/cloudscribe';
+  import { examples } from '../data/cloudscribe-examples';
+
+  const root = document.querySelector<HTMLElement>('.playground');
+  if (root) {
+    const source = root.querySelector<HTMLTextAreaElement>('#cs-source')!;
+    const output = root.querySelector<HTMLPreElement>('#cs-output')!;
+    const note = root.querySelector<HTMLElement>('#cs-note')!;
+    const origin = root.querySelector<HTMLElement>('#cs-origin')!;
+    const picker = root.querySelector<HTMLSelectElement>('#cs-example')!;
+    const runButton = root.querySelector<HTMLButtonElement>('#cs-run')!;
+    const sandbox = root.querySelector<HTMLIFrameElement>('#cs-sandbox')!;
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('.cs-tab')];
+
+    let stage: Stage = 'analyzed';
+
+    const paintTabs = () => {
+      for (const tab of tabs) {
+        const on = tab.dataset.stage === stage;
+        tab.setAttribute('aria-selected', String(on));
+        tab.style.background = on ? 'var(--raised)' : 'transparent';
+        tab.style.color = on ? 'var(--ink)' : 'var(--muted)';
+      }
+    };
+
+    // Both defects are documented; say which one you just hit rather than
+    // leaving a raw compiler error sitting there unexplained.
+    const explain = (error: string): string => {
+      if (error.includes('TaskDeclaration')) {
+        return 'This is a real defect in the submitted compiler, not a problem with the page. '
+          + 'generator.js has no case for TaskDeclaration, so every committed example — all of '
+          + 'which wrap their work in a task — throws here. The analyser handles task fine; the '
+          + 'generator was never tested against one. Pick the "no task" program to see the back end work.';
+      }
+      return 'The compiler stopped here. Parse, analyse and optimise run in your browser on the '
+        + 'submitted source; nothing is sent anywhere.';
+    };
+
+    const render = () => {
+      const result = compile(source.value, stage);
+      note.classList.add('hidden');
+
+      if (result.ok) {
+        output.style.color = 'var(--ink)';
+        output.textContent = result.output || '(no output)';
+        // The silent-empty-output defect is worth naming when you can see it.
+        if (stage === 'js' && /console\.log\(\)|=\s*;/.test(result.output)) {
+          note.textContent = 'Look closely: an argument has gone missing. optimizer.js returns '
+            + 'undefined for any binary expression it cannot constant-fold, and generator.js turns '
+            + 'that into an empty string instead of an error. Documented in docs/building.md.';
+          note.classList.remove('hidden');
+        }
+      } else {
+        output.style.color = 'var(--muted)';
+        output.textContent = result.error;
+        note.textContent = explain(result.error);
+        note.classList.remove('hidden');
+      }
+      runButton.disabled = !(result.ok && stage === 'js');
+      runButton.style.opacity = runButton.disabled ? '0.4' : '1';
+    };
+
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => {
+        stage = tab.dataset.stage as Stage;
+        paintTabs();
+        render();
+      });
+    }
+
+    picker.addEventListener('change', () => {
+      const example = examples[Number(picker.value)];
+      source.value = example.source;
+      origin.textContent = example.committed
+        ? 'committed with the compiler'
+        : 'written for this page';
+      render();
+    });
+
+    let typing: number;
+    source.addEventListener('input', () => {
+      clearTimeout(typing);
+      typing = setTimeout(render, 220) as unknown as number;
+    });
+
+    runButton.addEventListener('click', () => {
+      const result = compile(source.value, 'js');
+      if (!result.ok) return;
+      // Generated code runs in an opaque-origin iframe: no DOM, no storage,
+      // no network, and no way back into this page except one message.
+      const runner = `<script>
+        const lines = [];
+        console.log = (...args) => lines.push(args.map(String).join(' '));
+        try { ${result.output} } catch (e) { lines.push('Error: ' + e.message); }
+        parent.postMessage(lines.join('\\n') || '(the program printed nothing)', '*');
+      <\/script>`;
+      sandbox.srcdoc = runner;
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.source !== sandbox.contentWindow || typeof event.data !== 'string') return;
+      output.style.color = 'var(--ink)';
+      output.textContent = event.data;
+      note.textContent = 'Output of the generated JavaScript, run in a sandboxed frame.';
+      note.classList.remove('hidden');
+    });
+
+    origin.textContent = 'committed with the compiler';
+    paintTabs();
+    render();
+  }
+</script>

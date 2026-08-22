@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+// GitHub Pages serves static files only — there is no server here to POST to.
+// So the form needs a third-party endpoint. Set PUBLIC_CONTACT_ENDPOINT (e.g. a
+// Formspree or Web3Forms URL) at build time and the form posts there; leave it
+// unset and the page degrades to a plain mailto link rather than a form that
+// silently goes nowhere.
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
+const email = 'patrickking673@gmail.com';
+---
+<Base title="Contact" description="Get in touch.">
+  <div class="mx-auto max-w-xl px-4 sm:px-6 py-16">
+    <h1 class="text-4xl font-semibold tracking-tight">Contact</h1>
+    <p class="mt-3" style="color: var(--muted)">Questions about the coursework, the compiler, or anything else.</p>
+
+    {endpoint ? (
+      <form id="contact" action={endpoint} method="POST" class="mt-10 space-y-5">
+        <div>
+          <label for="name" class="block text-sm font-medium mb-1.5">Name</label>
+          <input id="name" name="name" type="text" required autocomplete="name"
+                 class="w-full px-3 py-2 rounded-lg border bg-transparent" style="border-color: var(--border)" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1.5">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email"
+                 class="w-full px-3 py-2 rounded-lg border bg-transparent" style="border-color: var(--border)" />
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-medium mb-1.5">Message</label>
+          <textarea id="message" name="message" rows="6" required
+                    class="w-full px-3 py-2 rounded-lg border bg-transparent resize-y" style="border-color: var(--border)"></textarea>
+        </div>
+        <!-- Honeypot: bots fill it, people never see it. -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+        <button type="submit" class="px-4 py-2.5 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90" style="background: var(--accent)">Send</button>
+        <p id="status" role="status" aria-live="polite" class="text-sm" style="color: var(--muted)"></p>
+      </form>
+    ) : (
+      <div class="mt-10 p-5 rounded-xl border" style="border-color: var(--border); background: var(--surface)">
+        <p class="text-sm leading-relaxed" style="color: var(--muted)">
+          No form endpoint is configured for this build, so rather than show a form that
+          would quietly discard your message, here is the direct route:
+        </p>
+        <a href={`mailto:${email}`} class="mt-3 inline-block font-medium hover:underline" style="color: var(--accent)">{email}</a>
+      </div>
+    )}
+  </div>
+
+  <script is:inline>
+    const form = document.getElementById('contact');
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('status');
+      const button = form.querySelector('button[type=submit]');
+      button.disabled = true;
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(`Endpoint returned ${res.status}`);
+        form.reset();
+        status.textContent = 'Sent. Thanks — I will get back to you.';
+      } catch (err) {
+        // Never claim success on a failed send.
+        status.textContent = `Could not send (${err.message}). Email me directly instead.`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</Base>

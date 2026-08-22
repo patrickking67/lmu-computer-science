@@ -49,3 +49,8 @@ CLAUDE.local.md
 # scripts/check-ai-config.sh fails on any ignored file that is not a build
 # artifact precisely to stop coursework being dropped this way. They stay
 # untracked and visible in `git status`. Add coursework with `git add -f`.
+
+# Astro
+.astro/
+src/dashboard/dist/
+*.egg-info/

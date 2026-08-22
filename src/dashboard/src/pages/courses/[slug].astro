@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import { courses } from '../../data/courses';
+
+export function getStaticPaths() {
+  return courses.map((c) => ({ params: { slug: c.slug }, props: { course: c } }));
+}
+const { course } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const repo = `https://github.com/patrickking67/lmu-computer-science/tree/main/src/courses/${course.slug}`;
+---
+<Base title={course.code} description={course.blurb}>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-16">
+    <a href={`${base}courses`.replace(/\/+/g,'/')} class="text-sm hover:underline" style="color: var(--muted)">← All courses</a>
+    <p class="mt-8 font-mono text-sm" style="color: var(--accent)">{course.code} · {course.term}</p>
+    <h1 class="mt-2 text-4xl font-semibold tracking-tight">{course.title}</h1>
+    <p class="mt-5 text-lg leading-relaxed" style="color: var(--muted)">{course.blurb}</p>
+
+    {course.stack.length > 0 && (
+      <ul class="mt-8 flex flex-wrap gap-2">
+        {course.stack.map((s) => (
+          <li class="text-xs font-mono px-2 py-1 rounded" style="background: var(--accent-soft); color: var(--accent)">{s}</li>
+        ))}
+      </ul>
+    )}
+
+    <div class="mt-10 p-5 rounded-xl border" style="border-color: var(--border); background: var(--surface)">
+      {course.work ? (
+        <>
+          <p class="text-sm font-medium">Preserved</p>
+          <p class="mt-1 text-sm" style="color: var(--muted)">{course.work}</p>
+          <a href={repo} class="mt-4 inline-block text-sm hover:underline" style="color: var(--accent)">Browse the source →</a>
+        </>
+      ) : (
+        <>
+          <p class="text-sm font-medium">Nothing preserved</p>
+          <p class="mt-1 text-sm leading-relaxed" style="color: var(--muted)">
+            The repository was deleted before any local clone existed, or none was ever
+            created. This is a real gap in the archive, not work in progress.
+          </p>
+        </>
+      )}
+    </div>
+  </div>
+</Base>

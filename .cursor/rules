@@ -1,0 +1,7 @@
+Read the root AGENTS.md. It is canonical; this file adds nothing to it.
+
+Non-negotiables:
+- src/courses/** is an archive. Do not refactor, modernise, reformat, or lint it.
+- Do not commit build artifacts or *.bundle files.
+- Do not push src/courses/cmsi-3802/cloudscribe/ to the cloudscribe remote.
+- Run scripts/check-ai-config.sh before completion.

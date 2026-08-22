@@ -1,0 +1,12 @@
+{
+  "files.exclude": { "**/.git": true, "**/node_modules": true, "**/dist": true },
+  "search.exclude": {
+    "src/courses/**": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/package-lock.json": true
+  },
+  "files.associations": { "*.ohm": "ohm" },
+  "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
+  "editor.formatOnSave": false
+}

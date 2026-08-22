@@ -7,11 +7,12 @@ cd "$(dirname "$0")/.." || exit 1
 fail=0
 ok()   { printf '  ok    %s\n' "$1"; }
 bad()  { printf '  FAIL  %s\n' "$1"; fail=1; }
+warn() { printf '  warn  %s\n' "$1"; }
 
 echo "Required files"
 for f in AGENTS.md CLAUDE.md README.md LICENSE .gitignore \
          .github/copilot-instructions.md .codex/config.toml .claude/settings.json \
-         docs/archive.md docs/reference.md; do
+         docs/archive.md docs/reference.md docs/publication.md; do
   [ -f "$f" ] && ok "$f" || bad "$f missing"
 done
 
@@ -71,13 +72,27 @@ fi
 
 echo
 echo "Archive integrity"
-ARCHIVE="$HOME/Backups/lmu-cs-history-2026-08-22"
+# Warning, not a failure: the archive is expected to move off this machine.
+# Its absence here means "check your backup", not "the repository is broken".
+ARCHIVE="${LMU_CS_ARCHIVE:-$HOME/Backups/lmu-cs-history-2026-08-22}"
 if [ -d "$ARCHIVE" ]; then
   n=$(find "$ARCHIVE" -name '*.bundle' | wc -l | tr -d ' ')
   [ "$n" -eq 19 ] && ok "history archive present, $n bundles" \
-                  || bad "history archive has $n bundles, expected 19"
+                  || warn "history archive has $n bundles, expected 19"
 else
-  bad "history archive missing at $ARCHIVE (see docs/archive.md)"
+  warn "history archive not at $ARCHIVE; confirm the off-machine copy (docs/archive.md)"
+fi
+
+# Vendored coursework carries its own .gitignore files. Those rules apply in
+# this repository too and have already dropped files that upstream tracked.
+# Anything ignored that is not a build artifact is a hole in the archive.
+leaked=$(git ls-files --others --ignored --exclude-standard \
+  | grep -vE '(^|/)(target|node_modules|dist|build|__pycache__|\.venv)/|\.DS_Store$' || true)
+if [ -n "$leaked" ]; then
+  bad "coursework files excluded by .gitignore:"
+  printf '%s\n' "$leaked" | sed 's/^/          /'
+else
+  ok "no coursework silently excluded by .gitignore"
 fi
 
 echo

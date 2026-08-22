@@ -65,6 +65,10 @@ Work that continues outside this archive.
 
 Instructor course material is indexed in [`docs/reference.md`](docs/reference.md).
 
+This repository is not cleared for a public remote. Tracked deliverables name a
+group partner and `CMSI-4072/Pathfinder/` came from a private upstream. See
+[`docs/publication.md`](docs/publication.md).
+
 ## File structure
 
 ```text
@@ -72,6 +76,7 @@ lmu-cs/
 ├── CMSI-1010 … CMSI-4072/     one directory per course
 ├── docs/
 │   ├── archive.md             bundle inventory and restore commands
+│   ├── publication.md         what blocks a public push
 │   └── reference.md           instructor repositories
 ├── AGENTS.md                  canonical agent instructions
 ├── CLAUDE.md                  Claude adapter

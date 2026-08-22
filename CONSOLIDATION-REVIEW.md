@@ -25,13 +25,31 @@ repository. Executed in full.
 Result: 511 MB and 19 nested repositories collapsed to 85 MB in one repository, with
 360 files and zero history lost.
 
+### Post-execution findings (2026-08-22, after the consolidation commit)
+
+Two checks that the original review did not run.
+
+**Publication is blocked.** The repository is public on GitHub and the commit added
+373 files to it. 15 tracked PDFs name a group partner, `CMSI-4072/Pathfinder/` was
+vendored from a private upstream, and two files are graded assessment records.
+Nothing has been pushed. `docs/publication.md` holds the full list and the options.
+
+**Four upstream-tracked files had been silently dropped.** Vendored coursework
+brought its own `.gitignore` files, whose rules apply in this repository. Those
+rules excluded `CMSI-3801/{LICENSE,.prettierrc.json,test-for-line-count.txt}` and
+`CMSI-4072/Pathfinder/Archive/my-app/package-lock.json`, all four of which the
+upstream repositories tracked. Verified against the bundles, then force-added.
+`scripts/check-ai-config.sh` now fails if any non-artifact file is ignored.
+
+The tracked-file count is 373, not the 369 reported before this fix.
+
 ### Still open
 
 | Action | Owner | Notes |
 |---|---|---|
 | Back up `~/Backups/lmu-cs-history-2026-08-22/` off this machine | Patrick | The only copy of 13 deleted repositories' history. Not on GitHub, too large to commit. |
-| Push the consolidated repository | Patrick | Not pushed. Publishing to a public repo needs an explicit call. |
-| Decide whether `lmu-cs` should stay public | Patrick | It is public today and now contains far more material than before. |
+| Set `lmu-cs` private, then push | Patrick | Blocking. 15 tracked PDFs name a group partner; `CMSI-4072/Pathfinder/` came from a private upstream. See `docs/publication.md`. |
+| Or strip third-party material and push public | Patrick | Alternative to the above. Costs 15 deliverables and the Pathfinder tree. |
 
 ---
 

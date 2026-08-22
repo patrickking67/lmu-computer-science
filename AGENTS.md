@@ -34,7 +34,12 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 - `CMSI-3802/cloudscribe/` is a course-era snapshot at commit `25b48f1`, diverged 46
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
-- Work that continues outside the archive is referenced, never vendored. `pathfinder` and
+- Work that continues outside the archive is referenced, never vendored.
+- Do not push to a public remote. Tracked deliverables name a group partner and
+  `CMSI-4072/Pathfinder/` came from a private upstream. See `docs/publication.md`.
+- Vendored coursework carries its own `.gitignore` files whose rules apply here.
+  They have already dropped files that upstream tracked. Use `git add -f` for
+  coursework, and never add a `.gitignore` rule that could match one. `pathfinder` and
   `myGainz` are live repositories.
 
 ## Coding and security

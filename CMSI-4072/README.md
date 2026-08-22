@@ -14,6 +14,12 @@ Deliverables in this directory are jointly authored and name the team.
 | `Pathfinder/Final Product Delivery` | Final submission |
 | `Pathfinder/Archive` | Earlier iterations, includes the 23 MB project PDF |
 | `Pathfinder/backend`, `Pathfinder/frontend` | Application code, JavaScript |
+| `Senior Project Deliverables` | The seven-document set spanning CMSI 4071 and 4072 |
+| `Coursework/Final Product Delivery` | Five screenshots of the delivered application |
+
+`Senior Project Deliverables/` and `Coursework/` were vendored from iCloud on 2026-08-22.
+The deliverable set covers both semesters of the senior project and is filed here rather
+than split with `CMSI-4071/`; see that course's README for why.
 
 ## Live repository
 

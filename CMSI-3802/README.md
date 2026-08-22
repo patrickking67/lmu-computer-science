@@ -8,6 +8,15 @@ Programming Language Concepts and Implementation. Spring 2025.
 |---|---|
 | `cloudscribe` | Course-era snapshot of the language project. See below. |
 | `Homework2` | Ohm grammar, JavaScript. |
+| `Coursework (from Classes)` | Assignment specs, condensed notes, HW1 exercises, resources |
+| `Coursework (from LMU)` | 16 instructor decks and exam preparation, plus 8 screenshots |
+| `Introduction to Parsing Theory.pdf` | Reference |
+
+The two `Coursework` directories were vendored from iCloud on 2026-08-22 and keep the
+author's own filing, which distinguished material collected from class from material
+distributed by the department. A `Class Files/Math 251/` folder inside
+`Coursework (from LMU)` was excluded as out of scope; see
+[`docs/vendoring.md`](../docs/vendoring.md).
 
 Homework 1 through 5 were tracked inside the language project. Homework 1's specification
 is at `cloudscribe/assignments/Homework 1.pdf`; the remaining specs and solutions live in

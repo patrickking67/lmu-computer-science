@@ -10,6 +10,9 @@ course. The coursework itself lives here; this is not an index of links.
 - `CMSI-1010/` … `CMSI-4072/`: one directory per course, named by catalog number
 - `docs/archive.md`: git bundle inventory and restore procedure
 - `docs/reference.md`: instructor course material, links only
+- `docs/record.md`: authoritative course, term, title, grade, and credit record
+- `docs/publication.md`: what publishing accepted, and what is still unresolved
+- `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
 - `CONSOLIDATION-REVIEW.md`: record of the 2026-08-22 consolidation
 
 ## Setup and validation
@@ -42,9 +45,22 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 - Course terms come from the author's course audit. Instructor course pages document
   whichever offering is currently published; all four checked disagreed with the
   enrollment term. Never take a term from a course-page URL.
-- Unvendored source material lives in iCloud at `Projects/Loyola Marymount University/`.
-  It is reorganized by hand and synced across devices, so verify it is settled before
-  copying from it. Never copy while `brctl status` shows active transfers.
+- Source material lives in iCloud at `Projects/Loyola Marymount University/`. It is
+  reorganized by hand and synced across devices, so verify it is settled before copying
+  from it. Never copy while `brctl status` shows active transfers. The vendoring pass
+  completed 2026-08-22; `docs/vendoring.md` records what it took and what it refused.
+- An evicted iCloud file is invisible to the obvious checks. `ls` shows it, `find` finds
+  it, `du` reports its full size, and reading it returns nothing. The only reliable test
+  is an allocated block count of zero against a non-zero size:
+  `stat -f '%z %b' <file>`. Census a tree that way before trusting any file count or
+  byte total taken from it. Counts taken without this check have been wrong by an order
+  of magnitude in this repository's history.
+- A nested git repository becomes a bundle, never a vendored directory. This is what
+  makes the file counts collapse: 40,479 of 40,676 candidate files in the 2026-08-22 pass
+  were inside twelve nested repositories. Before bundling one, check whether an existing
+  bundle already covers its objects; two of the twelve did.
+- Filing location does not establish scope. Another department's material found inside a
+  CMSI folder is still out of scope, and the publication decision does not extend to it.
 - This repository is published publicly by the author's explicit decision, including
   instructor material, answer keys, exam solutions, and grades. `docs/publication.md`
   records what that decision accepted. Do not re-open it; do not quietly remove

@@ -12,7 +12,8 @@ warn() { printf '  warn  %s\n' "$1"; }
 echo "Required files"
 for f in AGENTS.md CLAUDE.md README.md LICENSE .gitignore \
          .github/copilot-instructions.md .codex/config.toml .claude/settings.json \
-         docs/archive.md docs/reference.md docs/publication.md docs/record.md; do
+         docs/archive.md docs/reference.md docs/publication.md docs/record.md \
+         docs/vendoring.md; do
   [ -f "$f" ] && ok "$f" || bad "$f missing"
 done
 
@@ -77,8 +78,8 @@ echo "Archive integrity"
 ARCHIVE="${LMU_CS_ARCHIVE:-$HOME/Backups/lmu-cs-history-2026-08-22}"
 if [ -d "$ARCHIVE" ]; then
   n=$(find "$ARCHIVE" -name '*.bundle' | wc -l | tr -d ' ')
-  [ "$n" -eq 19 ] && ok "history archive present, $n bundles" \
-                  || warn "history archive has $n bundles, expected 19"
+  [ "$n" -eq 29 ] && ok "history archive present, $n bundles" \
+                  || warn "history archive has $n bundles, expected 29"
 else
   warn "history archive not at $ARCHIVE; confirm the off-machine copy (docs/archive.md)"
 fi

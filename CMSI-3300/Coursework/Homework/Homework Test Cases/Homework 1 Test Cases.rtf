@@ -1,0 +1,319 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs26 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 from environment import *\
+from maze_clause import *\
+from constants import *\
+from maze_knowledge_base import *\
+from copy import deepcopy\
+from statistics import *\
+import unittest\
+import pytest\
+\
+# Time in seconds given to complete mazes of different difficulty\
+# Can temporarily set these high for debugging\
+EASY_TIMEOUT = 10\
+MED_TIMEOUT  = 40\
+HARD_TIMEOUT = 60\
+OPT_ERR = "[X] Your agent's score was too low to pass this test"\
+\
+# Set VERBOSE to True and TICK to something like 1 to see maze \
+# played out, then run individual tests using the syntax like:\
+# pytest -k test_pitsweeper_easy1\
+VERBOSE = False\
+TICK    = 0\
+\
+# Logs for grade reporting\
+easy_scores: dict[str, int] = dict()\
+med_scores: dict[str, int]  = dict()\
+hard_scores: dict[str, int] = dict()\
+\
+class PitsweeperGradingTests(unittest.TestCase):\
+    """\
+    The final set of tests for your MazeAgent and Pitsweeping!\
+    \
+    [!] Ensure that all MazeClause and MazeKnowledgeBase tests pass before\
+    moving onto this one!\
+    """\
+    \
+    def score_maze (self, threshold: int, score: int, dict_log: dict) -> None:\
+        """\
+        Logs the scores of your agent on each of the different test difficulties,\
+        and ensure that, individually, each passes the threshold minimum score.\
+        \
+        Parameters:\
+            threshold (int):\
+                The minimum score that passes the given maze.\
+            score (int):\
+                The score obtained by your agent on the given maze.\
+            dict_log (dict):\
+                The dictionary of scores in which to log the current one.\
+        """\
+        dict_log[self._testMethodName] = score\
+        self.assertLess(threshold, score, OPT_ERR)\
+    \
+    @classmethod\
+    def tearDownClass(cls: Any) -> None:\
+        """\
+        Simple reporting method that is called at the end of the unit tests to report\
+        scores; used for grading only.\
+        """\
+        EASY_TESTS = 5\
+        MED_TESTS  = 5\
+        HARD_TESTS = 7\
+        TIMEOUT_SCORE = -100\
+\
+        easy_total = sum(list(easy_scores.values()) + [TIMEOUT_SCORE] * (EASY_TESTS - len(easy_scores)))\
+        med_total  = sum(list(med_scores.values()) + [TIMEOUT_SCORE] * (MED_TESTS  - len(med_scores)))\
+        hard_total = sum(list(hard_scores.values()) + [TIMEOUT_SCORE] * (HARD_TESTS - len(hard_scores)))\
+\
+        print("\\n---------------------------------------------")\
+        print("[!] Tests completed:")\
+        print("    > Easy Test Average:\\t" + str(easy_total / EASY_TESTS))\
+        print("    > Medium Test Average:\\t" + str(med_total / MED_TESTS))\
+        print("    > Hard Test Average:\\t" + str(hard_total / HARD_TESTS))\
+        print("    > TOTAL Score:\\t\\t" + str(sum([easy_total, med_total, hard_total])))\
+    \
+    # EZ Tests\
+    # -----------------------------------------------------------------------------------------\
+    \
+    @pytest.mark.timeout(EASY_TIMEOUT)\
+    def test_pitsweeper_easy1(self) -> None:\
+        #    c-> 012345   # r\
+        maze = ["XXXXXX", # 0\
+                "X...GX", # 1\
+                "X...PX", # 2\
+                "X....X", # 3\
+                "X....X", # 4\
+                "X@...X", # 5\
+                "XXXXXX"] # 6\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        # assertLess(threshold, score) where score must be > threshold to pass\
+        self.score_maze(-20, score, easy_scores)\
+        \
+    @pytest.mark.timeout(EASY_TIMEOUT)\
+    def test_pitsweeper_easy2(self) -> None:\
+        #    c-> 012345   # r\
+        maze = ["XXXXXX", # 0\
+                "X...GX", # 1\
+                "X...PX", # 2\
+                "X....X", # 3\
+                "X..P.X", # 4\
+                "X@...X", # 5\
+                "XXXXXX"] # 6\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-20, score, easy_scores)\
+    \
+    @pytest.mark.timeout(EASY_TIMEOUT)\
+    def test_pitsweeper_easy3(self) -> None:\
+        #    c-> 012345   # r\
+        maze = ["XXXXXX", # 0\
+                "X...GX", # 1\
+                "XP..PX", # 2\
+                "X....X", # 3\
+                "X...PX", # 4\
+                "X@...X", # 5\
+                "XXXXXX"] # 6\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-20, score, easy_scores)\
+        \
+    @pytest.mark.timeout(EASY_TIMEOUT)\
+    def test_pitsweeper_easy4(self) -> None:\
+        maze = ["XXXXX",\
+                "XG..X",\
+                "XP.PX",\
+                "X..PX",\
+                "X@..X",\
+                "XXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-20, score, easy_scores)\
+    \
+    @pytest.mark.timeout(EASY_TIMEOUT)\
+    def test_pitsweeper_easy5(self) -> None:\
+        maze = ["XXXXXX",\
+                "X...GX",\
+                "X..PPX",\
+                "X....X",\
+                "XP.PPX",\
+                "X.@.PX",\
+                "XXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-20, score, easy_scores)\
+        \
+    # Medium Tests\
+    # -----------------------------------------------------------------------------------------\
+    \
+    @pytest.mark.timeout(MED_TIMEOUT)\
+    def test_pitsweeper_med1(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X..PGP..X",\
+                "X.......X",\
+                "X..PPP..X",\
+                "X.......X",\
+                "X..@....X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-32, score, med_scores)\
+        \
+    @pytest.mark.timeout(MED_TIMEOUT)\
+    def test_pitsweeper_med2(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X..P.P.GX",\
+                "X@......X",\
+                "X..P.P..X",\
+                "X.......X",\
+                "X.......X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-32, score, med_scores)\
+        \
+    @pytest.mark.timeout(MED_TIMEOUT)\
+    def test_pitsweeper_med3(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X..P.P.GX",\
+                "X@..P...X",\
+                "X..P.P..X",\
+                "X.......X",\
+                "X.......X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-32, score, med_scores)\
+        \
+    @pytest.mark.timeout(MED_TIMEOUT)\
+    def test_pitsweeper_med4(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X.......X",\
+                "X..PGP..X",\
+                "X...P...X",\
+                "X.......X",\
+                "X...P..@X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-32, score, med_scores)\
+        \
+    @pytest.mark.timeout(MED_TIMEOUT)\
+    def test_pitsweeper_med5(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X...P...X",\
+                "X....P..X",\
+                "X@..P..GX",\
+                "X.......X",\
+                "X...P...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-32, score, med_scores)\
+        \
+    # Hard Tests\
+    # -----------------------------------------------------------------------------------------\
+    \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard1(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X......GX",\
+                "X.......X",\
+                "X.PPPPPPX",\
+                "X.......X",\
+                "X......@X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-35, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard2(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "XG.P....X",\
+                "X.......X",\
+                "X.PP.PP.X",\
+                "XP.....PX",\
+                "X...@...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard3(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X..PGP..X",\
+                "X.......X",\
+                "X..P.P..X",\
+                "X.......X",\
+                "X..@....X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard4(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "XG.P....X",\
+                "X.......X",\
+                "X.PP.PP.X",\
+                "XP.....PX",\
+                "X...@...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard5(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X...G...X",\
+                "X.......X",\
+                "X.P.P.P.X",\
+                "XP.....PX",\
+                "X...@...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard6(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "XG......X",\
+                "X....P..X",\
+                "X.PPPPP.X",\
+                "XP......X",\
+                "X...@...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+    @pytest.mark.timeout(HARD_TIMEOUT)\
+    def test_pitsweeper_hard7(self) -> None:\
+        maze = ["XXXXXXXXX",\
+                "X...G.PPX",\
+                "X...P...X",\
+                "X.......X",\
+                "XP......X",\
+                "XP.P.P.PX",\
+                "X...@...X",\
+                "XXXXXXXXX"]\
+        env = Environment(maze, tick_length = TICK, verbose = VERBOSE)\
+        score = env.start_mission()\
+        self.score_maze(-40, score, hard_scores)\
+        \
+if __name__ == "__main__":\
+    unittest.main()\
+}

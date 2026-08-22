@@ -60,13 +60,14 @@ created, and the iCloud source held only an empty template. CMSI 1900 produced n
 design, and CMSI 4071's deliverables are filed under CMSI 4072. That is a real gap, not
 work in progress.
 
-Course material that existed only in iCloud was vendored on 2026-08-22, adding 111 files
-across four courses. Nine more are held pending two publication questions. See
-[`docs/vendoring.md`](docs/vendoring.md) and
+Course material that existed only in iCloud was vendored on 2026-08-22, adding 98 files
+across four courses. Thirteen more were committed and then removed on review, nine are
+held pending two publication questions. See [`docs/vendoring.md`](docs/vendoring.md) and
 [`docs/publication.md`](docs/publication.md).
 
 Grades, credits, repeated attempts, and the non-major coursework are in
-[`docs/record.md`](docs/record.md).
+[`docs/record.md`](docs/record.md). What still compiles and runs, with the commands and
+version pins that make it do so, is in [`docs/building.md`](docs/building.md).
 
 ## Live repositories
 
@@ -93,6 +94,7 @@ lmu-cs/
 ├── CMSI-1010 … CMSI-4072/     one directory per course
 ├── docs/
 │   ├── archive.md             bundle inventory and restore commands
+│   ├── building.md            what compiles and runs, and what does not
 │   ├── publication.md         what publication accepted, and what is unresolved
 │   ├── record.md              grades, credits, and the full course record
 │   ├── reference.md           instructor repositories

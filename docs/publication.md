@@ -89,13 +89,28 @@ coursework, and the decision above accepted publishing CS instructor material, n
 anything that happened to be filed beside it. Excluded; see
 [`vendoring.md`](vendoring.md).
 
+The rule then had to be applied a second time. Eight further Math 251 pages, a complete
+practice final exam, were committed before review because they sat in a folder called
+`New Folder With Items` rather than one called `Math 251`, and because nobody had opened
+the images. They were removed. That document also credits a Math 251 instructor by name,
+a third party outside every row of the accepted table. No Math 251 material is tracked
+now.
+
 ## Verification
 
 Re-run the third-party name scan after any vendoring:
 
 ```bash
-git ls-files '*.pdf' | while IFS= read -r f; do pdftotext -q "$f" - | grep -qiE 'messner|powell' && echo "$f"; done
+git ls-files -z '*.pdf' | while IFS= read -r -d '' f; do pdftotext -q "$f" - | grep -qiE 'messner|powell|laurent' && echo "$f"; done
 ```
+
+**This scan is scoped to three known names, not to third parties in general.** It confirms
+where the two group partners and the one instructor found so far appear. It cannot tell
+you that a document is free of names, and a pass proves nothing about a name nobody has
+thought of yet. It also reads PDFs only: an image carries no extractable text, so no grep
+of any kind will see a name inside a screenshot. Images have to be opened and looked at.
+The 2026-08-22 pass learned this the hard way; see
+[`vendoring.md`](vendoring.md#removed-on-review).
 
 No LMU email addresses are tracked. No credential-shaped strings are tracked;
 `scripts/check-ai-config.sh` asserts this on every run.

@@ -15,11 +15,18 @@ Deliverables in this directory are jointly authored and name the team.
 | `Pathfinder/Archive` | Earlier iterations, includes the 23 MB project PDF |
 | `Pathfinder/backend`, `Pathfinder/frontend` | Application code, JavaScript |
 | `Senior Project Deliverables` | The seven-document set spanning CMSI 4071 and 4072 |
-| `Coursework/Final Product Delivery` | Five screenshots of the delivered application |
 
-`Senior Project Deliverables/` and `Coursework/` were vendored from iCloud on 2026-08-22.
-The deliverable set covers both semesters of the senior project and is filed here rather
-than split with `CMSI-4071/`; see that course's README for why.
+`Senior Project Deliverables/` was vendored from iCloud on 2026-08-22. It covers both
+semesters of the senior project and is filed here rather than split with `CMSI-4071/`; see
+that course's README for why.
+
+Those seven PDFs are byte-identical to the seven in `Pathfinder/Deliverables/`. What
+differs is the naming: `SDD Revised.pdf` and `SRS Revised 2.pdf` become
+`Pathfinder Software Design Document.pdf` and
+`Pathfinder Software Requirements Specification.pdf`. Fourteen filenames, seven documents.
+A `Coursework/Final Product Delivery/` directory vendored in the same pass held five
+screenshots already present under `Pathfinder/Final Product Delivery/`, identical down to
+the directory name, and was removed.
 
 ## Live repository
 

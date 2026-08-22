@@ -13,6 +13,7 @@ course. The coursework itself lives here; this is not an index of links.
 - `docs/record.md`: authoritative course, term, title, grade, and credit record
 - `docs/publication.md`: what publishing accepted, and what is still unresolved
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
+- `docs/building.md`: what compiles and runs, with verified commands and version pins
 - `CONSOLIDATION-REVIEW.md`: record of the 2026-08-22 consolidation
 
 ## Setup and validation
@@ -27,6 +28,18 @@ repository-level build.
 
 This is an archive. The governing rule is that history is preserved, not rewritten.
 
+- Never repair submitted coursework to make a test pass. A failing test that fails
+  because the submitted code was wrong is the archive working correctly, and "fixing" it
+  contradicts the grade recorded in `docs/record.md`. CMSI 3300's Homework 2 harness
+  scores 7 of 19 against a homework the gradebook marks 51%, and four of those failures
+  are a real bug: `ad_agent.py:44` calls `map_query` on a `pgmpy` `CausalInference`, which
+  has never had that method. Record such defects in `docs/building.md`; do not edit them
+  out. Fix the environment freely, never the answers.
+- Before concluding that archived code is broken, confirm the toolchain and the pins.
+  `docs/building.md` records four separate dependency breakages in the CMSI 3300 stack
+  that all look like broken coursework and are not. `/usr/bin/javac` exists on macOS as a
+  stub that only prints an install prompt, so `command -v javac` succeeding does not mean
+  a JDK is present.
 - Course directories are historical records. Do not refactor, reformat, modernize, or
   lint archived coursework. Broken or dated code is the correct state.
 - Original student-authored READMEs in `CMSI-3550/` and `CMSI-3801/` are artifacts.
@@ -74,7 +87,14 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 
 - Follow existing patterns before creating new abstractions.
 - Never commit secrets.
-- Do not commit build artifacts. `target/`, `node_modules/`, and `dist/` are ignored.
+- Do not commit build artifacts. `target/`, `node_modules/`, `dist/`, `build/`,
+  `coverage/`, `.pytest_cache/`, `__pycache__/`, and `*.class` are ignored. A compiled
+  binary with no extension is not caught by any of those; two were tracked from the first
+  pass until 2026-08-22. Test with `file(1)`, matching `Mach-O` or `ELF` and **not**
+  `executable`, which also describes every script carrying a shebang.
+- Running a test suite here leaves artifacts in the working tree: `.pytest_cache/`,
+  `coverage/`, and a `package-lock.json` in any npm project that lacked one. Clean them
+  before committing. `scripts/check-ai-config.sh` catches them.
 - Do not commit `*.bundle`. The largest exceeds GitHub's file size limit.
 
 ## Generated files

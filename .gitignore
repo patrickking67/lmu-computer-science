@@ -10,6 +10,9 @@ build/
 __pycache__/
 *.pyc
 .venv/
+.pytest_cache/
+coverage/
+*.class
 
 # History bundles live outside the repo; see docs/archive.md
 *.bundle

@@ -19,20 +19,23 @@ they can be copied. See "iCloud eviction" below.
 
 ## What was selected
 
-Of 40,676 candidate files under the fifteen course folders, 120 were selected and 111
-were committed. The reduction is almost entirely nested git repositories, which are
-preserved as bundles rather than as working trees. The nine uncommitted files are the two
-open publication questions in [`publication.md`](publication.md).
+Of 40,676 candidate files under the fifteen course folders, 120 were selected, 111 were
+committed, and 13 of those were removed the same day on review. 98 stand. The reduction
+from 40,676 is almost entirely nested git repositories, which are preserved as bundles
+rather than as working trees. The nine never-committed files are the two open publication
+questions in [`publication.md`](publication.md); the 13 removed are recorded under
+"Removed on review" below.
 
-| Course | Committed | Held | Size |
-|---|---|---|---|
-| `CMSI-3300/` | 45 | 8 | 31.2 MB |
-| `CMSI-3801/` | 9 | — | 3.6 MB |
-| `CMSI-3802/` | 45 | — | 70.7 MB |
-| `CMSI-3920/` | 0 | 1 | 0.1 MB |
-| `CMSI-4072/` | 12 | — | 8.2 MB |
+| Course | Committed | Removed | Held | Size |
+|---|---|---|---|---|
+| `CMSI-3300/` | 45 | — | 8 | 31.1 MB |
+| `CMSI-3801/` | 9 | — | — | 3.6 MB |
+| `CMSI-3802/` | 37 | 8 | — | 69.8 MB |
+| `CMSI-3920/` | 0 | — | 1 | 0.1 MB |
+| `CMSI-4072/` | 7 | 5 | — | 7.2 MB |
 
-Largest single file 19.3 MB. Nothing approaches GitHub's 100 MB limit.
+98 files, 111.7 MB. Largest single file 19.3 MB. Nothing approaches GitHub's 100 MB
+limit.
 
 ### What landed, by course
 
@@ -40,9 +43,9 @@ Largest single file 19.3 MB. Nothing approaches GitHub's 100 MB limit.
 |---|---|
 | `CMSI-3300/` | 28 lecture decks, classwork solutions, homework specs and grading record, final exam cheat sheet, syllabus. The four Berkeley Ghostbusters solution sets are held. |
 | `CMSI-3801/` | `Coursework/`: syllabus plus answer keys for three exams and five homeworks |
-| `CMSI-3802/` | Two `Coursework` trees: assignment specs, condensed notes, 16 instructor decks, exam preparation, 8 screenshots |
+| `CMSI-3802/` | Two `Coursework` trees: assignment specs, condensed notes, 16 instructor decks, exam preparation, 4 HW1 AST diagrams |
 | `CMSI-3920/` | One course reading, held |
-| `CMSI-4072/` | The seven-document senior project deliverable set, plus five delivered-application screenshots |
+| `CMSI-4072/` | The seven-document senior project deliverable set, under names that say what each document is |
 
 `CMSI-3801/`'s new `Coursework/` directory is documented here rather than in that
 course's README, because `CMSI-3801/README.md` is an original student-authored artifact
@@ -63,7 +66,7 @@ repositories. Full inventory and evidence: [`archive.md`](archive.md).
 | `Class Files/Math 251/` | 66 | Another department's material, including instructor solutions |
 | Build artifacts, `.DS_Store`, `._*`, `*.pyc` | — | Already covered by `.gitignore` |
 | iCloud stub `README.md` | 15 | Empty templates; see below |
-| Duplicate content, by SHA-256 | 3 | Same bytes reachable by two paths |
+| Duplicate content, by SHA-256 | 3 | Same bytes reachable by two paths in the source |
 
 ### Math 251
 
@@ -80,6 +83,40 @@ metadata followed by the line "Add syllabus, notes, code, and graded work here."
 to-do templates, not coursework. The metadata they carry is already in `docs/record.md`,
 and six of them would have overwritten authored course READMEs that state each course's
 preservation status. All were dropped.
+
+## Removed on review
+
+Thirteen of the 111 committed files were removed the same day, after the images were
+actually opened and the vendor set was compared by content against what the repository
+already tracked. Both misses came from checks that were narrower than they looked.
+
+| Removed | Files | Why it got in | Why it went out |
+|---|---|---|---|
+| `CMSI-3802/Coursework (from LMU)/New Folder With Items/` | 8 | The Math 251 exclusion matched a directory *named* `Math 251`. These eight were misfiled under a generic folder name and the rule never saw them. | All eight are consecutive pages of one document: "LMU MATH 251: Applied Linear Algebra – PRACTICE FINAL EXAM (Rev. 9)". Same course, same scope rule. |
+| `CMSI-4072/Coursework/Final Product Delivery/` | 5 | SHA-256 dedup ran *within* the candidate set, not against files already tracked here. | Byte-identical to `CMSI-4072/Pathfinder/Final Product Delivery/`, right down to the directory name. No information gained. |
+
+The lesson generalises past this pass. A name-based exclusion only catches material that
+was filed under that name, and a dedup that compares candidates to each other will not
+notice that the repository already holds the same bytes. Compare against
+`git ls-files`, not just within the batch:
+
+```bash
+git ls-files -z | xargs -0 shasum -a 256 | sort \
+  | awk '{h=$1; $1=""; sub(/^ +/,""); if (h==p) print "dup: "$0" <=> "q; p=h; q=$0}'
+```
+
+That the images were unopened is the sharper point: eight files sat through a scope
+check, a third-party-name scan, and a commit without anyone reading the title line at
+the top of the first one.
+
+### Duplicates that were kept, deliberately
+
+Two sets of byte-identical files remain, both retained for a reason:
+
+| Path | Duplicate of | Why kept |
+|---|---|---|
+| `CMSI-4072/Senior Project Deliverables/` (7 PDFs) | `CMSI-4072/Pathfinder/Deliverables/` | The names differ even though the bytes do not. `SDD Revised.pdf` becomes `Pathfinder Software Design Document.pdf`. `CMSI-4071/README.md` points here for the cross-semester set. Fourteen filenames, seven documents. |
+| `CMSI-3802/Coursework (from Classes)/Homework1.pdf` | `CMSI-3802/cloudscribe/assignments/Homework 1.pdf` | 19.3 MB, the largest file in the vendor set. Kept because `cloudscribe/` is a snapshot of a separate repository, not this archive's filing, and the author's own tree should be readable without it. |
 
 ## Courses with no vendored material
 

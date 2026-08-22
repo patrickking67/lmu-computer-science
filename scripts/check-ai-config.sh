@@ -13,7 +13,7 @@ echo "Required files"
 for f in AGENTS.md CLAUDE.md README.md LICENSE .gitignore \
          .github/copilot-instructions.md .codex/config.toml .claude/settings.json \
          docs/archive.md docs/reference.md docs/publication.md docs/record.md \
-         docs/vendoring.md; do
+         docs/vendoring.md docs/building.md; do
   [ -f "$f" ] && ok "$f" || bad "$f missing"
 done
 

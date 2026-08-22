@@ -193,15 +193,15 @@ echo "Course coverage"
 courses=(1010 1900 2021 2120 2130 2210 2820 3300 3550 3751 3801 3802 3920 4071 4072)
 missing=0
 for c in "${courses[@]}"; do
-  [ -f "CMSI-$c/README.md" ] || { bad "CMSI-$c/README.md missing"; missing=1; }
+  [ -f "src/courses/cmsi-$c/README.md" ] || { bad "src/courses/cmsi-$c/README.md missing"; missing=1; }
 done
 [ "$missing" -eq 0 ] && ok "all ${#courses[@]} course directories documented"
-for d in CMSI-*/; do
+for d in src/courses/cmsi-*/; do
   [ -d "$d" ] || continue   # no nullglob: an unmatched glob arrives literally
-  c=${d#CMSI-}; c=${c%/}
+  c=${d#src/courses/cmsi-}; c=${c%/}
   case " ${courses[*]} " in
     *" $c "*) ;;
-    *) bad "CMSI-$c is not in the expected course list (update docs/record.md)" ;;
+    *) bad "src/courses/cmsi-$c is not in the expected course list (update docs/record.md)" ;;
   esac
 done
 

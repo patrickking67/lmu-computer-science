@@ -35,21 +35,21 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 
 | Course | Title | Term | Work |
 |---|---|---|---|
-| [CMSI 1010](CMSI-1010) | Computer Programming Laboratory | Fall 2021 | none preserved |
-| [CMSI 1900](CMSI-1900) | Exploring Computer Science | Fall 2021 | none, 0 units by design |
-| [CMSI 2021](CMSI-2021) | Web Application Development | Fall 2022 | myGainz, 3 web apps |
-| [CMSI 2120](CMSI-2120) | Data Structures and Applications | Spring 2022 | none preserved |
-| [CMSI 2130](CMSI-2130) | Algorithms and Analysis | Spring 2023 | 5 projects, Java |
-| [CMSI 2210](CMSI-2210) | Computer Systems Organization | Fall 2022 | none preserved |
-| [CMSI 2820](CMSI-2820) | Discrete Mathematics for Computer Science | Fall 2022 | none preserved |
-| [CMSI 3300](CMSI-3300) | Artificial Intelligence | Fall 2024 | course material |
-| [CMSI 3550](CMSI-3550) | Networks and the Internet | Spring 2024 | 7 projects, Rust |
-| [CMSI 3751](CMSI-3751) | Game Design | Fall 2023 | none preserved |
-| [CMSI 3801](CMSI-3801) | Theories of Computer and Human Languages | Fall 2024 | 13 languages, answer keys |
-| [CMSI 3802](CMSI-3802) | Programming Language Concepts and Implementation | Spring 2025 | cloudscribe, course material |
-| [CMSI 3920](CMSI-3920) | Computing Contexts and Ethics | Summer 2024 I | none committed |
-| [CMSI 4071](CMSI-4071) | Senior Project I | Fall 2024 | see 4072 |
-| [CMSI 4072](CMSI-4072) | Senior Project II | Spring 2025 | Pathfinder, deliverable set |
+| [CMSI 1010](src/courses/cmsi-1010) | Computer Programming Laboratory | Fall 2021 | none preserved |
+| [CMSI 1900](src/courses/cmsi-1900) | Exploring Computer Science | Fall 2021 | none, 0 units by design |
+| [CMSI 2021](src/courses/cmsi-2021) | Web Application Development | Fall 2022 | myGainz, 3 web apps |
+| [CMSI 2120](src/courses/cmsi-2120) | Data Structures and Applications | Spring 2022 | none preserved |
+| [CMSI 2130](src/courses/cmsi-2130) | Algorithms and Analysis | Spring 2023 | 5 projects, Java |
+| [CMSI 2210](src/courses/cmsi-2210) | Computer Systems Organization | Fall 2022 | none preserved |
+| [CMSI 2820](src/courses/cmsi-2820) | Discrete Mathematics for Computer Science | Fall 2022 | none preserved |
+| [CMSI 3300](src/courses/cmsi-3300) | Artificial Intelligence | Fall 2024 | course material |
+| [CMSI 3550](src/courses/cmsi-3550) | Networks and the Internet | Spring 2024 | 7 projects, Rust |
+| [CMSI 3751](src/courses/cmsi-3751) | Game Design | Fall 2023 | none preserved |
+| [CMSI 3801](src/courses/cmsi-3801) | Theories of Computer and Human Languages | Fall 2024 | 13 languages, answer keys |
+| [CMSI 3802](src/courses/cmsi-3802) | Programming Language Concepts and Implementation | Spring 2025 | cloudscribe, course material |
+| [CMSI 3920](src/courses/cmsi-3920) | Computing Contexts and Ethics | Summer 2024 I | none committed |
+| [CMSI 4071](src/courses/cmsi-4071) | Senior Project I | Fall 2024 | see 4072 |
+| [CMSI 4072](src/courses/cmsi-4072) | Senior Project II | Spring 2025 | Pathfinder, deliverable set |
 
 Fifteen computer science courses. Terms come from the author's course audit, not from
 instructor course pages, which document whichever offering is currently published and
@@ -92,7 +92,7 @@ the two questions the 2026-08-22 vendoring pass raised that it did not.
 
 ```text
 lmu-cs/
-├── CMSI-1010 … CMSI-4072/         one directory per course, 15 in total
+├── CMSI-1010 … src/courses/cmsi-4072/         one directory per course, 15 in total
 ├── docs/
 │   ├── archive.md                 bundle inventory and restore commands
 │   ├── building.md                what compiles and runs, and what does not
@@ -110,7 +110,6 @@ lmu-cs/
 ├── .codex/config.toml             Codex configuration
 ├── AGENTS.md                      canonical agent instructions
 ├── CLAUDE.md                      Claude adapter, imports AGENTS.md
-├── CONSOLIDATION-REVIEW.md        2026-08-22 consolidation record
 └── LICENSE                        MIT
 ```
 

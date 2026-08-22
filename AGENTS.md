@@ -7,14 +7,13 @@ course. The coursework itself lives here; this is not an index of links.
 
 ## Repository map
 
-- `CMSI-1010/` … `CMSI-4072/`: one directory per course, named by catalog number
+- `src/courses/cmsi-1010/` … `src/courses/cmsi-4072/`: one directory per course, named by catalog number
 - `docs/archive.md`: git bundle inventory and restore procedure
 - `docs/reference.md`: instructor course material, links only
 - `docs/record.md`: authoritative course, term, title, grade, and credit record
 - `docs/publication.md`: what publishing accepted, and what is still unresolved
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
 - `docs/building.md`: what compiles and runs, with verified commands and version pins
-- `CONSOLIDATION-REVIEW.md`: record of the 2026-08-22 consolidation
 - `scripts/check-ai-config.sh`: the repository check, also run in CI
 - `.github/workflows/check-ai-config.yml`: runs that check on every push to `main`
 
@@ -49,12 +48,12 @@ This is an archive. The governing rule is that history is preserved, not rewritt
   a JDK is present.
 - Course directories are historical records. Do not refactor, reformat, modernize, or
   lint archived coursework. Broken or dated code is the correct state.
-- Original student-authored READMEs in `CMSI-3550/` and `CMSI-3801/` are artifacts.
+- Original student-authored READMEs in `src/courses/cmsi-3550/` and `src/courses/cmsi-3801/` are artifacts.
   Leave them as written.
 - Thirteen upstream repositories were deleted from GitHub. Their commit histories exist
   only as git bundles in `~/Backups/lmu-cs-history-2026-08-22/`, outside this repository
   and outside GitHub. Never delete that directory. See `docs/archive.md`.
-- `CMSI-3802/cloudscribe/` is a course-era snapshot at commit `25b48f1`, diverged 46
+- `src/courses/cmsi-3802/cloudscribe/` is a course-era snapshot at commit `25b48f1`, diverged 46
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
 - Work that continues outside the archive is referenced, never vendored.
@@ -99,8 +98,8 @@ This is an archive. The governing rule is that history is preserved, not rewritt
 - Follow existing patterns before creating new abstractions.
 - Never commit secrets. Two are already committed, in vendored CMSI 4072 coursework: a
   Google service-account private key at
-  `CMSI-4072/Pathfinder/backend/serviceAccountKey.json` and a RapidAPI key hardcoded
-  twice in `CMSI-4072/Pathfinder/backend/functions/index.js`. They block making this
+  `src/courses/cmsi-4072/Pathfinder/backend/serviceAccountKey.json` and a RapidAPI key hardcoded
+  twice in `src/courses/cmsi-4072/Pathfinder/backend/functions/index.js`. They block making this
   repository public and `scripts/check-ai-config.sh` fails on them today. Do not delete
   them to make the check pass; the remedy is rotation, and the archive question is the
   author's. See `docs/publication.md`. Firebase *Web* API keys (`AIza…`) in three front

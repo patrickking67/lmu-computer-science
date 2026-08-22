@@ -37,24 +37,24 @@ counts against the source. 29 of 29 passed.
 
 | Bundle | Commits | Source | Remote status |
 |---|---|---|---|
-| `CMSI-3550.bundle` | 21 | `CMSI-3550/` | deleted |
-| `CMSI-3801.bundle` | 108 | `CMSI-3801/` | deleted |
+| `CMSI-3550.bundle` | 21 | `src/courses/cmsi-3550/` | deleted |
+| `CMSI-3801.bundle` | 108 | `src/courses/cmsi-3801/` | deleted |
 | `cmsi3801.bundle` | 108 | root duplicate | deleted |
-| `CMSI-3802.bundle` | 9 | `CMSI-3802/` | deleted |
-| `CMSI-3802_cloudscribe.bundle` | 77 | `CMSI-3802/cloudscribe/` | alive, diverged |
-| `CMSI-2130.bundle` | 8 | `CMSI-2130/` | deleted |
+| `CMSI-3802.bundle` | 9 | `src/courses/cmsi-3802/` | deleted |
+| `CMSI-3802_cloudscribe.bundle` | 77 | `src/courses/cmsi-3802/cloudscribe/` | alive, diverged |
+| `CMSI-2130.bundle` | 8 | `src/courses/cmsi-2130/` | deleted |
 | `Java-Algorithms.bundle` | 8 | root duplicate | deleted |
-| `CMSI-2021_myGainz.bundle` | 95 | `CMSI-2021/myGainz/` | alive |
+| `CMSI-2021_myGainz.bundle` | 95 | `src/courses/cmsi-2021/myGainz/` | alive |
 | `mygainz.bundle` | 95 | root duplicate | alive |
-| `Senior_Project_Pathfinder.bundle` | 57 | `CMSI-4072/Pathfinder/` | alive, private |
+| `Senior_Project_Pathfinder.bundle` | 57 | `src/courses/cmsi-4072/Pathfinder/` | alive, private |
 | `pathfinder.bundle` | 57 | root duplicate | alive, private |
-| `cmsi3550-p2pfinal.bundle` | 8 | `CMSI-3550/Final/` | deleted |
+| `cmsi3550-p2pfinal.bundle` | 8 | `src/courses/cmsi-3550/Final/` | deleted |
 | `CMSI-3550_Final.bundle` | 8 | same, second clone | deleted |
-| `cmsi3550-pgt-p2p.bundle` | 4 | `CMSI-3550/cmsi3550-pgt-p2p/` | deleted |
+| `cmsi3550-pgt-p2p.bundle` | 4 | `src/courses/cmsi-3550/cmsi3550-pgt-p2p/` | deleted |
 | `CMSI-3550_cmsi3550-pgt-p2p.bundle` | 4 | same, second clone | deleted |
-| `Artist-Data-API.bundle` | 17 | `CMSI-2021/Artist-Data-API/` | deleted |
-| `Blog-Application.bundle` | 3 | `CMSI-2021/Blog-Application/` | deleted |
-| `Compound-Interest-Calculator.bundle` | 10 | `CMSI-2021/Compound-Interest-Calculator/` | deleted |
+| `Artist-Data-API.bundle` | 17 | `src/courses/cmsi-2021/Artist-Data-API/` | deleted |
+| `Blog-Application.bundle` | 3 | `src/courses/cmsi-2021/Blog-Application/` | deleted |
+| `Compound-Interest-Calculator.bundle` | 10 | `src/courses/cmsi-2021/Compound-Interest-Calculator/` | deleted |
 | `_parent_lmu-cs.bundle` | 6 | this repository, pre-consolidation | alive |
 
 ### Added 2026-08-22, from the iCloud source tree

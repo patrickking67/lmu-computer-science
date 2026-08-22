@@ -18,7 +18,7 @@ audit, all four disagree, so the enrollment term is given separately.
 
 The CMSI 2130 page documents Spring 2026 while the work was done in Spring 2023 and
 commits on 2023-07-24. Its published homework set still matches the preserved projects
-one for one, which is what establishes the course attribution in `CMSI-2130/README.md`.
+one for one, which is what establishes the course attribution in `src/courses/cmsi-2130/README.md`.
 The assignment set is stable across offerings; the term on the page is not.
 
 ## Dr. Ray Toal ([`rtoal`](https://github.com/rtoal))

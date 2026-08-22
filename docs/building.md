@@ -17,18 +17,18 @@ Run from the repository root unless a `cd` is shown.
 |---|---|---|---|
 | CMSI 3801 | C | `gcc -o /tmp/t c/string_stack.c c/string_stack_test.c && /tmp/t` | 25 passed, 0 failed |
 | CMSI 3801 | C++ | `g++ -std=c++20 -o /tmp/t cpp/stack_test.cpp && /tmp/t` | 27 passed, 0 failed |
-| CMSI 3801 | Python | `cd CMSI-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
-| CMSI 3801 | JavaScript | `cd CMSI-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
-| CMSI 3801 | TypeScript | `cd CMSI-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
-| CMSI 3801 | Swift | `cd CMSI-3801/swift && swift exercises.swift main.swift` | exit 0, no output |
-| CMSI 3802 | cloudscribe | `cd CMSI-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
+| CMSI 3801 | Python | `cd src/courses/cmsi-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
+| CMSI 3801 | JavaScript | `cd src/courses/cmsi-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
+| CMSI 3801 | TypeScript | `cd src/courses/cmsi-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
+| CMSI 3801 | Swift | `cd src/courses/cmsi-3801/swift && swift exercises.swift main.swift` | exit 0, no output |
+| CMSI 3802 | cloudscribe | `cd src/courses/cmsi-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
 
 Toolchains these were verified against: Node 24.18.0, Python 3.14.7, Apple Swift 6.4,
 Apple clang/gcc as shipped with the Xcode command line tools.
 
 ### Python needs 3.10 or newer
 
-`CMSI-3801/python/exercises.py` annotates with `str | None` at module level, which is
+`src/courses/cmsi-3801/python/exercises.py` annotates with `str | None` at module level, which is
 [PEP 604](https://peps.python.org/pep-0604/) syntax. On macOS's bundled Python 3.9 the
 file raises `TypeError: unsupported operand type(s) for |` at *import* time, so the suite
 does not fail, it never collects. Use 3.10 or newer. This was not recorded anywhere before
@@ -73,7 +73,7 @@ largest open item in the archive.
 
 ## CMSI 3300: the harness is here, the solutions are in a bundle
 
-`CMSI-3300/Coursework/Homework/Homework Test Cases/` holds the instructor grading
+`src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/` holds the instructor grading
 harnesses for Homework 2 and Homework 4. They import modules that are **not** in this
 repository:
 
@@ -88,9 +88,9 @@ The GitHub Classroom repositories that held the solutions were deleted; the bund
 
 ```bash
 git clone ~/Backups/lmu-cs-history-2026-08-22/CMSI-3300_Homework-2.bundle /tmp/hw2
-cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/src/grading_constants.py" /tmp/hw2/src/
-cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/src/grading_tests.py"     /tmp/hw2/src/
-cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/dat/hw2_grading.csv"       /tmp/hw2/dat/
+cp "src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/src/grading_constants.py" /tmp/hw2/src/
+cp "src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/src/grading_tests.py"     /tmp/hw2/src/
+cp "src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/Homework 2 Grading/dat/hw2_grading.csv"       /tmp/hw2/dat/
 ```
 
 ### The dependency stack has to be pinned to the course era
@@ -139,7 +139,7 @@ it is the version the Homework 4 numbers below were measured under.
 | 8 | Wrong numeric answers | e.g. VPI expected 796.82, computed 234.52; MEU expected 20.779, computed 1.371 |
 | 4 | `AttributeError: 'CausalInference' object has no attribute 'map_query'` | `ad_agent.py:44` calls `map_query` on a `CausalInference`. That method has never existed on that class in any `pgmpy` release; `CausalInference` exposes `query` only. `most_likely_consumer` was broken as submitted. |
 
-`CMSI-3300/Coursework/Homework/Homework Feedback and Grading.rtf` records the author's own
+`src/courses/cmsi-3300/Coursework/Homework/Homework Feedback and Grading.rtf` records the author's own
 mark for this homework as **51%**. A suite that half fails is the archive agreeing with the
 gradebook.
 
@@ -150,8 +150,8 @@ needs both its own files copied in:
 
 ```bash
 git clone ~/Backups/lmu-cs-history-2026-08-22/CMSI-3300_Homework-4.bundle /tmp/hw4
-cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/src/classifier_grading_tests.py" /tmp/hw4/src/
-cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/dat/salary_grading.csv"           /tmp/hw4/dat/
+cp "src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/src/classifier_grading_tests.py" /tmp/hw4/src/
+cp "src/courses/cmsi-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/dat/salary_grading.csv"           /tmp/hw4/dat/
 cd /tmp/hw4/src && /tmp/venv/bin/python -m pytest -q classifier_grading_tests.py
 ```
 
@@ -181,17 +181,17 @@ Not code that fails, but material that is incomplete. Recorded rather than repai
 
 | Item | Detail |
 |---|---|
-| `CMSI-3300/Coursework/Test Cases/AttributesAndImportAdd.py` | 0 bytes |
-| `CMSI-3550/cmsi3550-pgt-p2p/cards.json` | 0 bytes |
-| `CMSI-3300/Coursework/Lectures/` | Lecture 8.1 and 14.2 are missing; the set runs 1 – 15.2 otherwise |
+| `src/courses/cmsi-3300/Coursework/Test Cases/AttributesAndImportAdd.py` | 0 bytes |
+| `src/courses/cmsi-3550/cmsi3550-pgt-p2p/cards.json` | 0 bytes |
+| `src/courses/cmsi-3300/Coursework/Lectures/` | Lecture 8.1 and 14.2 are missing; the set runs 1 – 15.2 otherwise |
 | CMSI 3300 homework | Only the Homework 4 specification survives. Homework 1 – 3 and 5 specs are gone. |
 
-`CMSI-3801/python/__init__.py` is also 0 bytes, which is correct: it is a package marker.
+`src/courses/cmsi-3801/python/__init__.py` is also 0 bytes, which is correct: it is a package marker.
 
 ## Removed build artifacts
 
 Two compiled binaries were tracked from the first consolidation pass and were removed on
-2026-08-22: `CMSI-3550/demo/main` and `CMSI-3801/cpp/stack_test`. Both were x86_64 Mach-O
+2026-08-22: `src/courses/cmsi-3550/demo/main` and `src/courses/cmsi-3801/cpp/stack_test`. Both were x86_64 Mach-O
 executables on an arm64 machine, neither was source, and both rebuild from tracked sources
 with the commands above. `.gitignore` covers `target/`, `node_modules/`, `dist/`, `build/`
 and `__pycache__/`, but cannot catch an extensionless binary sitting next to its source;

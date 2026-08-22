@@ -3,7 +3,7 @@
 # LMU Computer Science
 
 Coursework from a BS in Computer Science at **Loyola Marymount University**,
-Seaver College of Science and Engineering. Graduated **2025**.
+Seaver College of Science and Engineering. **Fall 2021 – Spring 2025**.
 Advised by **Dr. Ray Toal**.
 
 ![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white&style=flat)

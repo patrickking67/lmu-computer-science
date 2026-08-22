@@ -1,0 +1,36 @@
+---
+import { courses } from '../data/courses';
+const b = import.meta.env.BASE_URL;
+const u = (p: string) => `${b}/${p}`.replace(/\/+/g, '/');
+
+// Band height encodes what actually survived, so the seven hollow courses
+// read as the real gaps they are rather than being smoothed over.
+const weight = (c: (typeof courses)[number]) =>
+  c.work === null ? 18 : Math.min(100, 34 + c.stack.length * 9);
+---
+<figure class="strata mt-14">
+  <div class="flex items-end gap-[3px] h-40" role="list" aria-label="The fifteen courses in order, band height showing how much work survived">
+    {courses.map((c, i) => (
+      <a
+        role="listitem"
+        href={u(`courses/${c.slug}`)}
+        class="stratum group relative flex-1 rounded-t-[3px] rounded-b-[1px]"
+        style={`height:${weight(c)}%; animation-delay:${i * 55}ms; background:${c.work ? 'var(--patina)' : 'var(--line)'}`}
+        aria-label={`${c.code}, ${c.term}, ${c.work ?? 'nothing preserved'}`}
+      >
+        <span
+          class="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border px-2 py-1 text-[11px] font-mono opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+          style="border-color: var(--line); background: var(--surface); color: var(--ink)"
+        >{c.code}</span>
+      </a>
+    ))}
+  </div>
+  <figcaption class="mt-4 flex flex-wrap justify-between gap-x-6 gap-y-1 text-xs" style="color: var(--muted)">
+    <span>Fall 2021</span>
+    <span class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-sm inline-block" style="background: var(--patina)"></i> work preserved</span>
+      <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-sm inline-block" style="background: var(--line)"></i> nothing survived</span>
+    </span>
+    <span>Spring 2025</span>
+  </figcaption>
+</figure>

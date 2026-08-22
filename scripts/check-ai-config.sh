@@ -164,7 +164,7 @@ fi
 # *.class, *.pyc, *.o, *.obj, .gradle/ and .ipynb_checkpoints/, none of which were
 # excluded here, so compiling any of the five CMSI 2130 Java projects made this
 # check fail with "coursework files excluded by .gitignore" over a .class file.
-artifact_re='(^|/)(target|node_modules|dist|build|__pycache__|\.venv|\.gradle|\.ipynb_checkpoints|\.idea)/'
+artifact_re='(^|/)(target|node_modules|dist|build|__pycache__|\.venv|\.gradle|\.ipynb_checkpoints|\.idea|\.astro)/|\.egg-info/'
 artifact_re="$artifact_re"'|\.(class|pyc|o|obj|swp|swo)$|(^|/)(\.DS_Store|Icon.?)$|(^|/)\._|~$'
 residue_re='(^|/)(\.pytest_cache|coverage)/'
 

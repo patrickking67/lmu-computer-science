@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Core sample.
+   An archive of work that nearly disappeared, so the register is
+   preservation: verdigris (copper oxidising slowly), archival paper,
+   amber for what was recovered. Fraunces carries the display weight —
+   its SOFT and WONK axes are what make the type feel grown rather
+   than set. Karla underneath, for its slightly irregular grotesque.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Karla", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root {
+  --paper: oklch(97.5% 0.009 195);
+  --surface: oklch(94.5% 0.012 195);
+  --line: oklch(87% 0.014 195);
+  --ink: oklch(24% 0.028 215);
+  --muted: oklch(50% 0.02 210);
+  --patina: oklch(52% 0.088 178);
+  --patina-soft: oklch(92% 0.035 178);
+  --amber: oklch(58% 0.115 68);
+  --depth: 0 1px 2px oklch(24% 0.028 215 / 0.05), 0 8px 24px oklch(24% 0.028 215 / 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: oklch(19% 0.024 215);
+    --surface: oklch(23% 0.026 215);
+    --line: oklch(31% 0.026 215);
+    --ink: oklch(95% 0.008 195);
+    --muted: oklch(70% 0.018 200);
+    --patina: oklch(74% 0.105 178);
+    --patina-soft: oklch(28% 0.05 178);
+    --amber: oklch(78% 0.11 70);
+    --depth: 0 1px 2px oklch(0% 0 0 / 0.3), 0 8px 28px oklch(0% 0 0 / 0.25);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: oklch(19% 0.024 215);
+  --surface: oklch(23% 0.026 215);
+  --line: oklch(31% 0.026 215);
+  --ink: oklch(95% 0.008 195);
+  --muted: oklch(70% 0.018 200);
+  --patina: oklch(74% 0.105 178);
+  --patina-soft: oklch(28% 0.05 178);
+  --amber: oklch(78% 0.11 70);
+  --depth: 0 1px 2px oklch(0% 0 0 / 0.3), 0 8px 28px oklch(0% 0 0 / 0.25);
+}
+
+html { color-scheme: light dark; scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fraunces set soft and a little wonky — the organic register. */
+.display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 108;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--patina);
+}
+
+::selection { background: var(--patina-soft); color: var(--ink); }
+
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--patina);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Motion ──────────────────────────────────────────────────
+   One orchestrated idea: things settle into place, as if drawn up
+   out of the ground. Everything else stays still.                */
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes grow {
+  from { transform: scaleY(0); opacity: 0; }
+  to   { transform: scaleY(1); opacity: 1; }
+}
+
+.settle {
+  animation: settle 0.75s cubic-bezier(0.16, 0.84, 0.28, 1) backwards;
+}
+
+/* Strata grow from their base, oldest first — the core coming up. */
+.stratum {
+  transform-origin: bottom;
+  animation: grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+.strata:hover .stratum { opacity: 0.4; }
+.strata .stratum:hover, .strata .stratum:focus-visible { opacity: 1; filter: brightness(1.12); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 0.84, 0.28, 1), transform 0.8s cubic-bezier(0.16, 0.84, 0.28, 1);
+}
+.reveal.shown { opacity: 1; transform: none; }
+
+.lift { transition: transform 0.35s cubic-bezier(0.16, 0.84, 0.28, 1), box-shadow 0.35s ease, border-color 0.35s ease; }
+.lift:hover { transform: translateY(-3px); box-shadow: var(--depth); border-color: var(--patina); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* The nav scrolls rather than clipping when it runs out of room on a phone. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

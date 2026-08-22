@@ -1,6 +1,9 @@
 # CMSI 4072
 
-Senior Project II. Spring 2025. Pathfinder.
+Senior Project II. Spring 2025. Pathfinder, a career-guidance web application.
+Patrick King was project manager. React and Vite front end, JavaScript back end.
+
+Deliverables in this directory are jointly authored and name the team.
 
 ## Contents
 

@@ -55,6 +55,12 @@ CMSI 2130 was taken twice. The Fall 2022 attempt earned no credit; the Spring 20
 retake earned a C-. The preserved CMSI 2130 projects commit on 2023-07-24, which places
 them in the retake.
 
+## Other LMU roles
+
+| Role | Period |
+|---|---|
+| Research Assistant | January to May 2024 |
+
 ## Non-major courses
 
 Core, elective, and business courses are recorded on the audit but are not represented

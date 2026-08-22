@@ -17,6 +17,19 @@ repository becomes a bundle, never a directory here. See [`vendoring.md`](vendor
 Not committed. The largest bundle is 161 MB, above GitHub's file limit, and the bundles
 duplicate content already vendored here. Back this directory up separately.
 
+A second copy lives on external media. As of 2026-08-22 both copies hold all 29 bundles,
+byte-identical. The five CMSI 3300 homework repositories and the four CMSI 3801 clones
+exist *only* in these two copies: their GitHub Classroom originals are gone and their
+working trees were never vendored. Losing both copies loses that coursework outright.
+
+Confirm the two copies still agree before trusting either:
+
+```bash
+diff <(shasum -a 256 ~/Backups/lmu-cs-history-2026-08-22/*.bundle | awk '{print $1}' | sort) \
+     <(shasum -a 256 /Volumes/<drive>/Backups/lmu-cs-history-2026-08-22/*.bundle | awk '{print $1}' | sort) \
+  && echo "copies agree"
+```
+
 ## Inventory
 
 Every bundle was verified by fetching all refs into a bare repository and comparing commit

@@ -10,7 +10,9 @@ cover.
 
 Two items are open, both raised by the 2026-08-22 vendoring pass and neither within any
 accepted row. They are held out of version control pending a decision. Until they are
-settled the repository stays private and unpushed.
+settled the repository stays private and unpushed. They are two different questions, not
+a matched pair: one is a licence term, the other is a copyright judgment. Read them
+separately.
 
 ## Accepted risks
 
@@ -31,6 +33,11 @@ uncommitted**, so that either decision is cheap: committing them needs one `git 
 dropping them needs one `rm`. Neither requires rewriting history. The repository is
 still private and has not been pushed since the pass.
 
+Held, rather than decided, because no rule already in this file reaches them. That is the
+distinction that matters: the Math 251 material below was removed without asking anyone,
+because a scope rule this document already states decided it. These two are not covered
+that way, so they are the author's call and nobody else's.
+
 ### UC Berkeley CS188 licence, 8 files
 
 `CMSI-3300/HW3 Answers (Pacman AI)/` holds four distinct complete solutions to the
@@ -44,6 +51,12 @@ This is not the same kind of risk as the *Instructor copyright* and *Academic in
 rows above, which weigh a norm and a consequence. This is an express condition of the
 licence under which the material was received, and publishing the files would breach it
 on its own terms. No student is named in them.
+
+It is also not the same question as the article below. That one is a judgment about how
+much redistribution of a publisher's PDF is acceptable, and reasonable people land in
+different places on it. This one is a stated term: the notice says what may not be done
+with the files, and publishing them does that thing. Of the two, this is the one where
+the accepted-risk reasoning elsewhere in this document gives no cover.
 
 The eight files are the whole exposure; the scan below confirms nothing else in the
 repository carries the notice. Removing them costs one directory. Keeping them means

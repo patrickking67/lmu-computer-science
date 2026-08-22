@@ -84,7 +84,7 @@ repository:
 
 The GitHub Classroom repositories that held the solutions were deleted; the bundles in
 `~/Backups/lmu-cs-history-2026-08-22/` are the only surviving copies. See
-[`archive.md`](archive.md). To reconstitute Homework 2:
+[`archive.md`](archive.md). Both were reconstituted and run on 2026-08-22. Homework 2:
 
 ```bash
 git clone ~/Backups/lmu-cs-history-2026-08-22/CMSI-3300_Homework-2.bundle /tmp/hw2
@@ -113,11 +113,24 @@ This combination runs:
 python3.12 -m venv /tmp/venv
 /tmp/venv/bin/pip install 'pgmpy==0.1.26' 'numpy<2' 'pandas<2.2' 'scipy==1.13.1' \
                           'setuptools<81' pytest
+/tmp/venv/bin/pip install 'scikit-learn<1.6'   # Homework 4 only
 brew install libomp    # only needed for the xgboost dylib that pgmpy pulls in
 cd /tmp/hw2/src && /tmp/venv/bin/python -m pytest -q grading_tests.py
 ```
 
-### What that produces, and why it is correct that it fails
+That exact install line was re-run in a clean 3.12 virtualenv on 2026-08-22 and
+resolved to pgmpy 0.1.26, numpy 1.26.4, pandas 2.1.4, scipy 1.13.1, setuptools 80.10.2,
+scikit-learn 1.5.2, reproducing the results below. `brew install libomp` installs a
+Homebrew package on the machine; `brew uninstall libomp` reverses it.
+
+The `scikit-learn` bound is weaker evidence than the others and should be read that way.
+Every other pin here was found by hitting a failure and tracing it to the version that
+caused it. `scikit-learn<1.6` was not: it was chosen because it satisfies the numpy 1.26
+floor the other pins impose, and it resolved to 1.5.2. Nothing here establishes that 1.5.2
+is what the course used in Fall 2024. It is a version the rest of the stack tolerates, and
+it is the version the Homework 4 numbers below were measured under.
+
+### Homework 2: what that produces, and why it is correct that it fails
 
 **7 passed, 12 failed.** Every one of the 12 is the coursework, not the environment:
 
@@ -129,6 +142,28 @@ cd /tmp/hw2/src && /tmp/venv/bin/python -m pytest -q grading_tests.py
 `CMSI-3300/Coursework/Homework/Homework Feedback and Grading.rtf` records the author's own
 mark for this homework as **51%**. A suite that half fails is the archive agreeing with the
 gradebook.
+
+### Homework 4, reconstituted the same way
+
+**9 passed, 1 failed.** Same recipe, same pinned stack plus `scikit-learn<1.6`; the harness
+needs both its own files copied in:
+
+```bash
+git clone ~/Backups/lmu-cs-history-2026-08-22/CMSI-3300_Homework-4.bundle /tmp/hw4
+cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/src/classifier_grading_tests.py" /tmp/hw4/src/
+cp "CMSI-3300/Coursework/Homework/Homework Test Cases/Homework 4 Grading/dat/salary_grading.csv"           /tmp/hw4/dat/
+cd /tmp/hw4/src && /tmp/venv/bin/python -m pytest -q classifier_grading_tests.py
+```
+
+The one failure is not an error, it is a scoring tier. The salary classifier is graded at
+three accuracy thresholds against an unseen grading set; the submitted model clears 0.80
+and 0.82 and misses 0.84, scoring **0.827**. The recorded mark for Homework 4 is **96%**,
+which is what clearing everything but the top stretch tier looks like.
+
+One caveat worth stating rather than hiding: that verdict rests on a 1.3-point margin, and
+accuracy can shift slightly with the scikit-learn version. Under 1.5.2 the tier misses. It
+is not the kind of failure that would flip with a bug fix, but it is close enough to a
+threshold that the version matters, which is why the version is pinned above.
 
 ## Do not repair the coursework
 

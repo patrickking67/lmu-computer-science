@@ -1,0 +1,28 @@
+---
+/**
+ * The stack chips. Five places had grown their own copy of this markup with
+ * slightly different padding each time.
+ */
+interface Props {
+  items: readonly string[];
+  /** Show at most this many, then a "+n" counter. */
+  max?: number;
+  class?: string;
+}
+const { items, max, class: klass = '' } = Astro.props as Props;
+const shown = max ? items.slice(0, max) : items;
+const hidden = items.length - shown.length;
+---
+{items.length > 0 && (
+  <ul class={`flex flex-wrap gap-1.5 ${klass}`}>
+    {shown.map((item) => (
+      <li
+        class="text-[11px] font-mono px-2 py-0.5 rounded-full"
+        style="background: var(--raised); color: var(--ink)"
+      >{item}</li>
+    ))}
+    {hidden > 0 && (
+      <li class="text-[11px] font-mono px-1 py-0.5 self-center" style="color: var(--muted)">+{hidden}</li>
+    )}
+  </ul>
+)}

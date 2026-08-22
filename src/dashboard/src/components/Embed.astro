@@ -8,81 +8,82 @@
  * which installs and runs the repository inside the browser tab; that costs
  * real memory, so it waits for a click rather than starting two at once.
  */
-import fs from 'node:fs';
-import path from 'node:path';
+import { readRepoText, readRepoDataUri } from '../lib/repo';
 import type { Program } from '../data/programs';
 
 interface Props { program: Program }
 const { program } = Astro.props as Props;
 
-// Vite rewrites import.meta.url in the built output, so anchor on the
-// repository root instead: walk up from the working directory until
-// src/courses appears.
-function repoRoot() {
-  let dir = process.cwd();
-  for (;;) {
-    if (fs.existsSync(path.join(dir, 'src/courses'))) return dir;
-    const up = path.dirname(dir);
-    if (up === dir) throw new Error('repository root not found from ' + process.cwd());
-    dir = up;
-  }
-}
-const root = repoRoot();
-const readText = (p: string) => fs.readFileSync(path.join(root, p), 'utf8');
-const readBytes = (p: string) => fs.readFileSync(path.join(root, p));
-
-let srcdoc = '';
-if (program.embed === 'inline') {
-  const dir = program.path;
-  const css = readText(`${dir}/cic.css`);
-  const js = readText(`${dir}/cic.js`);
-  const img = readBytes(`${dir}/Interest.jpeg`).toString('base64');
-  srcdoc = readText(`${dir}/index.html`)
+/**
+ * Compose the calculator into one self-contained document.
+ *
+ * The image rewrite is the only edit: index.html asks for interest.jpg where
+ * the committed file is Interest.jpeg. That mismatch is a real defect in the
+ * submitted work and stays in the coursework; fixing it here would make the
+ * embed a lie in the other direction, so the page says what it did.
+ */
+function inlineDocument(dir: string): string {
+  const css = readRepoText(`${dir}/cic.css`);
+  const js = readRepoText(`${dir}/cic.js`);
+  const image = readRepoDataUri(`${dir}/Interest.jpeg`, 'image/jpeg');
+  return readRepoText(`${dir}/index.html`)
     .replace('<link rel="stylesheet" href="cic.css" />', `<style>\n${css}\n</style>`)
     .replace('<script src="cic.js"></script>', `<script>\n${js}\n</script>`)
-    .replace('src="interest.jpg"', `src="data:image/jpeg;base64,${img}"`);
+    .replace('src="interest.jpg"', `src="${image}"`);
 }
 
-const sb = program.repo
+const srcdoc = program.embed === 'inline' ? inlineDocument(program.path) : '';
+
+const container = program.repo
   ? `https://stackblitz.com/github/${program.repo}?embed=1&hideNavigation=1&hidedevtools=1` +
     (program.file ? `&file=${encodeURIComponent(program.file)}` : '')
   : '';
+const repoName = program.repo?.split('/')[1] ?? program.name;
 ---
 {program.embed === 'inline' && (
-  <div class="rounded-xl overflow-hidden border" style="border-color: var(--line); background: var(--surface)">
+  <div class="rounded-2xl overflow-hidden border" style="border-color: var(--line); background: var(--surface)">
     <iframe
       title={`${program.name}, running`}
       srcdoc={srcdoc}
       sandbox="allow-scripts"
       loading="lazy"
       class="w-full block"
-      style="height: 30rem; border: 0; background: white"
+      style="height: 30rem; border: 0; background: #fff"
     ></iframe>
   </div>
 )}
 
 {program.embed === 'container' && (
-  <div class="container-embed rounded-xl overflow-hidden border" data-src={sb}
-       style="border-color: var(--line); background: var(--surface)">
-    <div class="boot grid place-items-center text-center gap-3 px-6" style="height: 30rem">
-      <div class="space-y-3">
+  <div
+    class="container-embed rounded-2xl overflow-hidden border"
+    data-src={container}
+    style="border-color: var(--line); background: var(--surface)"
+  >
+    <div class="grid place-items-center text-center px-6" style="height: 30rem">
+      <div class="space-y-3 max-w-xs">
         <p class="eyebrow">WebContainer</p>
-        <p class="text-sm max-w-xs mx-auto" style="color: var(--muted)">
-          Boots {program.repo?.split('/')[1]} in this tab — install, build and all. No clone, nothing installed on your machine.
+        <p class="text-sm leading-relaxed" style="color: var(--muted)">
+          Installs and runs <span class="font-mono text-[0.95em]">{repoName}</span> inside this tab.
+          Nothing is downloaded to your machine.
         </p>
-        <button type="button" class="mt-1 px-5 py-2.5 rounded-full text-sm font-medium lift"
-                style="background: var(--ink); color: var(--paper)">Start it</button>
+        <button
+          type="button"
+          class="mt-1 px-5 py-2.5 rounded-full text-sm font-medium lift"
+          style="background: var(--ink); color: var(--paper)"
+        >Start it</button>
       </div>
     </div>
   </div>
 )}
 
 <script>
-  document.querySelectorAll<HTMLElement>('.container-embed').forEach((box) => {
+  // One container per click. Booting several WebContainers at once starves
+  // them all, so nothing loads until someone asks for it.
+  for (const box of document.querySelectorAll<HTMLElement>('.container-embed')) {
     box.querySelector('button')?.addEventListener('click', () => {
-      const dark = document.documentElement.dataset.theme
-        ? document.documentElement.dataset.theme === 'dark'
-        : matchMedia('(prefers-color-scheme: dark)').matches;
+      const { theme } = document.documentElement.dataset;
+      const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+
       const frame = document.createElement('iframe');
       frame.src = `${box.dataset.src}&theme=${dark ? 'dark' : 'light'}`;
       frame.title = 'Running program';
@@ -91,5 +92,5 @@ const sb = program.repo
       frame.allow = 'cross-origin-isolated';
       box.replaceChildren(frame);
     });
-  });
+  }
 </script>

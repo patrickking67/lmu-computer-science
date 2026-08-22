@@ -1,0 +1,44 @@
+name: Site data
+
+# The dashboard makes checkable claims about this repository: that a program
+# lives at a path, that a snippet quotes real lines, that the published line
+# counts are current. Any of those can rot without breaking the build, so they
+# are tested rather than trusted.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Data matches the tree
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install lmucs
+        run: python -m pip install --no-build-isolation -e src/packages/lmucs
+
+      - name: Test
+        run: node --experimental-strip-types --test tests/
+
+      - name: Build the site
+        working-directory: src/dashboard
+        run: |
+          npm ci
+          npm run build

@@ -3,9 +3,9 @@ name: Python package (Conda)
 on:
   push:
     branches: [main]
-    paths: ['src/packages/**', '.github/workflows/python-package-conda.yml']
+    paths: ['src/packages/**', 'src/courses/**', '.github/workflows/python-package-conda.yml']
   pull_request:
-    paths: ['src/packages/**', '.github/workflows/python-package-conda.yml']
+    paths: ['src/packages/**', 'src/courses/**', '.github/workflows/python-package-conda.yml']
   workflow_dispatch:
 
 permissions:
@@ -54,3 +54,8 @@ jobs:
       - name: Test
         working-directory: src/packages/lmucs
         run: pytest -q
+
+      - name: Verify the record against the tree
+        run: |
+          lmucs verify
+          lmucs stats

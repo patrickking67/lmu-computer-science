@@ -1,23 +1,33 @@
 ---
 import '../styles/global.css';
-const { title, description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages.' } = Astro.props;
-const b = import.meta.env.BASE_URL;
-const u = (p: string) => `${b}/${p}`.replace(/\/+/g, '/');
+import Wordmark from '../components/Wordmark.astro';
+import { href, isCurrent, site } from '../lib/site';
+
+interface Props {
+  title?: string | null;
+  description?: string;
+}
+const {
+  title,
+  description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages — with the programs running on the page.',
+} = Astro.props as Props;
+
 const nav = [
-  { href: u('programs'), label: 'Programs' },
-  { href: u('courses'), label: 'Courses' },
-  { href: u('wiki'), label: 'Wiki' },
-  { href: u('contact'), label: 'Contact' },
+  { path: 'programs', label: 'Programs' },
+  { path: 'courses', label: 'Courses' },
+  { path: 'wiki', label: 'Wiki' },
+  { path: 'contact', label: 'Contact' },
 ];
-const here = Astro.url.pathname.replace(/\/$/, '');
+const here = Astro.url.pathname;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} · LMU Computer Science` : 'LMU Computer Science · Patrick King'}</title>
+    <title>{title ? `${title} · ${site.name}` : `${site.name} · ${site.owner}`}</title>
     <meta name="description" content={description} />
-    <link rel="sitemap" href={u('sitemap-index.xml')} />
+    <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={href('sitemap-index.xml')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,70 +35,93 @@ const here = Astro.url.pathname.replace(/\/$/, '');
       rel="stylesheet"
     />
     <script is:inline>
+      // Before first paint, so a stored preference never flashes the other theme.
       try {
-        const t = localStorage.getItem('theme');
-        if (t) document.documentElement.dataset.theme = t;
+        const stored = localStorage.getItem('theme');
+        if (stored) document.documentElement.dataset.theme = stored;
       } catch (e) { /* private mode — fall through to prefers-color-scheme */ }
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg" style="background: var(--surface)">Skip to content</a>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg"
+      style="background: var(--surface)"
+    >Skip to content</a>
 
-    <header class="sticky top-0 z-40 border-b backdrop-blur-md" style="border-color: var(--line); background: color-mix(in oklch, var(--paper) 82%, transparent)">
+    <header
+      class="sticky top-0 z-40 border-b backdrop-blur-md"
+      style="border-color: var(--line); background: color-mix(in oklch, var(--paper) 82%, transparent)"
+    >
       <nav class="mx-auto max-w-5xl px-4 sm:px-6 h-16 flex items-center gap-4 sm:gap-7" aria-label="Main">
-        <a href={u('')} class="wordmark text-xl shrink-0" aria-label="LMU Computer Science, home">
-          <span class="lmu">LMU</span><span class="cs">cs</span>
+        <a href={href()} class="shrink-0 text-lg" aria-label={`${site.name}, home`}>
+          <Wordmark size={24} />
         </a>
+
         <ul class="flex items-center gap-3.5 sm:gap-5 text-sm min-w-0 overflow-x-auto no-scrollbar">
-          {nav.map((i) => {
-            const on = here === i.href.replace(/\/$/, '');
+          {nav.map((item) => {
+            const current = isCurrent(here, item.path);
             return (
               <li class="shrink-0">
-                <a href={i.href} aria-current={on ? 'page' : undefined}
-                   class="transition-opacity hover:opacity-60"
-                   style={on ? 'color: var(--ink)' : 'color: var(--muted)'}>{i.label}</a>
+                <a
+                  href={href(item.path)}
+                  aria-current={current ? 'page' : undefined}
+                  class="transition-opacity hover:opacity-60"
+                  style={current ? 'color: var(--ink)' : 'color: var(--muted)'}
+                >{item.label}</a>
               </li>
             );
           })}
         </ul>
-        <button id="theme" type="button" class="ml-auto shrink-0 w-8 h-8 rounded-full border grid place-items-center text-xs transition-colors"
-                style="border-color: var(--line); color: var(--muted)" aria-label="Switch between light and dark">◐</button>
+
+        <button
+          id="theme"
+          type="button"
+          class="ml-auto shrink-0 w-8 h-8 rounded-full border grid place-items-center text-xs transition-colors"
+          style="border-color: var(--line); color: var(--muted)"
+          aria-label="Switch between light and dark"
+        >◐</button>
       </nav>
     </header>
 
     <main id="main" class="flex-1"><slot /></main>
 
     <footer class="border-t mt-28" style="border-color: var(--line)">
-      <div class="mx-auto max-w-5xl px-6 py-12 text-sm space-y-3" style="color: var(--muted)">
-        <p>Patrick King — BS Computer Science, Loyola Marymount University, Fall 2021 – Spring 2025.</p>
-        <p>Advised by <strong style="color: var(--ink)">Dr. Ray Toal</strong>, who taught most of what is in here.</p>
-        <p class="flex gap-5 pt-2">
-          <a href="https://github.com/patrickking67" class="hover:underline">GitHub</a>
-          <a href="https://www.linkedin.com/in/patrickgking03/" class="hover:underline">LinkedIn</a>
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 py-12 text-sm space-y-3" style="color: var(--muted)">
+        <p>{site.owner} — BS Computer Science, Loyola Marymount University, {site.years}.</p>
+        <p>Advised by <strong style="color: var(--ink)">{site.advisor}</strong>, who taught most of what is in here.</p>
+        <p class="flex flex-wrap gap-5 pt-2">
+          <a href={site.github} class="hover:underline">GitHub</a>
+          <a href={site.linkedin} class="hover:underline">LinkedIn</a>
+          <a href={site.repo} class="hover:underline">This repository</a>
         </p>
       </div>
     </footer>
 
     <script is:inline>
       document.getElementById('theme')?.addEventListener('click', () => {
-        const el = document.documentElement;
-        const now = el.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const root = document.documentElement;
+        const now = root.dataset.theme
+          || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         const next = now === 'dark' ? 'light' : 'dark';
-        el.dataset.theme = next;
+        root.dataset.theme = next;
         try { localStorage.setItem('theme', next); } catch (e) { /* nothing to persist to */ }
       });
 
-      // Scroll reveal. If IntersectionObserver is missing, show everything.
-      const items = document.querySelectorAll('.reveal');
+      // Scroll reveal. Without IntersectionObserver, show everything rather
+      // than leaving the page permanently blank.
+      const revealed = document.querySelectorAll('.reveal');
       if (!('IntersectionObserver' in window)) {
-        items.forEach((el) => el.classList.add('shown'));
+        revealed.forEach((el) => el.classList.add('shown'));
       } else {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); }
-          });
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('shown');
+            observer.unobserve(entry.target);
+          }
         }, { rootMargin: '0px 0px -12% 0px' });
-        items.forEach((el) => io.observe(el));
+        revealed.forEach((el) => observer.observe(el));
       }
     </script>
   </body>

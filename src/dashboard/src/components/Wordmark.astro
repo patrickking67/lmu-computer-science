@@ -1,0 +1,51 @@
+---
+/**
+ * The mark: LMU's shield, reduced to a silhouette, holding the one symbol
+ * every one of these fifteen courses had in common.
+ *
+ * Drawn rather than set, so it stays crisp at 20px in the nav and 512px on a
+ * card, and painted in currentColor so the theme carries it with no second
+ * asset. `size` scales the shield; the wordmark scales with the font size of
+ * whatever contains it.
+ */
+interface Props {
+  /** Shield height in pixels. */
+  size?: number;
+  /** Mark only, no lettering — for tight spaces. */
+  bare?: boolean;
+  class?: string;
+}
+const { size = 26, bare = false, class: klass = '' } = Astro.props as Props;
+const w = Math.round((size * 24) / 26);
+---
+<span class={`wordmark ${klass}`}>
+  <svg
+    class="shield"
+    width={w}
+    height={size}
+    viewBox="0 0 24 26"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path
+      d="M12 1.1 21.7 4.3v8.9c0 6.1-4.2 10.4-9.7 11.8C6.5 23.6 2.3 19.3 2.3 13.2V4.3Z"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="m10.1 9.5-2.9 3.3 2.9 3.3M13.9 9.5l2.9 3.3-2.9 3.3"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.85"
+    />
+  </svg>
+  {!bare && (
+    <>
+      <span class="lmu">LMU</span><span class="cs">cs</span>
+    </>
+  )}
+</span>

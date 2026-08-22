@@ -1,0 +1,55 @@
+---
+/**
+ * One quoted file, read at build time.
+ *
+ * Deliberately not syntax-highlighted: the palette is greyscale on purpose,
+ * and a highlighter would be the one place colour crept back in. Structure
+ * comes from the line numbers and the file header instead.
+ */
+import { readRepoText, repoRelative } from '../lib/repo';
+import { inRepo } from '../lib/site';
+import type { Snippet } from '../data/snippets';
+
+interface Props { snippet: Snippet }
+const { snippet } = Astro.props as Props;
+
+const all = readRepoText(snippet.path).split('\n');
+const [from, to] = snippet.lines ?? [1, all.length];
+if (from < 1 || to > all.length || from > to) {
+  throw new Error(
+    `snippet "${snippet.title}" asks for lines ${from}-${to} of ${snippet.path}, which has ${all.length}`,
+  );
+}
+const body = all.slice(from - 1, to);
+// Trailing blank lines read as a rendering bug rather than as content.
+while (body.length && body[body.length - 1].trim() === '') body.pop();
+const width = String(from + body.length - 1).length;
+const file = repoRelative(snippet.path);
+---
+<figure class="rounded-2xl border overflow-hidden" style="border-color: var(--line); background: var(--surface)">
+  <figcaption
+    class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 sm:px-5 py-3 border-b"
+    style="border-color: var(--line-soft)"
+  >
+    <span class="eyebrow">{snippet.course}</span>
+    <a
+      href={inRepo(snippet.path)}
+      class="font-mono text-xs hover:underline truncate"
+      style="color: var(--muted)"
+      title={snippet.path}
+    >{file}</a>
+    {snippet.lines && (
+      <span class="font-mono text-xs" style="color: var(--faint)">L{from}–{to}</span>
+    )}
+  </figcaption>
+
+  <div class="overflow-x-auto">
+    <pre class="px-4 sm:px-5 py-4 text-[12.5px] leading-[1.65] font-mono"><code>{body.map((line, i) => (
+      <span class="block whitespace-pre"><span
+        class="select-none inline-block text-right mr-4"
+        style={`width: ${width}ch; color: var(--faint)`}
+        aria-hidden="true"
+      >{from + i}</span>{line || ' '}</span>
+    ))}</code></pre>
+  </div>
+</figure>

@@ -1,10 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import Toolkit from '../components/Toolkit.astro';
-import { courses, liveRepos, toolkit } from '../data/courses';
-const b = import.meta.env.BASE_URL;
-const u = (p: string) => `${b}/${p}`.replace(/\/+/g, '/');
+import Tags from '../components/Tags.astro';
+import Snippet from '../components/Snippet.astro';
+import { courses, liveRepos } from '../data/courses';
+import { figures } from '../data/stats';
+import { snippets } from '../data/snippets';
+import { href } from '../lib/site';
+
 const built = courses.filter((c) => c.work);
+// Two on the front page. The rest are on the courses they came from.
+const featured = snippets.slice(0, 2);
 ---
 <Base title={null}>
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-8">
@@ -17,10 +23,22 @@ const built = courses.filter((c) => c.work);
       programs that fit in a browser tab run right here on the page.
     </p>
     <div class="mt-9 flex flex-wrap gap-3 settle" style="animation-delay: 320ms">
-      <a href={u('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run one now</a>
-      <a href={u('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">See the coursework</a>
+      <a href={href('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run one now</a>
+      <a href={href('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">See the coursework</a>
     </div>
     <Toolkit />
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
+    <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+      {figures.map((f, i) => (
+        <div class="reveal" style={`transition-delay: ${i * 70}ms`}>
+          <dt class="eyebrow">{f.label}</dt>
+          <dd class="display text-[clamp(2rem,4.5vw,2.75rem)] mt-2" style="font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 60">{f.value}</dd>
+          <p class="mt-2 text-xs leading-relaxed" style="color: var(--muted)">{f.note}</p>
+        </div>
+      ))}
+    </dl>
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
@@ -30,38 +48,61 @@ const built = courses.filter((c) => c.work);
     </p>
     <div class="grid sm:grid-cols-2 gap-4">
       {built.map((c, i) => (
-        <a href={u(`courses/${c.slug}`)} class="reveal lift block p-6 rounded-2xl border"
-           style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 45}ms`}>
+        <a
+          href={href(`courses/${c.slug}`)}
+          class="reveal lift block p-6 rounded-2xl border"
+          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 45}ms`}
+        >
           <div class="flex items-baseline justify-between gap-3">
             <span class="eyebrow">{c.code}</span>
             <span class="text-xs" style="color: var(--muted)">{c.term}</span>
           </div>
           <h3 class="display text-xl mt-3" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{c.title}</h3>
           <p class="mt-2.5 text-sm leading-relaxed" style="color: var(--muted)">{c.blurb}</p>
-          {c.stack.length > 0 && (
-            <ul class="mt-4 flex flex-wrap gap-1.5">
-              {c.stack.slice(0, 5).map((s) => (
-                <li class="text-[11px] font-mono px-2 py-0.5 rounded-full" style="background: var(--raised); color: var(--ink)">{s}</li>
-              ))}
-              {c.stack.length > 5 && <li class="text-[11px] font-mono px-1 py-0.5" style="color: var(--muted)">+{c.stack.length - 5}</li>}
-            </ul>
-          )}
+          <Tags items={c.stack} max={5} class="mt-4" />
         </a>
       ))}
     </div>
   </section>
 
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
+    <h2 class="display text-3xl reveal">Some of it, up close</h2>
+    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+      Quoted straight out of the tree at build time, so none of it can drift from
+      what is actually committed.
+    </p>
+    <div class="space-y-10">
+      {featured.map((s) => (
+        <div class="reveal">
+          <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{s.title}</h3>
+          <p class="mt-2 mb-4 max-w-2xl text-sm leading-relaxed" style="color: var(--muted)">{s.caption}</p>
+          <Snippet snippet={s} />
+        </div>
+      ))}
+    </div>
+    <a href={href('programs')} class="mt-8 inline-block text-sm hover:underline reveal" style="color: var(--ink)">
+      More, and the programs that run →
+    </a>
+  </section>
+
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-12">
     <h2 class="display text-3xl reveal">Still going</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">Three projects outlived the course that started them.</p>
+    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+      Three projects outlived the course that started them.
+    </p>
     <ul class="space-y-3">
       {liveRepos.map((r, i) => (
-        <li class="reveal lift p-6 rounded-2xl border" style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 60}ms`}>
-          <div class="flex flex-wrap items-center gap-3">
-            <a href={r.url} class="font-mono text-sm hover:underline" style="color: var(--ink)">{r.name}</a>
-            <span class="text-[11px] px-2 py-0.5 rounded-full border" style="border-color: var(--line); color: var(--muted)">{r.visibility}</span>
+        <li
+          class="reveal lift p-6 rounded-2xl border"
+          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 60}ms`}
+        >
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{r.name}</h3>
+            <span class="eyebrow">{r.from}</span>
+            <span class="ml-auto text-[11px] px-2.5 py-1 rounded-full border" style="border-color: var(--line); color: var(--muted)">{r.visibility}</span>
           </div>
-          <p class="mt-2 text-sm leading-relaxed max-w-2xl" style="color: var(--muted)">{r.blurb}</p>
+          <p class="mt-2.5 text-sm leading-relaxed max-w-2xl" style="color: var(--muted)">{r.blurb}</p>
+          <a href={r.url} class="mt-3 inline-block font-mono text-sm hover:underline" style="color: var(--ink)">{r.repo} →</a>
         </li>
       ))}
     </ul>

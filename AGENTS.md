@@ -16,8 +16,9 @@ that presents it. The code itself lives here; this is not an index of links.
 - `docs/publication.md`: what publishing accepted, and what is still unresolved
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
 - `docs/building.md`: what compiles and runs, with verified commands and version pins
+- `tests/site-data.test.mjs`: checks the dashboard's claims against the tree
 - `scripts/check-ai-config.sh`: the repository check, also run in CI
-- `.github/workflows/check-ai-config.yml`: runs that check on every push to `main`
+- `.github/workflows/`: the repository check, the Python package, the site-data tests, Pages
 
 ## Setup and validation
 
@@ -26,6 +27,12 @@ own, and each course project carries its own toolchain. Course projects are not
 maintained. Do not add a repository-level build that spans them.
 
 - Validation: `scripts/check-ai-config.sh`
+- Site data: `node --experimental-strip-types --test tests/` (needs `lmucs` importable)
+- Package: `pytest` in `src/packages/lmucs`
+
+Running any of these leaves artifacts. `.pytest_cache/` and `lmucs.egg-info/` appear the
+moment pytest or an editable install runs, and `check-ai-config.sh` fails on them, which
+is the intended order: clean before committing.
 
 The check runs in GitHub Actions on every push to `main` and on pull requests. It
 warns rather than fails when the git bundles are absent, because they live off-machine
@@ -60,10 +67,14 @@ submitted; everything outside it is normal, maintained code.
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
 - Work that continues in its own repository is referenced, never copied in.
-- Fifteen computer science courses, not thirteen. CMSI 1900 is a zero-unit seminar with
-  no repository, and CMSI 3920 appears only in the course audit, so an inventory built
-  from directories alone undercounts. `docs/record.md` is authoritative for courses,
-  terms, and titles; `lmucs verify` checks the tree against it in both directions.
+- Course terms and the course list are checked in three places, and all three must agree:
+  `docs/record.md`, `src/courses/`, and `src/dashboard/src/data/courses.ts`.
+- Fifteen computer science courses, thirteen of which produced a repository. CMSI 1900 is
+  a zero-unit seminar and CMSI 3920 a summer session; both carry a directory holding only
+  a README, so a count of repositories undercounts the courses by two while a count of
+  directories does not. `docs/record.md` is authoritative for courses, terms, and titles;
+  `lmucs verify` checks the tree against it in both directions, and
+  `tests/site-data.test.mjs` checks the dashboard's copy of the same list.
 - Course terms come from the author's course audit. Instructor course pages document
   whichever offering is currently published; all four checked disagreed with the
   enrollment term. Never take a term from a course-page URL.
@@ -100,7 +111,17 @@ submitted; everything outside it is normal, maintained code.
   that one `src` at build time; the coursework keeps the broken reference.
 - Astro rewrites `import.meta.url` in the built output, so a build-time file read must
   anchor on the repository root found by walking up from `process.cwd()`, not on the
-  component's own URL. `src/dashboard/src/components/Embed.astro` does this.
+  component's own URL. `src/dashboard/src/lib/repo.ts` is the only thing that reads the
+  coursework, and it only reads.
+- The dashboard's data files make checkable claims — a path, a line range, a line count —
+  and every one of them can rot without breaking the build. `tests/site-data.test.mjs`
+  checks them against the tree instead: paths exist, quoted ranges are inside their file,
+  `courses.ts` and `src/courses/` agree both ways, no private repository is marked
+  containerizable, and the published counts match a fresh `lmucs stats --json`. Add a
+  test with any new claim rather than trusting the data file.
+- Published numbers come from `lmucs stats`, never from a hand count. It counts tracked
+  files only, so an untracked scratch file cannot inflate a total, and it excludes
+  lockfiles.
 - Commits are authored by Patrick King. On 2026-08-22 five commits carrying an assistant
   identity were re-authored to match the rest of the history.
 - Course projects carry their own `.gitignore` files whose rules apply here. They have

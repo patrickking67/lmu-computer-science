@@ -3,22 +3,50 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
 from .record import CourseRecord, RecordError, find_repo_root
+from .stats import count_lines, total_lines
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="lmucs", description=__doc__)
     parser.add_argument(
-        "command", choices=("summary", "courses", "verify"), help="what to print"
+        "command",
+        choices=("summary", "courses", "verify", "stats"),
+        help="what to print",
     )
     parser.add_argument("--root", type=Path, default=None, help="repository root")
+    parser.add_argument(
+        "--json", action="store_true", help="machine-readable output (stats only)"
+    )
     args = parser.parse_args(argv)
 
     try:
         root = args.root.resolve() if args.root else find_repo_root()
+    except RecordError as exc:
+        print(f"lmucs: {exc}", file=sys.stderr)
+        return 2
+
+    # stats reads the tree, not the record, so it works even if record.md is
+    # mid-edit. Everything else needs the record parsed first.
+    if args.command == "stats":
+        counts = count_lines(root)
+        if args.json:
+            print(json.dumps({
+                "languages": [{"name": c.name, "lines": c.lines} for c in counts],
+                "total": total_lines(counts),
+            }, indent=2))
+        else:
+            width = max((len(c.name) for c in counts), default=0)
+            for c in counts:
+                print(f"{c.name:<{width}}  {c.lines:>6}")
+            print(f"{'total':<{width}}  {total_lines(counts):>6}")
+        return 0
+
+    try:
         record = CourseRecord.from_path(root / "docs" / "record.md")
     except RecordError as exc:
         print(f"lmucs: {exc}", file=sys.stderr)

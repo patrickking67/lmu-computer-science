@@ -59,11 +59,11 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 | [CMSI 4071](src/courses/cmsi-4071) | Senior Project I | Fall 2024 | design and specification |
 | [CMSI 4072](src/courses/cmsi-4072) | Senior Project II | Spring 2025 | Pathfinder, deliverable set |
 
-Fifteen, not the thirteen a directory count suggests: CMSI 1900 is a zero-unit seminar
-that produced no repository, and CMSI 3920 was a summer session. Eight of the fifteen
-produced code. Terms come from the course audit rather than instructor course pages,
-which publish whichever offering happens to be current — all four checked disagreed with
-the enrolment term.
+Fifteen courses, thirteen of which produced a repository: CMSI 1900 was a zero-unit
+seminar and CMSI 3920 a summer session, so their directories hold a README and nothing
+else. Eight produced code you can read here. Terms come from the course audit rather
+than instructor course pages, which publish whichever offering happens to be current —
+all four checked disagreed with the enrolment term.
 
 The full record — grades, credits, and the non-major coursework — is in
 [`docs/record.md`](docs/record.md), and `lmucs verify` checks this tree against it in
@@ -93,6 +93,7 @@ lmu-computer-science/
 │   ├── packages/lmucs/            Python package that reads and verifies the record
 │   └── dashboard/                 the site (Astro + Tailwind)
 ├── docs/                          reference notes, the course record, build commands
+├── tests/site-data.test.mjs       checks the site's claims against the tree
 ├── scripts/check-ai-config.sh     repository check, also run in CI
 ├── .github/workflows/             Pages deploy, Conda package, repository check
 ├── AGENTS.md                      canonical agent instructions
@@ -102,15 +103,47 @@ lmu-computer-science/
 
 ## Verification
 
+Three checks, all of them run in CI on every push to `main`.
+
 ```bash
-./scripts/check-ai-config.sh
+./scripts/check-ai-config.sh                  # the repository itself
+node --experimental-strip-types --test tests/ # the site's claims about it
+pytest src/packages/lmucs/tests               # the record and the line counter
 ```
 
-Checks the required files, adapter wiring, that no build artifact, compiled binary, or
-local configuration is tracked, that no committed credential is present, that no
-`.gitignore` rule silently drops coursework, and that all fifteen courses are documented.
-Runs on every push to `main`. Commands that build and test the coursework itself are in
+`check-ai-config.sh` covers the required files, adapter wiring, and that no build
+artifact, compiled binary, local configuration, or committed credential is tracked —
+plus that no `.gitignore` rule silently drops coursework, and that all fifteen courses
+are documented.
+
+`tests/site-data.test.mjs` covers everything the dashboard asserts about this
+repository: that each program and snippet path exists, that every quoted line range is
+inside the file it quotes, that `courses.ts` and `src/courses/` agree in both
+directions, that no private repository is marked as an embeddable container, and that
+the published language counts still match a fresh count.
+
+Those counts come from the Python package:
+
+```bash
+lmucs summary    # courses, credits, terms
+lmucs verify     # the record against the tree, both directions
+lmucs stats      # lines of coursework by language
+```
+
+Commands that build and test the coursework itself are in
 [`docs/building.md`](docs/building.md).
+
+## By the numbers
+
+Counted by `lmucs stats` over tracked files under `src/courses`, lockfiles excluded.
+
+| | |
+|---|---|
+| Courses | 15, of which 13 produced a repository |
+| Lines of coursework | 15,950 |
+| Languages | 18 |
+| Largest | JavaScript (5,542), Java (4,427), Rust (743) |
+| Smallest that still ships | CloudScribe (113), Assembly (30) |
 
 ## About
 

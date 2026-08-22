@@ -90,25 +90,39 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
 }
 
 /* ── Wordmark ────────────────────────────────────────────────
-   LMU set quiet and wide; CS set in Fraunces at high optical
-   size with a tight negative track, so the two halves read as
-   institution and discipline rather than one word.            */
-.wordmark { display: inline-flex; align-items: baseline; gap: 0.4rem; color: var(--mark); }
+   Shield, then LMU set quiet and wide, then CS in Fraunces at
+   high optical size with a tight negative track — so the three
+   parts read as institution, discipline and mark rather than
+   one undifferentiated word.                                  */
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  color: var(--mark);
+  line-height: 1;
+}
+.wordmark .shield {
+  flex: none;
+  transition: transform 0.5s cubic-bezier(0.16, 0.84, 0.28, 1);
+}
+a:hover > .wordmark .shield,
+a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg); }
 .wordmark .lmu {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.82em;
-  letter-spacing: 0.2em;
-  opacity: 0.62;
+  font-size: 0.8em;
+  letter-spacing: 0.19em;
+  opacity: 0.6;
+  margin-left: 0.12rem;
 }
 .wordmark .cs {
   font-family: var(--font-display);
   font-variation-settings: "SOFT" 0, "WONK" 1, "opsz" 144;
   font-weight: 600;
-  font-size: 1.42em;
+  font-size: 1.4em;
   letter-spacing: -0.045em;
   font-style: italic;
-  line-height: 1;
+  margin-left: -0.06em;
 }
 
 /* ── Motion ──────────────────────────────────────────────── */

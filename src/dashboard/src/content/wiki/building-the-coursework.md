@@ -1,7 +1,7 @@
 ---
 title: Building the coursework
 description: What still compiles, what does not, and why the difference matters.
-order: 3
+order: 4
 ---
 
 # Building the coursework

@@ -1,7 +1,7 @@
 ---
 title: Building cloudscribe
 description: A statically typed language for IT automation, and the five stages it compiles through.
-order: 2
+order: 3
 ---
 
 # Building cloudscribe

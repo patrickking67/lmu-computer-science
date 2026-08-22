@@ -13,11 +13,11 @@ const built = courses.filter((c) => c.work);
       A compiler, a network stack, and thirteen languages.
     </h1>
     <p class="mt-7 text-lg max-w-xl leading-relaxed settle" style="animation-delay: 240ms; color: var(--muted)">
-      Four years of computer science at LMU, and the code that came out of it. All of it
-      runs — here are the commands.
+      Four years of computer science at LMU, and the code that came out of it. The
+      programs that fit in a browser tab run right here on the page.
     </p>
     <div class="mt-9 flex flex-wrap gap-3 settle" style="animation-delay: 320ms">
-      <a href={u('apps')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--patina); color: var(--paper)">Run something</a>
+      <a href={u('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run one now</a>
       <a href={u('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">See the coursework</a>
     </div>
     <Toolkit />
@@ -26,7 +26,7 @@ const built = courses.filter((c) => c.work);
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
     <h2 class="display text-3xl reveal">What I built</h2>
     <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
-      Eight courses produced something you can clone and run today.
+      Eight of the fifteen courses produced something that still runs.
     </p>
     <div class="grid sm:grid-cols-2 gap-4">
       {built.map((c, i) => (
@@ -41,7 +41,7 @@ const built = courses.filter((c) => c.work);
           {c.stack.length > 0 && (
             <ul class="mt-4 flex flex-wrap gap-1.5">
               {c.stack.slice(0, 5).map((s) => (
-                <li class="text-[11px] font-mono px-2 py-0.5 rounded-full" style="background: var(--patina-soft); color: var(--patina)">{s}</li>
+                <li class="text-[11px] font-mono px-2 py-0.5 rounded-full" style="background: var(--raised); color: var(--ink)">{s}</li>
               ))}
               {c.stack.length > 5 && <li class="text-[11px] font-mono px-1 py-0.5" style="color: var(--muted)">+{c.stack.length - 5}</li>}
             </ul>
@@ -58,7 +58,7 @@ const built = courses.filter((c) => c.work);
       {liveRepos.map((r, i) => (
         <li class="reveal lift p-6 rounded-2xl border" style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 60}ms`}>
           <div class="flex flex-wrap items-center gap-3">
-            <a href={r.url} class="font-mono text-sm hover:underline" style="color: var(--patina)">{r.name}</a>
+            <a href={r.url} class="font-mono text-sm hover:underline" style="color: var(--ink)">{r.name}</a>
             <span class="text-[11px] px-2 py-0.5 rounded-full border" style="border-color: var(--line); color: var(--muted)">{r.visibility}</span>
           </div>
           <p class="mt-2 text-sm leading-relaxed max-w-2xl" style="color: var(--muted)">{r.blurb}</p>

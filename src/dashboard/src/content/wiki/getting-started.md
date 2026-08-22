@@ -13,12 +13,10 @@ Four years of computer science coursework, plus the site that presents it.
 ```text
 src/
 ├── courses/     fifteen course directories, cmsi-1010 … cmsi-4072
-├── apps/        runnable projects pulled out of the coursework
 ├── packages/    lmucs, a Python package for the course record
 └── dashboard/   this site (Astro + Tailwind)
 docs/            reference notes and the course record
 scripts/         the repository check, also run in CI
-tests/           suites that belong to no single course
 ```
 
 ## One rule

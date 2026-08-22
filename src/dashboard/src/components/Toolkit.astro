@@ -8,8 +8,8 @@ const size = { 3: 'text-2xl sm:text-3xl', 2: 'text-lg sm:text-xl', 1: 'text-sm s
   <ul class="flex flex-wrap items-baseline gap-x-5 gap-y-3">
     {toolkit.map((t, i) => (
       <li
-        class={`stratum display leading-none ${size[t.weight]}`}
-        style={`animation-delay:${i * 38}ms; color:${t.weight === 3 ? 'var(--patina)' : t.weight === 2 ? 'var(--ink)' : 'var(--muted)'}; font-variation-settings:'SOFT' ${t.weight * 20}, 'WONK' 1, 'opsz' 32`}
+        class={`settle display leading-none ${size[t.weight]}`}
+        style={`animation-delay:${i * 38}ms; color:${t.weight === 3 ? 'var(--ink)' : t.weight === 2 ? 'var(--muted)' : 'var(--faint)'}; font-variation-settings:'SOFT' ${t.weight * 20}, 'WONK' 1, 'opsz' 32`}
         title={t.where}
       >{t.name}</li>
     ))}

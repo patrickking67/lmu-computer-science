@@ -20,7 +20,7 @@ const repo = `https://github.com/patrickking67/lmu-computer-science/tree/main/sr
     {course.stack.length > 0 && (
       <ul class="mt-8 flex flex-wrap gap-2 settle" style="animation-delay: 240ms">
         {course.stack.map((s) => (
-          <li class="text-xs font-mono px-2.5 py-1 rounded-full" style="background: var(--patina-soft); color: var(--patina)">{s}</li>
+          <li class="text-xs font-mono px-2.5 py-1 rounded-full" style="background: var(--raised); color: var(--ink)">{s}</li>
         ))}
       </ul>
     )}
@@ -29,7 +29,7 @@ const repo = `https://github.com/patrickking67/lmu-computer-science/tree/main/sr
       <div class="mt-10 p-6 rounded-2xl border lift" style="border-color: var(--line); background: var(--surface)">
         <p class="text-sm font-medium">In this repository</p>
         <p class="mt-1 text-sm" style="color: var(--muted)">{course.work}</p>
-        <a href={repo} class="mt-4 inline-block text-sm hover:underline" style="color: var(--patina)">Browse the source →</a>
+        <a href={repo} class="mt-4 inline-block text-sm hover:underline" style="color: var(--ink)">Browse the source →</a>
       </div>
     )}
   </div>

@@ -25,11 +25,17 @@ Advised by **Dr. Ray Toal**.
 ---
 
 A compiler, a network stack, and thirteen languages. Four years of computer science at
-LMU, with the code that came out of it — all of it runnable, with the commands in
-[`docs/building.md`](docs/building.md).
+LMU, and the code that came out of it.
 
-The site that presents it is in [`src/dashboard`](src/dashboard): Astro and Tailwind,
-deployed to GitHub Pages.
+**[patrickking67.github.io/lmu-computer-science](https://patrickking67.github.io/lmu-computer-science/)**
+presents all of it, and runs the programs that fit in a browser tab — CloudScribe and
+myGainz boot in a WebContainer, the compound interest calculator runs inline. Nothing to
+clone, nothing to install. The site itself is in [`src/dashboard`](src/dashboard): Astro,
+Tailwind, deployed to GitHub Pages.
+
+For the rest — compiled languages, raw sockets, anything wired to a live account — the
+build and test commands, with the version pins that make them work, are in
+[`docs/building.md`](docs/building.md).
 
 ## Courses
 
@@ -53,13 +59,15 @@ Titles follow the [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descri
 | [CMSI 4071](src/courses/cmsi-4071) | Senior Project I | Fall 2024 | design and specification |
 | [CMSI 4072](src/courses/cmsi-4072) | Senior Project II | Spring 2025 | Pathfinder, deliverable set |
 
-Fifteen courses. Eight produced code you can clone and run; the rest were lecture and
-exam courses. Terms come from the author's course audit rather than instructor course
-pages, which publish whichever offering is current.
+Fifteen, not the thirteen a directory count suggests: CMSI 1900 is a zero-unit seminar
+that produced no repository, and CMSI 3920 was a summer session. Eight of the fifteen
+produced code. Terms come from the course audit rather than instructor course pages,
+which publish whichever offering happens to be current — all four checked disagreed with
+the enrolment term.
 
 The full record — grades, credits, and the non-major coursework — is in
-[`docs/record.md`](docs/record.md). Build and test commands, with the version pins that
-make them work, are in [`docs/building.md`](docs/building.md).
+[`docs/record.md`](docs/record.md), and `lmucs verify` checks this tree against it in
+both directions.
 
 ## Still going
 
@@ -67,9 +75,9 @@ Projects that outlived the course that started them.
 
 | Repository | Visibility | Relation |
 |---|---|---|
-| [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | Statically typed language for IT automation, compiling to JavaScript. Five-stage Ohm compiler, 99.66% statement coverage. Started in CMSI 3802. |
-| [`pathfinder`](https://github.com/patrickking67/pathfinder) | private | The senior capstone, being rebuilt as a product. |
-| [`myGainz`](https://github.com/patrickking67/myGainz) | public | Fitness tracker. React and Firestore. Started in CMSI 2021. |
+| **CloudScribe** — [`cloudscribe`](https://github.com/patrickking67/cloudscribe) | public | A statically typed language for the work that usually ends up in a fragile shell script. Five-stage Ohm compiler to JavaScript, 143 tests, 99.66% statement coverage. Started in CMSI 3802. |
+| **Pathfinder** — [`pathfinder`](https://github.com/patrickking67/pathfinder) | private | The senior capstone, being rebuilt as a product. |
+| **myGainz** — [`myGainz`](https://github.com/patrickking67/myGainz) | public | A training log that keeps the set-by-set history most workout apps discard. React and Firestore. Started in CMSI 2021. |
 
 ## Reference
 
@@ -82,12 +90,10 @@ Instructor course material is indexed in [`docs/reference.md`](docs/reference.md
 lmu-computer-science/
 ├── src/
 │   ├── courses/                   fifteen course directories, cmsi-1010 … cmsi-4072
-│   ├── apps/                      runnable projects
-│   ├── packages/lmucs/            Python package for the course record
+│   ├── packages/lmucs/            Python package that reads and verifies the record
 │   └── dashboard/                 the site (Astro + Tailwind)
 ├── docs/                          reference notes, the course record, build commands
 ├── scripts/check-ai-config.sh     repository check, also run in CI
-├── tests/                         suites that belong to no single course
 ├── .github/workflows/             Pages deploy, Conda package, repository check
 ├── AGENTS.md                      canonical agent instructions
 ├── SECURITY.md                    security policy
@@ -106,11 +112,10 @@ local configuration is tracked, that no committed credential is present, that no
 Runs on every push to `main`. Commands that build and test the coursework itself are in
 [`docs/building.md`](docs/building.md).
 
-
 ## About
 
-**Patrick King.** BS Computer Science, minor in Business Administration. CTO at Barkrow
-Systems.
+**Patrick King.** BS Computer Science, minor in Business Administration, Loyola
+Marymount University.
 
 - LinkedIn: [linkedin.com/in/patrickgking03](https://www.linkedin.com/in/patrickgking03/)
 - GitHub: [github.com/patrickking67](https://github.com/patrickking67)

@@ -87,6 +87,22 @@ submitted; everything outside it is normal, maintained code.
   instructor material, answer keys, exam solutions, and grades. `docs/publication.md`
   records what that decision accepted. Do not re-open it; do not quietly remove
   material it covers.
+- The dashboard runs programs in the page instead of printing commands to copy. Three
+  paths, and the distinction is not cosmetic: `inline` reads a program's own files at
+  build time and hands them to a sandboxed iframe as `srcdoc`; `container` boots a
+  StackBlitz WebContainer against a **public** GitHub repository; `source` is everything
+  else. StackBlitz cannot reach a private repository, so only `cloudscribe` and `myGainz`
+  can be containerized — this repository and `pathfinder` cannot, and no amount of
+  configuration changes that. Never mark a program runnable that will not boot.
+- The inline embed reads out of `src/courses/` and writes nothing back. It also cannot
+  resolve `Compound-Interest-Calculator/index.html`'s reference to `interest.jpg`, because
+  the file is `Interest.jpeg` — a real defect in the submitted work. The embed rewrites
+  that one `src` at build time; the coursework keeps the broken reference.
+- Astro rewrites `import.meta.url` in the built output, so a build-time file read must
+  anchor on the repository root found by walking up from `process.cwd()`, not on the
+  component's own URL. `src/dashboard/src/components/Embed.astro` does this.
+- Commits are authored by Patrick King. On 2026-08-22 five commits carrying an assistant
+  identity were re-authored to match the rest of the history.
 - Course projects carry their own `.gitignore` files whose rules apply here. They have
   already dropped files that upstream tracked. Use `git add -f` for coursework, and never
   add a `.gitignore` rule that could match one. `pathfinder` and `myGainz` are live

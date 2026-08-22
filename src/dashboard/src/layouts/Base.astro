@@ -4,8 +4,8 @@ const { title, description = 'Computer science at Loyola Marymount University, F
 const b = import.meta.env.BASE_URL;
 const u = (p: string) => `${b}/${p}`.replace(/\/+/g, '/');
 const nav = [
+  { href: u('programs'), label: 'Programs' },
   { href: u('courses'), label: 'Courses' },
-  { href: u('apps'), label: 'Apps' },
   { href: u('wiki'), label: 'Wiki' },
   { href: u('contact'), label: 'Contact' },
 ];
@@ -36,8 +36,8 @@ const here = Astro.url.pathname.replace(/\/$/, '');
 
     <header class="sticky top-0 z-40 border-b backdrop-blur-md" style="border-color: var(--line); background: color-mix(in oklch, var(--paper) 82%, transparent)">
       <nav class="mx-auto max-w-5xl px-4 sm:px-6 h-16 flex items-center gap-4 sm:gap-7" aria-label="Main">
-        <a href={u('')} class="display text-lg shrink-0" style="font-variation-settings: 'SOFT' 60, 'WONK' 1, 'opsz' 20">
-          lmu<span style="color: var(--patina)">·</span>cs
+        <a href={u('')} class="wordmark text-xl shrink-0" aria-label="LMU Computer Science, home">
+          <span class="lmu">LMU</span><span class="cs">cs</span>
         </a>
         <ul class="flex items-center gap-3.5 sm:gap-5 text-sm min-w-0 overflow-x-auto no-scrollbar">
           {nav.map((i) => {
@@ -46,7 +46,7 @@ const here = Astro.url.pathname.replace(/\/$/, '');
               <li class="shrink-0">
                 <a href={i.href} aria-current={on ? 'page' : undefined}
                    class="transition-opacity hover:opacity-60"
-                   style={on ? 'color: var(--patina)' : 'color: var(--muted)'}>{i.label}</a>
+                   style={on ? 'color: var(--ink)' : 'color: var(--muted)'}>{i.label}</a>
               </li>
             );
           })}

@@ -18,12 +18,12 @@ const years = Object.keys(byYear).sort();
 
     {years.map((y) => (
       <section class="mt-12">
-        <h2 class="font-mono text-sm mb-4 pb-2 border-b" style="color: var(--accent); border-color: var(--border)">{y}</h2>
-        <ul class="divide-y" style="border-color: var(--border)">
+        <h2 class="font-mono text-sm mb-4 pb-2 border-b" style="color: var(--ink); border-color: var(--line)">{y}</h2>
+        <ul class="divide-y" style="border-color: var(--line)">
           {byYear[y].map((c) => (
             <li>
               <a href={`${base}courses/${c.slug}`.replace(/\/+/g,'/')} class="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-4 hover:opacity-75 transition-opacity">
-                <span class="font-mono text-sm w-24 shrink-0" style="color: var(--accent)">{c.code}</span>
+                <span class="font-mono text-sm w-24 shrink-0" style="color: var(--ink)">{c.code}</span>
                 <span class="font-medium flex-1 min-w-[16rem]">{c.title}</span>
                 <span class="text-sm" style="color: var(--muted)">{c.work ?? ''}</span>
               </a>

@@ -11,7 +11,7 @@ const pages = (await getCollection('wiki')).sort((a, b) => a.data.order - b.data
     <ul class="mt-10 space-y-3">
       {pages.map((p) => (
         <li>
-          <a href={`${base}wiki/${p.id}`.replace(/\/+/g,'/')} class="block p-5 rounded-xl border transition-opacity hover:opacity-80" style="border-color: var(--border); background: var(--surface)">
+          <a href={`${base}wiki/${p.id}`.replace(/\/+/g,'/')} class="block p-5 rounded-xl border transition-opacity hover:opacity-80" style="border-color: var(--line); background: var(--surface)">
             <h2 class="font-medium">{p.data.title}</h2>
             <p class="mt-1 text-sm" style="color: var(--muted)">{p.data.description}</p>
           </a>

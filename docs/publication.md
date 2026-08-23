@@ -10,7 +10,7 @@ cover.
 
 Two items are open, both raised by the 2026-08-22 vendoring pass and neither within any
 accepted row. They are held out of version control pending a decision. Until they are
-settled the repository stays private and unpushed. They are two different questions, not
+settled the repository stays private. They are two different questions, not
 a matched pair: one is a licence term, the other is a copyright judgment. Read them
 separately.
 
@@ -31,7 +31,8 @@ Two items are outside every row of the table above. Both arrived with the iCloud
 vendoring pass. Both are present in the working tree and deliberately **left
 uncommitted**, so that either decision is cheap: committing them needs one `git add -f`,
 dropping them needs one `rm`. Neither requires rewriting history. The repository is
-still private and has not been pushed since the pass.
+still private. It has been pushed to its GitHub remote since the pass, which does not
+touch either held item: both are untracked, so no push can carry them.
 
 Held, rather than decided, because no rule already in this file reaches them. That is the
 distinction that matters: the Math 251 material below was removed without asking anyone,

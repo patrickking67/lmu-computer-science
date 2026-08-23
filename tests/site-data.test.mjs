@@ -25,6 +25,28 @@ const { languages, totalLines, figures } = await data('stats.ts');
 const inRepo = (p) => path.join(root, p);
 const courseCodes = new Set(courses.map((c) => c.code));
 
+/**
+ * What the repository publishes, which is not what sits in the working tree.
+ *
+ * docs/publication.md holds two items out of version control pending a
+ * decision, and AGENTS.md requires held files to stay untracked and *visible*
+ * rather than ignored. So the tree legitimately contains files the repository
+ * does not publish. Reading the filesystem therefore failed on a working tree
+ * behaving exactly as designed, and passed in CI only because a runner checks
+ * out tracked files alone. Ask git, not the disk.
+ */
+const tracked = (dir) =>
+  execFileSync('git', ['ls-files', '-z', '--', dir], { cwd: root, encoding: 'utf8' })
+    .split('\0')
+    .filter(Boolean);
+
+const trackedDirectly = (dir) =>
+  tracked(dir)
+    .filter((p) => p.startsWith(`${dir}/`))
+    .map((p) => p.slice(dir.length + 1))
+    .filter((p) => !p.includes('/'))
+    .sort();
+
 test('every program path exists in the tree', () => {
   for (const program of programs) {
     assert.ok(fs.existsSync(inRepo(program.path)), `${program.name}: ${program.path} is missing`);
@@ -163,17 +185,49 @@ test('every snippet names a course that exists', () => {
 });
 
 test('courses.ts and src/courses agree in both directions', () => {
-  const onDisk = fs.readdirSync(inRepo('src/courses')).filter((d) => d.startsWith('cmsi-')).sort();
+  const inIndex = [...new Set(tracked('src/courses').map((p) => p.split('/')[2]))]
+    .filter((d) => d.startsWith('cmsi-'))
+    .sort();
   const declared = courses.map((c) => c.slug).sort();
-  assert.deepEqual(onDisk, declared);
+  assert.deepEqual(inIndex, declared);
 });
 
 test('the two courses that produced no repository still have a directory', () => {
   // CMSI 1900 was a zero-unit seminar and CMSI 3920 a summer session. Both
   // carry a README and nothing else, which is why they are easy to miscount.
   for (const slug of ['cmsi-1900', 'cmsi-3920']) {
-    const files = fs.readdirSync(inRepo(`src/courses/${slug}`));
-    assert.deepEqual(files, ['README.md'], `${slug} unexpectedly holds code`);
+    assert.deepEqual(
+      trackedDirectly(`src/courses/${slug}`),
+      ['README.md'],
+      `${slug} unexpectedly publishes code`,
+    );
+  }
+});
+
+test('the held publication items are untracked and not ignored', () => {
+  // docs/publication.md leaves two items out of version control pending a
+  // decision, and AGENTS.md requires them to stay visible in `git status`
+  // rather than be hidden by .gitignore. Both halves are asserted, because
+  // ignoring them would satisfy "untracked" while defeating the point.
+  const held = [
+    'src/courses/cmsi-3300/HW3 Answers (Pacman AI)',
+    'src/courses/cmsi-3920/fraser-2010-injustice-at-intersecting-scales-on-social-exclusion-and-the-global-poor.pdf',
+  ];
+  // `git check-ignore -q` exits 0 when the path IS ignored and 1 when it is not,
+  // and execFileSync throws on a non-zero exit, so absence is the passing case.
+  const isIgnored = (item) => {
+    try {
+      execFileSync('git', ['check-ignore', '-q', '--', item], { cwd: root, stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  for (const item of held) {
+    if (!fs.existsSync(inRepo(item))) continue; // decided and removed; nothing to guard
+    assert.equal(tracked(item).length, 0, `${item} is tracked; publication.md holds it`);
+    assert.equal(isIgnored(item), false, `${item} is ignored; it must stay visible`);
   }
 });
 

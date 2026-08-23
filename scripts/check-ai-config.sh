@@ -59,10 +59,14 @@ fi
 # the first consolidation pass until 2026-08-22; docs/building.md records them and
 # names this scan as the way to catch the next one. Match Mach-O and ELF, never
 # *executable*, which also describes every script carrying a shebang.
+# `case ... esac` cannot appear inside `$( )` under bash 3.2, which is the only
+# bash macOS ships (/bin/bash 3.2.57). The old form parsed on the ubuntu runner
+# and died here with "syntax error near unexpected token `;;`", aborting the
+# script before it reached the credential scan. grep says the same thing and
+# parses everywhere.
 binaries=$(git ls-files -z | while IFS= read -r -d '' f; do
-  case "$(file -b "$f" 2>/dev/null)" in
-    *Mach-O*|*ELF*|*"ar archive"*) printf '%s\n' "$f" ;;
-  esac
+  t=$(file -b "$f" 2>/dev/null)
+  printf '%s' "$t" | grep -qE 'Mach-O|ELF|ar archive' && printf '%s\n' "$f"
 done)
 if [ -n "$binaries" ]; then
   bad "compiled binaries are tracked:"
@@ -168,9 +172,23 @@ artifact_re='(^|/)(target|node_modules|dist|build|__pycache__|\.venv|\.gradle|\.
 artifact_re="$artifact_re"'|\.(class|pyc|o|obj|swp|swo)$|(^|/)(\.DS_Store|Icon.?)$|(^|/)\._|~$'
 residue_re='(^|/)(\.pytest_cache|coverage)/'
 
+# A fourth bucket, because a third thing turned up that is none of the other
+# three. Coding agents write session state into the working tree: `.remember/`
+# carries its own `.gitignore` holding `*`, so all of it lands in the ignored
+# list and every file of it was reported as "coursework excluded by .gitignore".
+# It is not coursework and its absence is not a hole in the archive.
+#
+# Deliberately a narrow, root-anchored allowlist rather than a wildcard. The
+# property worth keeping is that nobody can hide coursework by choosing a
+# directory name, so this bucket warns rather than passing in silence, and it
+# names only the two directories that actually occur.
+tool_re='^\.(remember|claude)/'
+
 ignored=$(git ls-files --others --ignored --exclude-standard || true)
 residue=$(printf '%s\n' "$ignored" | grep -E "$residue_re" || true)
-leaked=$(printf '%s\n' "$ignored" | grep -vE "$artifact_re" | grep -vE "$residue_re" || true)
+toolstate=$(printf '%s\n' "$ignored" | grep -E "$tool_re" || true)
+leaked=$(printf '%s\n' "$ignored" \
+  | grep -vE "$artifact_re" | grep -vE "$residue_re" | grep -vE "$tool_re" || true)
 
 if [ -n "$leaked" ]; then
   bad "coursework files excluded by .gitignore:"
@@ -181,6 +199,10 @@ fi
 if [ -n "$residue" ]; then
   bad "test-run residue in the working tree; clean it before committing:"
   printf '%s\n' "$residue" | sed 's/^/          /' | sort -u | head -5
+fi
+if [ -n "$toolstate" ]; then
+  n=$(printf '%s\n' "$toolstate" | wc -l | tr -d ' ')
+  warn "$n agent/tool state file(s) ignored (.remember, .claude); not coursework"
 fi
 
 echo

@@ -34,10 +34,30 @@ Running any of these leaves artifacts. `.pytest_cache/` and `lmucs.egg-info/` ap
 moment pytest or an editable install runs, and `check-ai-config.sh` fails on them, which
 is the intended order: clean before committing.
 
-The check runs in GitHub Actions on every push to `main` and on pull requests. It
-warns rather than fails when the git bundles are absent, because they live off-machine
-and no runner will ever see them. A warning there means "confirm your backup", not
-"the repository is broken".
+The check runs in GitHub Actions on every push to `main` and on pull requests, on
+both `ubuntu-latest` and `macos-latest`. It warns rather than fails when the git
+bundles are absent, because they live off-machine and no runner will ever see them.
+A warning there means "confirm your backup", not "the repository is broken".
+
+Two rules keep the local checks and CI honest about each other. Both were added on
+2026-08-22 after each had been silently violated for as long as the checks existed.
+
+- **Write shell for bash 3.2.** macOS ships 3.2.57 at `/bin/bash` and ships nothing
+  newer, so that is the floor for anything in `scripts/`. In particular bash 3.2
+  cannot parse `case`/`esac` inside a command substitution; use `grep` instead. The
+  macOS CI leg calls `/bin/bash` directly rather than honouring the
+  `#!/usr/bin/env bash` shebang, because the runner has a newer bash earlier in PATH
+  and honouring it would test bash 5 twice. Do not "simplify" that back to
+  `./scripts/check-ai-config.sh`.
+- **Ask git what the repository contains, never the filesystem.** `docs/publication.md`
+  holds material out of version control pending a decision, and held files stay
+  untracked and *visible* rather than ignored, so a correct working tree contains
+  files the repository does not publish. A check that reads the tree fails locally
+  and passes in CI, where a runner checks out tracked files alone. Use
+  `git ls-files`. `tests/site-data.test.mjs` also asserts the held items are neither
+  tracked nor ignored, so a stray `git add -A` cannot publish them by accident.
+  Agent state under `.remember/` and `.claude/` is ignored, is not coursework, and is
+  reported by the check as a warning rather than counted as a hole in the archive.
 
 ## Architecture
 

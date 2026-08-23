@@ -204,6 +204,30 @@ test('the two courses that produced no repository still have a directory', () =>
   }
 });
 
+test('the page CSP stays narrow, because a script-src would break the embeds', () => {
+  const base = fs.readFileSync(inRepo('src/dashboard/src/layouts/Base.astro'), 'utf8');
+  const meta = base.match(/http-equiv="Content-Security-Policy"[\s\S]{0,400}?content="([^"]+)"/);
+  assert.ok(meta, 'Base.astro no longer sets a Content-Security-Policy');
+  const policy = meta[1];
+
+  // Measured 2026-08-22 in the browser: a sandboxed srcdoc iframe inherits the
+  // embedding page's CSP. Both the inline calculator embed and the playground's
+  // Run stage execute inline script inside one, and the playground's script is
+  // generated from whatever the visitor typed, so no build-time hash can cover
+  // it and static hosting has no nonce. script-src would break both features;
+  // default-src would too, by falling back to it.
+  for (const directive of ['script-src', 'default-src']) {
+    assert.ok(
+      !policy.includes(directive),
+      `${directive} in the page CSP silently breaks the inline embed and the playground`,
+    );
+  }
+  // And the directives that do earn their place stay put.
+  for (const directive of ["object-src 'none'", "base-uri 'self'"]) {
+    assert.ok(policy.includes(directive), `${directive} dropped from the page CSP`);
+  }
+});
+
 test('the held publication items are untracked and not ignored', () => {
   // docs/publication.md leaves two items out of version control pending a
   // decision, and AGENTS.md requires them to stay visible in `git status`

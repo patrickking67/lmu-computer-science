@@ -157,6 +157,19 @@ submitted; everything outside it is normal, maintained code.
   proper isolation headers." An `embed: 'container'` mode existed for one round and was
   removed; a test in `tests/site-data.test.mjs` now fails if anything reintroduces it.
   Open it in a new tab instead — that is StackBlitz's own documented workaround.
+- The page's `Content-Security-Policy` cannot carry a `script-src`, and
+  `tests/site-data.test.mjs` fails if one appears. Measured in the browser on
+  2026-08-22: a sandboxed `srcdoc` iframe inherits the embedding page's policy. The
+  inline calculator embed and the playground's Run stage both execute inline script
+  inside one, and the playground's script is generated from whatever the visitor
+  typed, so no build-time hash covers it and static hosting has no nonce. Adding
+  `'unsafe-inline'` to buy those back leaves a `script-src` permitting exactly what
+  `script-src` exists to stop, so it buys nothing. `default-src` is the same mistake
+  by fallback. What remains is real and was verified, not assumed: under
+  `object-src 'none'; base-uri 'self'; form-action 'self'` a `<base>` injection
+  pointing every relative URL at another origin is refused. `frame-ancestors` is
+  ignored in a meta tag, so clickjacking cover still needs a response header, which
+  GitHub Pages does not let you set.
 - The cloudscribe playground (`src/dashboard/src/lib/cloudscribe.ts`) runs the submitted
   compiler in the browser, not a reimplementation of it: `analyzer.js`, `optimizer.js` and
   `generator.js` are imported from `src/courses/` unmodified. It substitutes exactly one

@@ -26,6 +26,21 @@ const here = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} · ${site.name}` : `${site.name} · ${site.owner}`}</title>
     <meta name="description" content={description} />
+    {/* Deliberately narrow. A script-src directive cannot go here: a sandboxed
+        srcdoc iframe inherits this policy, the inline embed and the playground's
+        Run stage both execute inline script inside one, and the playground's
+        script is generated at runtime from what the visitor typed, so no
+        build-time hash covers it and static hosting has no nonce. Adding
+        'unsafe-inline' to buy back those two features would leave a script-src
+        that permits exactly what script-src exists to stop. These three cost
+        nothing and are not theatre: base-uri blocks a <base> injection that
+        would silently repoint every relative URL on the page. frame-ancestors
+        is not honoured in a meta tag, so clickjacking cover still needs a real
+        header, which GitHub Pages will not send. */}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
     <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
     {/* Browser chrome follows the page. These two cover the system case and the
         no-JS case; the scripts below overwrite both when an explicit theme is

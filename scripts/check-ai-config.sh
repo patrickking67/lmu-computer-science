@@ -36,7 +36,10 @@ while IFS= read -r a; do
   [ "$d" = "." ] && continue
   scoped=1
   [ -f "$d/CLAUDE.md" ] && ok "$d has CLAUDE.md adapter" || bad "$d/AGENTS.md lacks CLAUDE.md adapter"
-done < <(find . -name AGENTS.md -not -path './.git/*')
+# Ask git, not the filesystem: `find` descends into node_modules and every other
+# ignored directory, so a dependency shipping its own AGENTS.md would be demanded
+# to carry a CLAUDE.md adapter. It also disagrees with CI, which has no such tree.
+done < <(git ls-files | grep -E '(^|/)AGENTS\.md$' || true)
 [ "$scoped" -eq 0 ] && ok "no scoped AGENTS.md below the root (none required)"
 
 echo

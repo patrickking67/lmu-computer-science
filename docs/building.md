@@ -279,9 +279,15 @@ check `file(1)` output rather than relying on it:
 
 ```bash
 git ls-files -z | while IFS= read -r -d '' f; do
-  case "$(file -b "$f")" in *Mach-O*|*ELF*|*"ar archive"*) echo "$f";; esac
+  t=$(file -b "$f")
+  printf '%s' "$t" | grep -qE 'Mach-O|ELF|ar archive' && echo "$f"
 done
 ```
+
+Not a `case` statement, deliberately. bash 3.2 cannot parse `case`/`esac` inside a
+command substitution, and 3.2.57 is the only bash macOS ships. The earlier form of
+this loop is what `scripts/check-ai-config.sh` used, and it aborted the whole script
+with a syntax error on any Mac while parsing cleanly on the ubuntu runner.
 
 Match on `Mach-O` and `ELF`, not on `executable`: `file` describes any script carrying a
 shebang as "script text executable", so a bare `*executable*` pattern flags half the
@@ -289,3 +295,67 @@ Python in the repository.
 
 `scripts/check-ai-config.sh` now runs that scan itself, so the next tracked binary is
 caught without anyone remembering to type the loop above.
+
+## Dependency audit of the coursework, 2026-08-22
+
+Recorded, not acted on. These are submitted projects and the rule in
+[Do not repair the coursework](#do-not-repair-the-coursework) applies to their
+dependencies exactly as it applies to their source: a lockfile is part of what was
+handed in. `npm audit fix` here would rewrite submitted work to satisfy a scanner.
+
+Five projects carry a lockfile, so `npm audit --package-lock-only` can resolve them
+without installing anything:
+
+| Project | Total | Critical | High | Moderate | Low |
+|---|---|---|---|---|---|
+| `cmsi-2021/Blog-Application` | 80 | 6 | 39 | 20 | 15 |
+| `cmsi-2021/myGainz/mygainz` | 80 | 6 | 39 | 20 | 15 |
+| `cmsi-3550/Final/p2p-app` | 65 | 3 | 33 | 14 | 15 |
+| `cmsi-3550/cmsi3550-pgt-p2p/my-react-app` | 64 | 3 | 32 | 14 | 15 |
+| `cmsi-4072/Pathfinder/Archive/my-app` | 59 | 3 | 28 | 15 | 13 |
+
+348 advisories, 21 of them critical. Nine further `package.json` files carry no
+lockfile, so no count exists for them; that is not a clean bill of health.
+
+The number is less alarming than it looks, and it is worth knowing why before anyone
+panics or dismisses it. Most of it is the Create React App build chain, which
+`react-scripts@5.0.1` pins to versions that stopped receiving fixes: `@svgr/webpack`,
+`css-select`, `http-proxy-middleware`, `braces`, `cross-spawn`, `@babel/traverse`.
+None of that ships to a browser, so for a project nobody builds any more the practical
+exposure is zero.
+
+The part that is not build tooling: `firebase@9.13`, `@firebase/firestore`,
+`@grpc/grpc-js`, `express`, `body-parser` and `form-data` are runtime dependencies and
+do reach a built bundle.
+
+### Two of these are still deployed
+
+That matters because two of the front ends are still live and publicly reachable:
+
+| Host | Status | Project |
+|---|---|---|
+| `patrickking-blogapp.web.app` | HTTP 200 | `cmsi-2021/Blog-Application` |
+| `mygainz2022.web.app` | HTTP 200 | `cmsi-2021/myGainz` |
+| `pathfinder-cae4f.web.app` | HTTP 404 | not deployed |
+
+They serve 2022 bundles built against the Firebase SDK above. Whether to leave them up
+is a decision about the deployment, not about this repository, and nothing here can
+change it: the fix is to take the hosting down or redeploy, both from the Firebase
+console.
+
+### What the probes did and did not establish
+
+Checked 2026-08-22 against all three Firebase projects, unauthenticated:
+
+- No Realtime Database is provisioned on any of them. The classic open-rules
+  exposure, an unauthenticated `GET /.json` returning the whole tree, cannot happen
+  where no database exists.
+- Storage object listing is closed on all three buckets.
+- **Firestore and Storage security rules are not in this repository.** No `.rules`
+  file is tracked anywhere, so the rules live only in the Firebase console and cannot
+  be reviewed from a checkout. A pass on the two probes above says nothing about them.
+
+The three `AIza…` strings in the front ends are Firebase Web API keys, which are
+client identifiers rather than secrets; `scripts/check-ai-config.sh` reports them and
+does not fail on them. They are guarded by Security Rules, which is the same set of
+rules nobody can currently read from here.

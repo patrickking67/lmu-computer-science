@@ -11,12 +11,35 @@ permissions:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Report both. A failure on one platform should not hide the other's result.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
         with:
           # The check only reads the tree. Leaving the job's token in
           # .git/config lets any later step push with it.
           persist-credentials: false
+
+      # The check died under bash 3.2 for as long as it existed and CI never saw
+      # it: the ubuntu runner has bash 5, and the failure was a parse error, so
+      # it happened before any check ran. macOS ships 3.2.57 at /bin/bash and
+      # ships nothing newer, which meant the repository's own definition of done
+      # could not run on the author's machine.
+      #
+      # Both steps call /bin/bash directly rather than going through the
+      # `#!/usr/bin/env bash` shebang. That is the point: the macOS runner has a
+      # newer bash earlier in PATH, so honouring the shebang would test bash 5
+      # on both platforms and reintroduce exactly the blind spot this leg exists
+      # to close.
+      - name: Parse under the oldest bash on this platform
+        run: |
+          /bin/bash --version | head -1
+          /bin/bash -n scripts/check-ai-config.sh
+
       - name: Validate repository configuration
-        run: ./scripts/check-ai-config.sh
+        run: /bin/bash scripts/check-ai-config.sh

@@ -56,6 +56,14 @@ Two rules keep the local checks and CI honest about each other. Both were added 
   and passes in CI, where a runner checks out tracked files alone. Use
   `git ls-files`. `tests/site-data.test.mjs` also asserts the held items are neither
   tracked nor ignored, so a stray `git add -A` cannot publish them by accident.
+  That assertion has to work where the files are absent, which is every CI run, so it
+  asks `git check-ignore` rather than the disk. Two traps there, both measured on
+  2026-08-22. `check-ignore` treats a path it cannot stat as a *file*, so a
+  directory-only rule (`HW3 Answers (Pacman AI)/`, the natural way to hide the first
+  held item) matches nothing; probe the trailing-slash form as well. And gating such a
+  check on `fs.existsSync` silently turns it off on the runner, which is the one place
+  it had to run. Keep the existence gate on the *tracked* half only, where a wrongly
+  tracked file is checked out and so is always present anyway.
   Agent state under `.remember/` and `.claude/` is ignored, is not coursework, and is
   reported by the check as a warning rather than counted as a hole in the archive.
 

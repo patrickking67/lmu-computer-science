@@ -215,19 +215,34 @@ test('the held publication items are untracked and not ignored', () => {
   ];
   // `git check-ignore -q` exits 0 when the path IS ignored and 1 when it is not,
   // and execFileSync throws on a non-zero exit, so absence is the passing case.
-  const isIgnored = (item) => {
-    try {
-      execFileSync('git', ['check-ignore', '-q', '--', item], { cwd: root, stdio: 'ignore' });
-      return true;
-    } catch {
-      return false;
-    }
-  };
+  // It answers from the ignore rules alone and needs no file on disk. One wrinkle:
+  // an absent path is treated as a file, so a directory-only rule -- the natural way
+  // to hide the first held item -- never matches the bare path. Probing the
+  // trailing-slash form too covers directory rules, and with no rule in place
+  // neither form matches, so the second probe adds no false positive.
+  const probes = (item) => [item, `${item}/`];
+  const isIgnored = (item) =>
+    probes(item).some((path) => {
+      try {
+        execFileSync('git', ['check-ignore', '-q', '--', path], { cwd: root, stdio: 'ignore' });
+        return true;
+      } catch {
+        return false;
+      }
+    });
 
   for (const item of held) {
-    if (!fs.existsSync(inRepo(item))) continue; // decided and removed; nothing to guard
-    assert.equal(tracked(item).length, 0, `${item} is tracked; publication.md holds it`);
+    // Unconditional: check-ignore answers from the ignore rules alone and needs no
+    // file on disk, so this half holds on a runner too. That matters, because a
+    // runner checks out tracked files only and these are deliberately untracked --
+    // gating this on existence made it a no-op in exactly the place it had to run.
     assert.equal(isIgnored(item), false, `${item} is ignored; it must stay visible`);
+
+    // Still gated. A wrongly-tracked item IS checked out on a runner, so the gate
+    // cannot hide that failure; removing it would instead fail main the day the
+    // publication decision goes the other way and the item is committed on purpose.
+    if (!fs.existsSync(inRepo(item))) continue; // decided and removed; nothing to track
+    assert.equal(tracked(item).length, 0, `${item} is tracked; publication.md holds it`);
   }
 });
 

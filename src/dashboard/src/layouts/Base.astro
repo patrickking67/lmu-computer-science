@@ -27,6 +27,12 @@ const here = Astro.url.pathname;
     <title>{title ? `${title} · ${site.name}` : `${site.name} · ${site.owner}`}</title>
     <meta name="description" content={description} />
     <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
+    {/* Browser chrome follows the page. These two cover the system case and the
+        no-JS case; the scripts below overwrite both when an explicit theme is
+        chosen, so whichever one matches is right either way. Values are --paper
+        converted to sRGB. */}
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0c0c" />
     <link rel="sitemap" href={href('sitemap-index.xml')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,9 +42,16 @@ const here = Astro.url.pathname;
     />
     <script is:inline>
       // Before first paint, so a stored preference never flashes the other theme.
+      window.__paintChrome = (theme) => {
+        const c = theme === 'dark' ? '#0c0c0c' : '#fafafa';
+        for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.content = c;
+      };
       try {
         const stored = localStorage.getItem('theme');
-        if (stored) document.documentElement.dataset.theme = stored;
+        if (stored) {
+          document.documentElement.dataset.theme = stored;
+          window.__paintChrome(stored);
+        }
       } catch (e) { /* private mode — fall through to prefers-color-scheme */ }
     </script>
   </head>
@@ -80,7 +93,7 @@ const here = Astro.url.pathname;
           class="ml-auto shrink-0 w-8 h-8 rounded-full border grid place-items-center text-xs transition-colors"
           style="border-color: var(--line); color: var(--muted)"
           aria-label="Switch between light and dark"
-        >◐</button>
+        ><span aria-hidden="true">◐</span></button>
       </nav>
     </header>
 
@@ -99,12 +112,25 @@ const here = Astro.url.pathname;
     </footer>
 
     <script is:inline>
-      document.getElementById('theme')?.addEventListener('click', () => {
-        const root = document.documentElement;
-        const now = root.dataset.theme
-          || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        const next = now === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
+      const toggle = document.getElementById('theme');
+      const current = () => document.documentElement.dataset.theme
+        || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      // The label carries the state as well as the action. Activating a control
+      // called only "Switch between light and dark" announces nothing about what
+      // happened, so a screen reader user cannot tell whether it worked.
+      const label = (theme) => {
+        if (toggle) toggle.setAttribute('aria-label', theme === 'dark'
+          ? 'Theme: dark. Switch to light.'
+          : 'Theme: light. Switch to dark.');
+      };
+      label(current());
+
+      toggle?.addEventListener('click', () => {
+        const next = current() === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        window.__paintChrome?.(next);
+        label(next);
         try { localStorage.setItem('theme', next); } catch (e) { /* nothing to persist to */ }
       });
 

@@ -89,6 +89,18 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
   border-radius: 4px;
 }
 
+/* Touch. `manipulation` drops the 300ms double-tap-to-zoom wait that mobile
+   Safari otherwise adds to every tap. The highlight is set rather than removed:
+   a touch device has no hover state, so taking the flash away with nothing in
+   its place would leave a tap with no feedback at all. */
+a, button, select, summary, [role="tab"], [tabindex] {
+  touch-action: manipulation;
+  /* A literal mid-grey at low alpha, not color-mix(): Lightning CSS emits an
+     opaque var(--ink) fallback ahead of a color-mix, and an unsupporting
+     browser would then flash the whole element solid. One value, both themes. */
+  -webkit-tap-highlight-color: oklch(50% 0 0 / 0.14);
+}
+
 /* ── Wordmark ────────────────────────────────────────────────
    Shield, then LMU set quiet and wide, then CS in Fraunces at
    high optical size with a tight negative track — so the three

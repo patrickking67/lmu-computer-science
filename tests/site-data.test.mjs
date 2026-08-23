@@ -204,6 +204,29 @@ test('the two courses that produced no repository still have a directory', () =>
   }
 });
 
+test('the playground tabs are a tablist, not four buttons that say tab', () => {
+  const src = fs.readFileSync(inRepo('src/dashboard/src/components/Playground.astro'), 'utf8');
+
+  // A tablist may contain only tabs. Run is not one, and it used to live inside.
+  const tablist = src.match(/role="tablist"[\s\S]*?<\/div>/);
+  assert.ok(tablist, 'the tablist markup moved; this test needs rewriting');
+  assert.ok(!tablist[0].includes('id="cs-run"'), 'the Run button is back inside the tablist');
+
+  // Tabs that control nothing are broken semantics, not decoration.
+  assert.ok(src.includes('aria-controls="cs-panel"'), 'the tabs no longer point at a panel');
+  assert.ok(/id="cs-panel"[\s\S]{0,240}role="tabpanel"/.test(src), 'the output pane is not a tabpanel');
+
+  // The panel scrolls. A scrollable region that cannot take focus cannot be
+  // scrolled from the keyboard, which is WCAG 2.1.1, not a nicety.
+  assert.ok(/role="tabpanel"[\s\S]{0,160}tabindex="0"/.test(src), 'the panel is not focusable');
+
+  // Roving tabindex and the arrow keys are what make it behave like a tablist.
+  assert.ok(src.includes('tab.tabIndex = on ? 0 : -1'), 'roving tabindex is gone');
+  for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) {
+    assert.ok(src.includes(key), `${key} handling is gone from the tablist`);
+  }
+});
+
 test('the page CSP stays narrow, because a script-src would break the embeds', () => {
   const base = fs.readFileSync(inRepo('src/dashboard/src/layouts/Base.astro'), 'utf8');
   const meta = base.match(/http-equiv="Content-Security-Policy"[\s\S]{0,400}?content="([^"]+)"/);

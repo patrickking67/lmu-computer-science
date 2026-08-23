@@ -48,6 +48,29 @@ def test_rows_from_the_no_credit_table_are_not_courses():
     assert len(CourseRecord.from_text(text).courses) == 3
 
 
+def test_a_broken_course_row_is_refused_not_skipped():
+    # The whole point of the module: a course row that will not parse must stop
+    # the read, because skipping it drops a course and the count still looks
+    # plausible. "4.0" credits is the kind of edit that does it.
+    text = TABLE + "| Fall 2025 | CMSI 5000 | Something | same | A | 4.0 |\n"
+    with pytest.raises(RecordError) as exc:
+        CourseRecord.from_text(text)
+    assert "CMSI 5000" in str(exc.value)
+
+
+def test_an_empty_cell_in_a_course_row_is_refused():
+    text = TABLE + "| Fall 2025 | CMSI 5000 |  | same | A | 4 |\n"
+    with pytest.raises(RecordError):
+        CourseRecord.from_text(text)
+
+
+def test_a_differently_shaped_cmsi_row_is_still_skipped_quietly():
+    # Only six-cell rows with the code in the second cell are course rows, so
+    # the no-credit table stays skipped rather than becoming an error.
+    text = TABLE + "| CMSI 2130 | D | Fall 2022 |\n"
+    assert len(CourseRecord.from_text(text).courses) == 3
+
+
 def test_empty_record_is_an_error_not_an_empty_list():
     with pytest.raises(RecordError):
         CourseRecord.from_text("# no table here\n")

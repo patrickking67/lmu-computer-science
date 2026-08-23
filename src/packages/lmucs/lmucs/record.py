@@ -24,6 +24,24 @@ _ROW = re.compile(
 )
 
 
+#: A course row is six cells with the code in the second. The "Attempts that
+#: earned no credit" table is | Course | Grade | Term |, three cells with the
+#: code first, so the shape alone tells them apart. That distinction is what
+#: lets a row be rejected rather than skipped: anything with this shape that
+#: does not match ``_ROW`` is a broken course row, not a different kind of row.
+_COURSE_CODE = re.compile(r"^CMSI\s+\d{4}$")
+
+
+def _cells(line: str) -> list[str]:
+    """The cells of a markdown table row, outer pipes removed."""
+    return [c.strip() for c in line.strip().strip("|").split("|")]
+
+
+def _looks_like_a_course_row(line: str) -> bool:
+    cells = _cells(line)
+    return len(cells) == 6 and _COURSE_CODE.match(cells[1]) is not None
+
+
 class RecordError(Exception):
     """The record could not be read, or disagrees with the tree."""
 
@@ -71,8 +89,28 @@ class CourseRecord:
             m = _ROW.match(line)
             if m is None:
                 # Not every CMSI-bearing table row is a course row: the
-                # "Attempts that earned no credit" table has a different shape.
+                # "Attempts that earned no credit" table has a different shape,
+                # and those are skipped. A row shaped like a course row that
+                # still will not parse is the case this module exists to refuse
+                # to do quietly, so it stops here instead of dropping a course.
+                if _looks_like_a_course_row(line):
+                    raise RecordError(
+                        "row looks like a course row but does not parse, so the "
+                        f"course would be dropped silently: {line.strip()}"
+                    )
                 continue
+            # `[^|]+?` is happy with a cell holding nothing but a space, which
+            # would yield a course titled " " rather than an error. Same hazard
+            # as a dropped row: the record still looks well formed afterwards.
+            blank = [
+                field
+                for field in ("term", "audit_title", "bulletin_title", "grade")
+                if not m[field].strip()
+            ]
+            if blank:
+                raise RecordError(
+                    f"course row has an empty {', '.join(blank)} cell: {line.strip()}"
+                )
             courses.append(
                 Course(
                     term=m["term"],

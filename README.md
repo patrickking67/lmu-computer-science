@@ -28,10 +28,10 @@ A compiler, a network stack, and thirteen languages. Four years of computer scie
 LMU, and the code that came out of it.
 
 **[patrickking67.github.io/lmu-computer-science](https://patrickking67.github.io/lmu-computer-science/)**
-presents all of it, and runs the programs that fit in a browser tab — CloudScribe and
-myGainz boot in a WebContainer, the compound interest calculator runs inline. Nothing to
-clone, nothing to install. The site itself is in [`src/dashboard`](src/dashboard): Astro,
-Tailwind, deployed to GitHub Pages.
+presents all of it, and runs the programs that fit in a browser tab — CloudScribe
+compiles in the page, the compound interest calculator runs inline, myGainz opens in a
+StackBlitz tab. Nothing to clone, nothing to install. The site itself is in
+[`src/dashboard`](src/dashboard): Astro, Tailwind, deployed to GitHub Pages.
 
 For the rest — compiled languages, raw sockets, anything wired to a live account — the
 build and test commands, with the version pins that make them work, are in

@@ -40,21 +40,29 @@ against the component's own location silently points at nothing. `repo.ts`
 anchors on the repository root instead, found by walking up from the working
 directory until `src/courses` appears.
 
-## Three ways a program runs
+## How a program runs
 
-`src/dashboard/src/data/programs.ts` gives every program one of three modes,
-and the mode is a promise the page has to keep:
+`src/dashboard/src/data/programs.ts` gives every program a mode, and the mode
+is a promise the page has to keep:
 
 | Mode | What happens |
 |---|---|
 | `inline` | Files are read at build time and rendered in a sandboxed iframe |
-| `container` | A StackBlitz WebContainer installs and runs a **public** repository in the tab |
+| `playground` | The submitted compiler runs in the page, and so does what it emits |
+| `external` | A new tab, where StackBlitz installs and serves a **public** repository |
 | `source` | Nothing runs — a native toolchain, or a repository nothing can reach |
 
-StackBlitz cannot load a private repository. That is not a configuration
-problem, it is the whole design, and it is why Pathfinder and the projects that
-live in this repository are `source` rather than `container`. Marking one of
-them runnable would produce a box that spins forever.
+There was a fifth mode that embedded a StackBlitz WebContainer in the page
+itself. It never worked and could not: a WebContainer needs the embedding
+document to be cross-origin isolated, GitHub Pages cannot send the headers that
+do it, and StackBlitz's own embed page pulls third-party resources carrying no
+CORP header regardless. So `external` opens a tab — StackBlitz's own documented
+workaround — and a test fails if the embedded mode is ever reintroduced.
+
+StackBlitz also cannot load a private repository. That is not a configuration
+problem either, it is the whole design, and it is why Pathfinder and the
+projects that live only in this repository are `source` rather than `external`.
+Marking one of them runnable would produce a box that spins forever.
 
 ## What the tests check
 
@@ -65,7 +73,8 @@ files and checks them against the tree:
 - every snippet's line range is inside the file it quotes
 - `courses.ts` and `src/courses/` agree in both directions
 - the published language counts match a fresh count from `lmucs stats`
-- no private repository is marked as a container embed
+- no program claims to embed a WebContainer in the page
+- the mode table above lists exactly the modes `programs.ts` declares
 - the calculator still has the broken image reference the embed rewrites —
   because if the coursework were ever "fixed", the rewrite would become a
   silent no-op and the note on the page would be wrong

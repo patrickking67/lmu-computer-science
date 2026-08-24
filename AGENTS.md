@@ -196,6 +196,17 @@ submitted; everything outside it is normal, maintained code.
   WebContainer, the cloudscribe defects below are still present, and the published counts
   match a fresh `lmucs stats --json`. Add a test with any new claim rather than trusting
   the data file.
+- Prose rots the same way, and was not covered for as long as the tests existed. On
+  2026-08-23 `README.md` still said CloudScribe and myGainz "boot in a WebContainer", and
+  the wiki still tabled `container` as one of three modes while omitting `playground` and
+  `external`, the two modes actually doing the work. The data file, this file, and a test
+  forbidding `embed: 'container'` were all correct and all agreed with each other; only
+  the human-facing copy was wrong, which is the worst place for it, because it is what a
+  reader without repository access sees first. Two tests now pin it: the wiki's mode table
+  must equal the `embed` union in `programs.ts` by set comparison, and `README.md` must not
+  name a WebContainer. A test that parses a declaration has to refuse an empty parse
+  first — two empty sets compare equal, so the guard would otherwise go green while
+  measuring nothing.
 - Published numbers come from `lmucs stats`, never from a hand count. It counts tracked
   files only, so an untracked scratch file cannot inflate a total, and it excludes
   lockfiles.

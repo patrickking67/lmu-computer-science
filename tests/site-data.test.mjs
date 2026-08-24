@@ -5,7 +5,10 @@
  * count goes stale — and the page keeps rendering, now lying.
  *
  * These tests read the site's own data files and check every claim against the
- * tree. Run with:  node --test tests/
+ * tree. Run with:  node --test "tests/*.test.mjs"
+ *
+ * A glob, not a directory: `node --test tests/` tries to load the directory
+ * itself as a module and fails.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -165,6 +168,55 @@ test('no program claims to embed a WebContainer in the page', () => {
   for (const program of programs) {
     assert.notEqual(program.embed, 'container', `${program.name} still uses the container mode`);
   }
+});
+
+test('the wiki documents exactly the run modes that exist', () => {
+  // The data files were checked against the tree and the prose was not, so the
+  // prose rotted: the wiki tabled a `container` mode that had been removed as
+  // impossible, and omitted `playground` and `external`, the two modes doing
+  // the work. Set equality against the declaration catches both directions.
+  const source = fs.readFileSync(inRepo('src/dashboard/src/data/programs.ts'), 'utf8');
+  const union = source.match(/embed:\s*((?:'[a-z]+'\s*\|\s*)*'[a-z]+')\s*;/);
+  assert.ok(union, 'no embed union found in programs.ts — this test is checking nothing');
+  const declared = new Set([...union[1].matchAll(/'([a-z]+)'/g)].map((m) => m[1]));
+  // Two empty sets compare equal, which is the way this test would go green
+  // while measuring nothing at all. Refuse that before comparing.
+  assert.ok(declared.size >= 2, `the embed union parsed to ${declared.size} mode(s); fix the parse`);
+
+  const page = 'src/dashboard/src/content/wiki/how-the-site-works.md';
+  // The first cell of a table row, and nowhere else. The page backticks
+  // filenames and component names freely in its prose, and a backticked word
+  // in the *description* column — `npm install`, say — would read as a mode and
+  // fail this test for no reason, sending someone off to edit the union type.
+  const documented = new Set(
+    fs
+      .readFileSync(inRepo(page), 'utf8')
+      .split('\n')
+      .filter((line) => line.startsWith('|'))
+      .flatMap((line) => [...(line.split('|')[1] ?? '').matchAll(/`([a-z]+)`/g)].map((m) => m[1])),
+  );
+  assert.deepEqual(
+    [...documented].sort(),
+    [...declared].sort(),
+    `${page} and the programs.ts embed union disagree about the run modes`,
+  );
+
+  for (const program of programs) {
+    assert.ok(declared.has(program.embed), `${program.name} uses undeclared mode ${program.embed}`);
+  }
+});
+
+test('the README does not promise a WebContainer', () => {
+  // Blunt on purpose, like the container-mode test above. No page here can
+  // embed one, so the front door has no honest reason to name the technology;
+  // why it cannot is design history, and lives in AGENTS.md and the wiki. The
+  // README claimed CloudScribe and myGainz "boot in a WebContainer" for as long
+  // as the modes that replaced it have existed.
+  const readme = fs.readFileSync(inRepo('README.md'), 'utf8');
+  assert.ok(
+    !readme.includes('WebContainer'),
+    'the README names WebContainer again; nothing on this site can embed one',
+  );
 });
 
 test('every snippet quotes lines that actually exist', () => {

@@ -19,13 +19,34 @@ const nav = [
   { path: 'contact', label: 'Contact' },
 ];
 const here = Astro.url.pathname;
+
+// og:image has to be absolute -- a crawler resolves it against nothing. Astro.site
+// is the deploy origin and href() adds the base path, so this is correct at both a
+// user-site root and a project-site subpath, the same two cases astro.config.mjs
+// exists to cover.
+const cardUrl = new URL(href('social-preview.png'), Astro.site).href;
+const pageUrl = new URL(here, Astro.site).href;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.owner}`;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} · ${site.name}` : `${site.name} · ${site.owner}`}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {/* Shared links had no card at all, so every paste of this site rendered as a
+        bare URL. The image is a static asset in public/ rather than a generated
+        route: it changes about as often as the wordmark does. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={cardUrl} />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={cardUrl} />
     {/* Deliberately narrow. A script-src directive cannot go here: a sandboxed
         srcdoc iframe inherits this policy, the inline embed and the playground's
         Run stage both execute inline script inside one, and the playground's

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Patrick King's LMU computer science coursework, Fall 2021 – Spring 2025, plus the site
+Patrick King's LMU computer science coursework, Fall 2021 to Spring 2025, plus the site
 that presents it. The code itself lives here; this is not an index of links.
 
 ## Repository map
@@ -29,6 +29,13 @@ maintained. Do not add a repository-level build that spans them.
 - Validation: `scripts/check-ai-config.sh`
 - Site data: `node --test "tests/*.test.mjs"` (needs `lmucs` importable, Node 22.18+)
 - Package: `pytest` in `src/packages/lmucs`
+- Site, from `src/dashboard`: `npm ci`, `npm run build` (output in `dist/`), `npm run dev`
+  (http://localhost:4321). Astro 7 may start `astro dev` in the background when the shell
+  is not interactive; stop it with `npx astro dev stop`. `npm run check` calls
+  `astro check`, but `@astrojs/check` is not a dependency, so it asks to install one.
+
+Every push to `main` builds `src/dashboard` and publishes it to GitHub Pages
+(`.github/workflows/pages.yml`). Site changes go live on merge.
 
 Running any of these leaves artifacts. `.pytest_cache/` and `lmucs.egg-info/` appear the
 moment pytest or an editable install runs, and `check-ai-config.sh` fails on them, which
@@ -74,7 +81,7 @@ submitted; everything outside it is normal, maintained code.
 
 - Never repair submitted coursework to make a test pass. A test that fails because the
   original code was wrong is telling you something true, and editing it to pass just
-  deletes the information — it also contradicts the grade in `docs/record.md`. CMSI 3300's Homework 2 harness
+  deletes the information; it also contradicts the grade in `docs/record.md`. CMSI 3300's Homework 2 harness
   scores 7 of 19 against a homework the gradebook marks 51%, and four of those failures
   are a real bug: `ad_agent.py:44` calls `map_query` on a `pgmpy` `CausalInference`, which
   has never had that method. Record such defects in `docs/building.md`; do not edit them
@@ -84,12 +91,12 @@ submitted; everything outside it is normal, maintained code.
   pinned by tests in `tests/site-data.test.mjs`, described in
   `src/dashboard/src/content/wiki/cloudscribe.md`, and visible in the playground. Do not
   repair either one. First: `generator.js` has no case for `TaskDeclaration`, so every one
-  of the seven committed example programs dies at the `js` stage — `task` is the language's
+  of the seven committed example programs dies at the `js` stage. `task` is the language's
   reason to exist, `analyzer.test.js` exercises it sixteen times, `generator.test.js`
   never does. Second: four visitors in `optimizer.js` (`foldBinary`, `WhileStatement`,
   `UnaryExpression`, `Conditional`) fall off the end and return `undefined`, which
-  `exp()`'s `if (e == null) return ""` and `visitBlock`'s `r == null` filter then swallow
-  — so `print(x + 1)` emits `console.log()`, `let y = x + 1` emits `let y_1 = ;`, and a
+  `exp()`'s `if (e == null) return ""` and `visitBlock`'s `r == null` filter then swallow,
+  so `print(x + 1)` emits `console.log()`, `let y = x + 1` emits `let y_1 = ;`, and a
   `while` loop is deleted outright. The optimiser only breaks what it tries to optimise;
   everything it has no visitor for passes through and works, which is why generator tests
   written against literal arithmetic go green over all of it. Statement coverage measures
@@ -156,7 +163,7 @@ submitted; everything outside it is normal, maintained code.
   "Unable to run Embedded Project / Looks like this project is being embedded without
   proper isolation headers." An `embed: 'container'` mode existed for one round and was
   removed; a test in `tests/site-data.test.mjs` now fails if anything reintroduces it.
-  Open it in a new tab instead — that is StackBlitz's own documented workaround.
+  Open it in a new tab instead; that is StackBlitz's own documented workaround.
 - The page's `Content-Security-Policy` cannot carry a `script-src`, and
   `tests/site-data.test.mjs` fails if one appears. Measured in the browser on
   2026-08-22: a sandboxed `srcdoc` iframe inherits the embedding page's policy. The
@@ -173,7 +180,7 @@ submitted; everything outside it is normal, maintained code.
 - The cloudscribe playground (`src/dashboard/src/lib/cloudscribe.ts`) runs the submitted
   compiler in the browser, not a reimplementation of it: `analyzer.js`, `optimizer.js` and
   `generator.js` are imported from `src/courses/` unmodified. It substitutes exactly one
-  thing, and only because a browser cannot do it — `parser.js` loads the grammar with
+  thing, and only because a browser cannot do it: `parser.js` loads the grammar with
   `fs.readFileSync`, so the playground imports `cloudscribe.ohm` with Vite's `?raw` and
   calls `ohm.grammar` itself. It also carries a local tree-printer in place of
   `graph-stringify`. Anything beyond that substitution would make the page lie about what
@@ -183,13 +190,13 @@ submitted; everything outside it is normal, maintained code.
   therefore cannot be imported by plain Node, so the test that checks it reads it as text.
 - The inline embed reads out of `src/courses/` and writes nothing back. It also cannot
   resolve `Compound-Interest-Calculator/index.html`'s reference to `interest.jpg`, because
-  the file is `Interest.jpeg` — a real defect in the submitted work. The embed rewrites
+  the file is `Interest.jpeg`, a real defect in the submitted work. The embed rewrites
   that one `src` at build time; the coursework keeps the broken reference.
 - Astro rewrites `import.meta.url` in the built output, so a build-time file read must
   anchor on the repository root found by walking up from `process.cwd()`, not on the
   component's own URL. `src/dashboard/src/lib/repo.ts` is the only thing that reads the
   coursework, and it only reads.
-- The dashboard's data files make checkable claims — a path, a line range, a line count —
+- The dashboard's data files make checkable claims (a path, a line range, a line count),
   and every one of them can rot without breaking the build. `tests/site-data.test.mjs`
   checks them against the tree instead: paths exist, quoted ranges are inside their file,
   `courses.ts` and `src/courses/` agree both ways, no program claims to embed a
@@ -205,7 +212,7 @@ submitted; everything outside it is normal, maintained code.
   reader without repository access sees first. Two tests now pin it: the wiki's mode table
   must equal the `embed` union in `programs.ts` by set comparison, and `README.md` must not
   name a WebContainer. A test that parses a declaration has to refuse an empty parse
-  first — two empty sets compare equal, so the guard would otherwise go green while
+  first: two empty sets compare equal, so the guard would otherwise go green while
   measuring nothing.
 - Published numbers come from `lmucs stats`, never from a hand count. It counts tracked
   files only, so an untracked scratch file cannot inflate a total, and it excludes

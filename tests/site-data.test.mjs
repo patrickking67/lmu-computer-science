@@ -24,6 +24,7 @@ const { programs } = await data('programs.ts');
 const { courses, liveRepos, toolkit } = await data('courses.ts');
 const { snippets } = await data('snippets.ts');
 const { languages, totalLines, figures } = await data('stats.ts');
+const { highlights } = await data('highlights.ts');
 
 const inRepo = (p) => path.join(root, p);
 const courseCodes = new Set(courses.map((c) => c.code));
@@ -392,5 +393,21 @@ test('live repositories are labelled with a visibility we can honour', () => {
       !external.has(`patrickking67/${live.repo}`),
       `${live.repo} is private but sent to StackBlitz, which cannot open it`,
     );
+  }
+});
+
+test('the front-page highlights point at real courses, paths and programs', () => {
+  assert.ok(highlights.length > 0, 'no highlights parsed; this test is checking nothing');
+  // The Programs page derives each anchor from the program name the same way.
+  const anchor = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const runnable = new Set(programs.filter((p) => p.embed !== 'source').map((p) => anchor(p.name)));
+  for (const h of highlights) {
+    for (const code of h.courses) {
+      assert.ok(courseCodes.has(code), `${h.name}: ${code} is not a course`);
+    }
+    assert.ok(tracked(h.path).length > 0, `${h.name}: ${h.path} holds no tracked files`);
+    if (h.program) {
+      assert.ok(runnable.has(h.program), `${h.name}: #${h.program} is not a runnable program anchor`);
+    }
   }
 });

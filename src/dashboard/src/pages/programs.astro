@@ -5,6 +5,7 @@ import Tags from '../components/Tags.astro';
 import { programs } from '../data/programs';
 import { href, treeInRepo } from '../lib/site';
 
+const anchor = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const runnable = programs.filter((p) => p.embed !== 'source');
 const rest = programs.filter((p) => p.embed === 'source');
 const inPage = programs.filter((p) => p.embed === 'inline' || p.embed === 'playground').length;
@@ -31,7 +32,7 @@ const badge: Record<string, string> = {
 
     <ul class="mt-16 space-y-16">
       {runnable.map((p) => (
-        <li>
+        <li id={anchor(p.name)} class="scroll-mt-24">
           <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
             <h2 class="display text-2xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 28">{p.name}</h2>
             <a href={href(`courses/${p.course.toLowerCase().replace(' ', '-')}`)} class="eyebrow hover:underline">{p.course}</a>
@@ -67,7 +68,8 @@ const badge: Record<string, string> = {
     <ul class="mt-10 space-y-4">
       {rest.map((p) => (
         <li
-          class="p-6 rounded-2xl border lift"
+          id={anchor(p.name)}
+          class="p-6 rounded-2xl border lift scroll-mt-24"
           style="border-color: var(--line); background: var(--surface)"
         >
           <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">

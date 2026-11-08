@@ -3,7 +3,7 @@
  *
  * Every number here comes from `lmucs stats`, which counts lines in tracked
  * files under src/courses by extension and ignores lockfiles. Re-run it
- * rather than editing these by hand — tests/site-data.test.mjs checks the
+ * rather than editing these by hand; tests/site-data.test.mjs checks the
  * totals against a fresh count and fails when they drift.
  *
  * Last counted 2026-08-22.
@@ -36,7 +36,7 @@ export const totalLines = languages.reduce((n, l) => n + l.lines, 0);
 /** The headline figures. Each one is checked by a test. */
 export const figures = [
   { value: '15', label: 'courses', note: 'Fall 2021 – Spring 2025' },
-  { value: '18', label: 'languages', note: 'everything with a line count — HTML, CSS and assembly included' },
+  { value: '18', label: 'languages', note: 'everything with a line count, including HTML, CSS and assembly' },
   { value: totalLines.toLocaleString('en-US'), label: 'lines of coursework', note: 'tracked files under src/courses' },
   { value: '143', label: 'tests in CloudScribe', note: '99.66% coverage, and still two defects in the back end' },
 ] as const;

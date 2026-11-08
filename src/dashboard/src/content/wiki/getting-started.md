@@ -22,7 +22,7 @@ scripts/         the repository check, also run in CI
 ## One rule
 
 Coursework in `src/courses/` is submitted work and stays as submitted. It does not get
-refactored, reformatted, or modernised — a test that fails because the original code was
+refactored, reformatted, or modernised. A test that fails because the original code was
 wrong is telling you something true, and editing it to pass just deletes the information.
 
 Fix the environment freely: pins, toolchains, build files, docs. Leave the answers alone.

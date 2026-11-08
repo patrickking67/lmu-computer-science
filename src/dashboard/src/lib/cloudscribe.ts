@@ -1,7 +1,7 @@
 /**
  * CloudScribe, running in the browser.
  *
- * This imports the submitted compiler directly out of src/courses — the real
+ * This imports the submitted compiler directly out of src/courses: the real
  * analyzer.js, optimizer.js and generator.js, 727 lines of it, unmodified.
  *
  * Only one thing is substituted. `parser.js` builds its grammar with

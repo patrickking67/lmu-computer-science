@@ -9,7 +9,7 @@ interface Props {
 }
 const {
   title,
-  description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages — with the programs running on the page.',
+  description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages, with the programs running on the page.',
 } = Astro.props as Props;
 
 const nav = [
@@ -88,7 +88,7 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
           document.documentElement.dataset.theme = stored;
           window.__paintChrome(stored);
         }
-      } catch (e) { /* private mode — fall through to prefers-color-scheme */ }
+      } catch (e) { /* private mode: fall through to prefers-color-scheme */ }
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -137,7 +137,7 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
 
     <footer class="border-t mt-28" style="border-color: var(--line)">
       <div class="mx-auto max-w-5xl px-4 sm:px-6 py-12 text-sm space-y-3" style="color: var(--muted)">
-        <p>{site.owner} — BS Computer Science, Loyola Marymount University, {site.years}.</p>
+        <p>{site.owner}, BS Computer Science, Loyola Marymount University, {site.years}.</p>
         <p>Advised by <strong style="color: var(--ink)">{site.advisor}</strong>, who taught most of what is in here.</p>
         <p class="flex flex-wrap gap-5 pt-2">
           <a href={site.github} class="hover:underline">GitHub</a>

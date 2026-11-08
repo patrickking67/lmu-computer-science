@@ -3,7 +3,7 @@
  *
  * The seven `.csc` files are the ones committed with the compiler, imported at
  * build time so they cannot drift from the coursework. The last entry is not
- * coursework — it is written for this page, and labelled as such, because
+ * coursework; it is written for this page, and labelled as such, because
  * every committed example fails at the generate stage and there would
  * otherwise be no way to see the back end work at all.
  */

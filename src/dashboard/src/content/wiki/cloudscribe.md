@@ -25,11 +25,11 @@ definition can be read on its own.
 
 **Analyse** walks the parse tree and builds the AST, resolving names against a scope chain
 and attaching types as it goes. This is where undeclared variables, type mismatches, and
-bad call arities are caught — all of it before a single line of output exists.
+bad call arities are caught, all of it before a single line of output exists.
 
 **Optimise** was meant to do constant folding, dead-branch elimination and identity
 simplification. It does the first one. `1 + 2` becomes `3`. `x + 0` does not become `x`,
-and `if false { … }` does not disappear — it is emitted verbatim. See below.
+and `if false { … }` does not disappear; it is emitted verbatim. See below.
 
 **Generate** emits JavaScript, with a fresh-name generator so that a cloudscribe variable
 can never collide with a JavaScript keyword or a runtime helper.
@@ -48,7 +48,7 @@ Both numbers are true. Neither is worth much, and finding out why is the most us
 this project taught me.
 
 Building the playground on the Programs page meant running the compiler outside its test
-suite for the first time — on its own example programs, end to end. Every one of them
+suite for the first time: on its own example programs, end to end. Every one of them
 fails:
 
 ```bash
@@ -69,16 +69,16 @@ the optimiser's own `visitBlock` filters it out. So:
 
 | Source | Generated |
 |---|---|
-| `t = t + i;` | `t_0 = t_0 + i_1;` — correct, because nothing visits an assignment |
-| `print(x + 1);` | `console.log();` — the argument is gone |
-| `let y = x + 1;` | `let y_1 = ;` — not valid JavaScript |
-| `while n > 0 { … }` | nothing at all — the loop is deleted |
+| `t = t + i;` | `t_0 = t_0 + i_1;`: correct, because nothing visits an assignment |
+| `print(x + 1);` | `console.log();`: the argument is gone |
+| `let y = x + 1;` | `let y_1 = ;`: not valid JavaScript |
+| `while n > 0 { … }` | nothing at all; the loop is deleted |
 
 The optimiser only breaks what it tries to optimise. Everything it has no visitor for
 passes through untouched and works.
 
 And `print(1 + 2)` emits `console.log(3)` perfectly, because the folding path runs before
-the generator ever sees a binary expression — which is exactly why a generator test suite
+the generator ever sees a binary expression, which is exactly why a generator test suite
 written against literal arithmetic goes green over all of it.
 
 Statement coverage measures which lines ran. It cannot tell you whether what they returned
@@ -86,7 +86,7 @@ was right, and every one of these is a function that ran and returned the wrong 
 
 None of it is repaired. Editing submitted work to make it look better would delete the
 only interesting thing here. It is written up in `docs/building.md`, pinned by tests in
-`tests/site-data.test.mjs` so it cannot silently change, and visible in the playground —
+`tests/site-data.test.mjs` so it cannot silently change, and visible in the playground:
 switch to the Generate tab and watch it throw.
 
 ## Try it

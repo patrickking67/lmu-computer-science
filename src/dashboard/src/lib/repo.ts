@@ -3,7 +3,7 @@
  * the coursework instead of copying it.
  *
  * Astro rewrites `import.meta.url` in the built output, so a component cannot
- * resolve paths against its own location — by the time the code runs it lives
+ * resolve paths against its own location; by the time the code runs it lives
  * in dist/.prerender/chunks. Anchor on the repository root instead, found by
  * walking up from the working directory until src/courses appears.
  *

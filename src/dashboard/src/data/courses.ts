@@ -1,6 +1,6 @@
 /**
  * The fifteen CMSI courses. Terms come from the author's course audit, not
- * from instructor course pages — all four checked disagreed with the
+ * from instructor course pages; all four checked disagreed with the
  * enrolment term. Titles are the LMU Academic Bulletin titles.
  *
  * Grades are deliberately absent. They live in docs/record.md; this is a
@@ -24,7 +24,7 @@ export const courses: Course[] = [
   {
     code: 'CMSI 1010', slug: 'cmsi-1010', title: 'Computer Programming Laboratory', term: 'Fall 2021',
     blurb:
-      'Where it started. Control flow, functions, decomposition, and the habit — enforced from week one — of writing the test before you trust the answer.',
+      'Where it started. Control flow, functions, decomposition, and the habit, enforced from week one, of writing the test before you trust the answer.',
     work: null, stack: ['Python'],
   },
   {
@@ -39,16 +39,16 @@ export const courses: Course[] = [
       'Four front ends built end to end, from a calculator with no dependencies at all to a multi-user application with real accounts. myGainz came out of this one and is still running.',
     work: 'myGainz and 3 web apps', stack: ['React', 'Firebase', 'Firestore', 'Tailwind', 'HTML', 'CSS'],
     highlights: [
-      'myGainz — training log on Firebase Auth and Firestore',
-      'Blog Application — multi-user posts, ownership enforced server-side',
-      'Artist Data API — MusicBrainz queries with disambiguation',
-      'Compound Interest Calculator — three files, no build step',
+      'myGainz: training log on Firebase Auth and Firestore',
+      'Blog Application: multi-user posts, ownership enforced server-side',
+      'Artist Data API: MusicBrainz queries with disambiguation',
+      'Compound Interest Calculator: three files, no build step',
     ],
   },
   {
     code: 'CMSI 2120', slug: 'cmsi-2120', title: 'Data Structures and Applications', term: 'Spring 2022',
     blurb:
-      'Lists, trees, hash tables and graphs, and the part that matters — what each one costs, and how expensive it is to have chosen wrong three months later.',
+      'Lists, trees, hash tables and graphs, and the part that matters: what each one costs, and how expensive it is to have chosen wrong three months later.',
     work: null, stack: ['Java'],
   },
   {
@@ -57,11 +57,11 @@ export const courses: Course[] = [
       'Five projects, 27 Java sources, each one a classical algorithm implemented rather than described: A* over a grid with constraints, Huffman coding, Damerau–Levenshtein edit distance, and minimax with alpha–beta pruning.',
     work: '5 projects, 27 Java sources', stack: ['Java', 'JUnit', 'Maven'],
     highlights: [
-      'Pathfinder — A* with a consistent heuristic over constrained grids',
-      'Huffman Coding Compression — encoder, decoder and a bit-level trie',
-      'Distle — edit-distance table with transposition, and a word-guessing agent on top',
-      'Tic Tac Toe — minimax with alpha–beta pruning',
-      'Classification — supervised learning against a held-out set',
+      'Pathfinder: A* with a consistent heuristic over constrained grids',
+      'Huffman Coding Compression: encoder, decoder and a bit-level trie',
+      'Distle: edit-distance table with transposition, and a word-guessing agent on top',
+      'Tic Tac Toe: minimax with alpha–beta pruning',
+      'Classification: supervised learning against a held-out set',
     ],
   },
   {
@@ -94,7 +94,7 @@ export const courses: Course[] = [
       'Seven projects in Rust, working down the stack rather than reading about it: subnet arithmetic by hand, then sockets, then two peers moving a file between them with no server in the middle.',
     work: '7 projects, Rust', stack: ['Rust', 'Cargo', 'React', 'TCP/IP'],
     highlights: [
-      'Subnet calculator — network, broadcast, usable range and CIDR, from bit operations',
+      'Subnet calculator: network, broadcast, usable range and CIDR, from bit operations',
       'Peer-to-peer file transfer over raw sockets, with a React front end',
       'Socket programming exercises across the transport layer',
     ],
@@ -102,7 +102,7 @@ export const courses: Course[] = [
   {
     code: 'CMSI 3751', slug: 'cmsi-3751', title: 'Game Design', term: 'Fall 2023',
     blurb:
-      'Mechanics, systems and level design, with playtesting treated as a method rather than a formality — the only course here where the failure mode is "technically works, nobody enjoys it".',
+      'Mechanics, systems and level design, with playtesting treated as a method rather than a formality. It is the only course here where the failure mode is "technically works, nobody enjoys it".',
     work: null, stack: [],
   },
   {
@@ -123,11 +123,11 @@ export const courses: Course[] = [
   {
     code: 'CMSI 3802', slug: 'cmsi-3802', title: 'Programming Language Concepts and Implementation', term: 'Spring 2025',
     blurb:
-      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through five stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and a generator emits. The playground on the Programs page runs that compiler in your browser — including the two back-end defects a 99.66%-coverage test suite never caught.',
+      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through five stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and a generator emits. The playground on the Programs page runs that compiler in your browser, including the two back-end defects a 99.66%-coverage test suite never caught.',
     work: 'CloudScribe compiler', stack: ['Ohm', 'JavaScript', 'Node', 'Mocha', 'c8'],
     highlights: [
       'Five stages: parse, analyse, optimise, generate, emit',
-      '143 tests holding 99.66% statement coverage — over a back end that is broken',
+      '143 tests holding 99.66% statement coverage, over a back end that is broken',
       'Seven example programs, all of which parse, analyse and optimise',
       'None of which reach JavaScript: the generator has no case for task',
       'Still developed in its own repository, 46 commits past the course snapshot',
@@ -192,7 +192,7 @@ export const liveRepos: LiveRepo[] = [
 ];
 
 /**
- * Languages and tools, weighted by how much was actually written in each —
+ * Languages and tools, weighted by how much was actually written in each:
  * 3 is sustained work across several courses, 1 is one project or one
  * exercise set. Exposure without code does not appear here at all.
  */

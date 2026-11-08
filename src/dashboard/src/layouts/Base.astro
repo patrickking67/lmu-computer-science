@@ -34,6 +34,8 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.owner} />
+    <link rel="canonical" href={pageUrl} />
     {/* Shared links had no card at all, so every paste of this site rendered as a
         bare URL. The image is a static asset in public/ rather than a generated
         route: it changes about as often as the wordmark does. */}
@@ -42,11 +44,14 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={cardUrl} />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="640" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={cardUrl} />
+    <meta name="twitter:image:alt" content={`${site.name}: coursework and running programs from ${site.years}`} />
+    <meta property="og:image:alt" content={`${site.name}: coursework and running programs from ${site.years}`} />
     {/* Deliberately narrow. A script-src directive cannot go here: a sandboxed
         srcdoc iframe inherits this policy, the inline embed and the playground's
         Run stage both execute inline script inside one, and the playground's

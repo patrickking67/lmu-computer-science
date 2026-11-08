@@ -6,7 +6,10 @@ import Snippet from '../components/Snippet.astro';
 import { courses, liveRepos } from '../data/courses';
 import { figures } from '../data/stats';
 import { snippets } from '../data/snippets';
-import { href } from '../lib/site';
+import { highlights } from '../data/highlights';
+import { href, treeInRepo } from '../lib/site';
+
+const slug = (code: string) => code.toLowerCase().replace(' ', '-');
 
 const built = courses.filter((c) => c.work);
 // Two on the front page. The rest are on the courses they came from.
@@ -14,7 +17,7 @@ const featured = snippets.slice(0, 2);
 ---
 <Base title={null}>
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-8">
-    <p class="eyebrow settle" style="animation-delay: 60ms">Loyola Marymount University · Fall 2021 – Spring 2025</p>
+    <p class="eyebrow settle" style="animation-delay: 60ms">Loyola Marymount University, Fall 2021 to Spring 2025</p>
     <h1 class="display text-[clamp(2.75rem,7vw,5rem)] mt-5 max-w-3xl settle" style="animation-delay: 140ms">
       A compiler, a network stack, and thirteen languages.
     </h1>
@@ -23,16 +26,58 @@ const featured = snippets.slice(0, 2);
       programs that fit in a browser tab run right here on the page.
     </p>
     <div class="mt-9 flex flex-wrap gap-3 settle" style="animation-delay: 320ms">
-      <a href={href('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run one now</a>
-      <a href={href('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">See the coursework</a>
+      <a href={href('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run the programs</a>
+      <a href={href('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">Browse the courses</a>
     </div>
     <Toolkit />
   </section>
 
+
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24" aria-labelledby="start-here">
+    <h2 id="start-here" class="display text-3xl">Start with these three</h2>
+    <p class="mt-3 mb-10 max-w-xl" style="color: var(--muted)">
+      A compiler, a network stack and a senior project. Each one is in this
+      repository as it was handed in.
+    </p>
+    <ul>
+      {highlights.map((h) => (
+        <li class="grid md:grid-cols-[11rem_1fr] gap-x-10 gap-y-3 py-10 border-t" style="border-color: var(--line)">
+          <div class="text-sm">
+            <p class="font-mono flex flex-wrap gap-x-3">
+              {h.courses.map((code) => (
+                <a href={href(`courses/${slug(code)}`)} class="hover:underline" style="color: var(--ink)">{code}</a>
+              ))}
+            </p>
+            <p class="mt-1" style="color: var(--muted)">{h.term}</p>
+          </div>
+          <div class="max-w-2xl">
+            <p class="eyebrow">{h.kind}</p>
+            <h3 class="display text-[clamp(1.875rem,4vw,2.75rem)] mt-1" style="font-variation-settings: 'SOFT' 40, 'WONK' 1, 'opsz' 72">{h.name}</h3>
+            <p class="mt-4 leading-relaxed" style="color: var(--muted)">{h.summary}</p>
+            <ul class="mt-4 space-y-1.5 text-sm">
+              {h.facts.map((fact) => (
+                <li class="flex gap-3">
+                  <span aria-hidden="true" class="mt-[0.55em] h-1.5 w-1.5 shrink-0" style="background: var(--ink)"></span>
+                  <span>{fact}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+              {h.program && (
+                <a href={href(`programs#${h.program}`)} class="underline underline-offset-4 decoration-1 hover:decoration-2">Run it in your browser</a>
+              )}
+              <a href={treeInRepo(h.path)} class="underline underline-offset-4 decoration-1 hover:decoration-2">Read the source</a>
+            </p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
     <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {figures.map((f, i) => (
-        <div class="reveal" style={`transition-delay: ${i * 70}ms`}>
+      {figures.map((f) => (
+        <div>
           <dt class="eyebrow">{f.label}</dt>
           <dd class="display text-[clamp(2rem,4.5vw,2.75rem)] mt-2" style="font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 60">{f.value}</dd>
           <p class="mt-2 text-xs leading-relaxed" style="color: var(--muted)">{f.note}</p>
@@ -42,16 +87,16 @@ const featured = snippets.slice(0, 2);
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
-    <h2 class="display text-3xl reveal">What I built</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">Every course that left code behind</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Eight of the fifteen courses produced something that still runs.
     </p>
     <div class="grid sm:grid-cols-2 gap-4">
-      {built.map((c, i) => (
+      {built.map((c) => (
         <a
           href={href(`courses/${c.slug}`)}
-          class="reveal lift block p-6 rounded-2xl border"
-          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 45}ms`}
+          class="lift block p-6 rounded-2xl border"
+          style="border-color: var(--line); background: var(--surface)"
         >
           <div class="flex items-baseline justify-between gap-3">
             <span class="eyebrow">{c.code}</span>
@@ -66,35 +111,35 @@ const featured = snippets.slice(0, 2);
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
-    <h2 class="display text-3xl reveal">Some of it, up close</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">Some of it, up close</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Quoted straight out of the tree at build time, so none of it can drift from
       what is actually committed.
     </p>
     <div class="space-y-10">
       {featured.map((s) => (
-        <div class="reveal">
+        <div>
           <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{s.title}</h3>
           <p class="mt-2 mb-4 max-w-2xl text-sm leading-relaxed" style="color: var(--muted)">{s.caption}</p>
           <Snippet snippet={s} />
         </div>
       ))}
     </div>
-    <a href={href('programs')} class="mt-8 inline-block text-sm hover:underline reveal" style="color: var(--ink)">
-      More, and the programs that run →
+    <a href={href('programs')} class="mt-8 inline-block text-sm hover:underline" style="color: var(--ink)">
+      More snippets, and the programs that run
     </a>
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-12">
-    <h2 class="display text-3xl reveal">Still going</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">Still going</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Three projects outlived the course that started them.
     </p>
     <ul class="space-y-3">
-      {liveRepos.map((r, i) => (
+      {liveRepos.map((r) => (
         <li
-          class="reveal lift p-6 rounded-2xl border"
-          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 60}ms`}
+          class="lift p-6 rounded-2xl border"
+          style="border-color: var(--line); background: var(--surface)"
         >
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{r.name}</h3>
@@ -102,7 +147,7 @@ const featured = snippets.slice(0, 2);
             <span class="ml-auto text-[11px] px-2.5 py-1 rounded-full border" style="border-color: var(--line); color: var(--muted)">{r.visibility}</span>
           </div>
           <p class="mt-2.5 text-sm leading-relaxed max-w-2xl" style="color: var(--muted)">{r.blurb}</p>
-          <a href={r.url} class="mt-3 inline-block font-mono text-sm hover:underline" style="color: var(--ink)">{r.repo} →</a>
+          <a href={r.url} class="mt-3 inline-block font-mono text-sm hover:underline" style="color: var(--ink)">{r.repo}</a>
         </li>
       ))}
     </ul>

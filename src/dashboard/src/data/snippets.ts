@@ -22,7 +22,7 @@ export const snippets: Snippet[] = [
     course: 'CMSI 3802',
     path: 'src/courses/cmsi-3802/cloudscribe/examples/network_monitoring.csc',
     caption:
-      'CloudScribe source. A task is the top-level unit — a named block of work the compiler can check before anything touches a server. It type-checks, compiles to JavaScript, and runs.',
+      'CloudScribe source. A task is the top-level unit: a named block of work the compiler can check before anything touches a server. It type-checks, compiles to JavaScript, and runs.',
   },
   {
     title: 'The grammar it parses with',
@@ -30,7 +30,7 @@ export const snippets: Snippet[] = [
     path: 'src/courses/cmsi-3802/cloudscribe/src/cloudscribe.ohm',
     lines: [1, 24],
     caption:
-      'The front end, in Ohm. Every alternative gets a case label, and each label becomes a node the semantic pass can match on — which is what keeps the analyser a set of small functions rather than one enormous switch.',
+      'The front end, in Ohm. Every alternative gets a case label, and each label becomes a node the semantic pass can match on, which is what keeps the analyser a set of small functions rather than one enormous switch.',
   },
   {
     title: 'Making change, in Haskell',

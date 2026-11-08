@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem privately
+    url: https://github.com/patrickking67/lmu-computer-science/security/advisories/new
+    about: Credentials or anything else that should not be public. Please do not open an issue for these.

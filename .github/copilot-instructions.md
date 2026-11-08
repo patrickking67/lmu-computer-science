@@ -15,5 +15,5 @@ Non-negotiables, repeated here because they are easy to get wrong:
 
 Before completion:
 
-- Run `scripts/check-ai-config.sh`.
+- Run `./scripts/check.sh`.
 - Update `AGENTS.md` only when durable repository knowledge changes.

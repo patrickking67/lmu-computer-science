@@ -7,8 +7,8 @@
  *   inline      a few static files, read at build time and handed to a
  *               sandboxed iframe as srcdoc
  *   playground  the program's own compiler, bundled and run in this page
- *   external    it runs, but in a new tab — see the note on WebContainers
- *   source      nothing runs — a native toolchain, a private repository, or
+ *   external    it runs, but in a new tab (see the note on WebContainers)
+ *   source      nothing runs: a native toolchain, a private repository, or
  *               credentials that are nobody's business but the owner's
  *
  * There was a `container` mode that embedded a StackBlitz WebContainer in the
@@ -41,11 +41,11 @@ export const programs: Program[] = [
     course: 'CMSI 3802',
     path: 'src/courses/cmsi-3802/cloudscribe',
     blurb:
-      'A statically typed language for the kind of work that usually ends up in a fragile shell script — provisioning, deployment, scheduled jobs. Five stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and a generator emits JavaScript. The playground below is the submitted compiler itself, bundled and run in your browser.',
+      'A statically typed language for the kind of work that usually ends up in a fragile shell script: provisioning, deployment, scheduled jobs. Five stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and a generator emits JavaScript. The playground below is the submitted compiler itself, bundled and run in your browser.',
     stack: ['Ohm', 'JavaScript', 'Node 20'],
     embed: 'playground',
     source: 'https://github.com/patrickking67/cloudscribe',
-    note: 'The front end is solid — 143 tests, 99.66% statement coverage. The back end is not, and the playground shows it rather than hiding it: the generator has no case for task, so all seven committed examples throw before reaching JavaScript. Recorded in docs/building.md, and deliberately not repaired.',
+    note: 'The front end is solid: 143 tests, 99.66% statement coverage. The back end is not, and the playground shows it rather than hiding it: the generator has no case for task, so all seven committed examples throw before reaching JavaScript. Recorded in docs/building.md, and deliberately not repaired.',
   },
   {
     name: 'myGainz',
@@ -65,7 +65,7 @@ export const programs: Program[] = [
     course: 'CMSI 2021',
     path: 'src/courses/cmsi-2021/Compound-Interest-Calculator',
     blurb:
-      'Four inputs and two outputs, recomputed on every keystroke. No framework, no build step, no dependency — one HTML file, one stylesheet, one script, which is the entire point of where it sits in the curriculum.',
+      'Four inputs and two outputs, recomputed on every keystroke. No framework, no build step, no dependency: one HTML file, one stylesheet, one script, which is the entire point of where it sits in the curriculum.',
     stack: ['HTML', 'CSS', 'JavaScript'],
     embed: 'inline',
     note:
@@ -86,7 +86,7 @@ export const programs: Program[] = [
     course: 'CMSI 3550',
     path: 'src/courses/cmsi-3550/homework2_subcalc',
     blurb:
-      'Give it an address and a mask and it returns the network and broadcast addresses, the usable host range, and the CIDR form — the arithmetic you do by hand once and then never want to again.',
+      'Give it an address and a mask and it returns the network and broadcast addresses, the usable host range, and the CIDR form. The arithmetic you do by hand once and then never want to again.',
     stack: ['Rust'],
     embed: 'source',
     note: 'Compiled Rust. Needs cargo.',
@@ -109,14 +109,14 @@ export const programs: Program[] = [
       'Multi-user blogging with real accounts: sign-up, sign-in, and posts owned by whoever wrote them, stored in Firestore and readable by everyone else.',
     stack: ['React', 'Firebase'],
     embed: 'source',
-    note: 'Same as myGainz — it needs a Firebase project pointed at it.',
+    note: 'Same as myGainz: it needs a Firebase project pointed at it.',
   },
   {
     name: 'Artist Data API',
     course: 'CMSI 2021',
     path: 'src/courses/cmsi-2021/Artist-Data-API',
     blurb:
-      'Type a musician’s name and it queries MusicBrainz, disambiguates the result, and lays out the catalogue — releases, dates, and the aliases the same artist has recorded under.',
+      'Type a musician’s name and it queries MusicBrainz, disambiguates the result, and lays out the catalogue: releases, dates, and the aliases the same artist has recorded under.',
     stack: ['React', 'MusicBrainz'],
     embed: 'source',
     note: 'Lives in this repository, which is not public, so no container can reach it.',
@@ -126,7 +126,7 @@ export const programs: Program[] = [
     course: 'CMSI 3801',
     path: 'src/courses/cmsi-3801',
     blurb:
-      'One problem set, solved thirteen times over — C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java. The problems stop being the interesting part around the fourth language; what each one makes easy or impossible is.',
+      'One problem set, solved thirteen times over: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java. The problems stop being the interesting part around the fourth language; what each one makes easy or impossible is.',
     stack: ['13 languages'],
     embed: 'source',
     note: 'Thirteen toolchains. Six were verified end to end; the commands are in docs/building.md.',

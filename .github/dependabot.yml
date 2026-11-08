@@ -1,0 +1,24 @@
+# Maintained code only. Course projects under src/courses are submitted work
+# and are never upgraded (see AGENTS.md), so Dependabot watches the site and
+# the workflows, nothing else. The lmucs package has no runtime dependencies.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /src/dashboard
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      dashboard-minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]

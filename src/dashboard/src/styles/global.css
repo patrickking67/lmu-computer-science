@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   Greyscale. No hue anywhere — hierarchy comes from value,
+   Greyscale. No hue anywhere: hierarchy comes from value,
    weight and scale alone, which is a harder discipline and a
    calmer result. A single near-black/near-white pair does the
    work an accent colour would normally do.
@@ -21,7 +21,7 @@
   --line-soft:oklch(93.8% 0 0);
   --ink:      oklch(19% 0 0);
   --muted:    oklch(48% 0 0);
-  --faint:    oklch(64% 0 0);
+  --faint:    oklch(54% 0 0);   /* 4.9:1 on --paper; was 64%, 3.2:1 */
   --mark:     oklch(19% 0 0);
   --depth: 0 1px 2px oklch(0% 0 0 / 0.04), 0 10px 34px oklch(0% 0 0 / 0.06);
 }
@@ -35,7 +35,7 @@
     --line-soft:oklch(23.5% 0 0);
     --ink:      oklch(96% 0 0);
     --muted:    oklch(70% 0 0);
-    --faint:    oklch(54% 0 0);
+    --faint:    oklch(62% 0 0); /* 5.4:1 on --paper; was 54%, 3.9:1 */
     --mark:     oklch(96% 0 0);
     --depth: 0 1px 2px oklch(0% 0 0 / 0.4), 0 12px 40px oklch(0% 0 0 / 0.3);
   }
@@ -49,7 +49,7 @@
   --line-soft:oklch(23.5% 0 0);
   --ink:      oklch(96% 0 0);
   --muted:    oklch(70% 0 0);
-  --faint:    oklch(54% 0 0);
+  --faint:    oklch(62% 0 0);
   --mark:     oklch(96% 0 0);
   --depth: 0 1px 2px oklch(0% 0 0 / 0.4), 0 12px 40px oklch(0% 0 0 / 0.3);
 }
@@ -74,16 +74,21 @@ body {
 }
 
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.685rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--faint);
+  /* Sentence case in the body face. It was tracked-out monospace capitals over
+     every heading, which read as template chrome and was the faintest text on
+     the page. Course codes keep the mono face where they appear as codes. */
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted);
 }
 
 ::selection { background: var(--ink); color: var(--paper); }
 
-a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+a:focus-visible, button:focus-visible, summary:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible,
+[tabindex]:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
   border-radius: 4px;
@@ -103,7 +108,7 @@ a, button, select, summary, [role="tab"], [tabindex] {
 
 /* ── Wordmark ────────────────────────────────────────────────
    Shield, then LMU set quiet and wide, then CS in Fraunces at
-   high optical size with a tight negative track — so the three
+   high optical size with a tight negative track, so the three
    parts read as institution, discipline and mark rather than
    one undifferentiated word.                                  */
 .wordmark {
@@ -137,6 +142,14 @@ a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg);
   margin-left: -0.06em;
 }
 
+/* At phone width the nav has 343px for the mark, four links and the theme
+   button. With the full wordmark, Contact sat past the edge of a scroller
+   whose scrollbar is hidden, so nothing said it was there. Below 640px the
+   header keeps the shield and CS and drops the quiet LMU lettering. */
+@media (max-width: 639px) {
+  header .wordmark .lmu { display: none; }
+}
+
 /* ── Motion ──────────────────────────────────────────────── */
 @keyframes settle { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
 @keyframes fade   { from { opacity: 0 } to { opacity: 1 } }
@@ -144,14 +157,12 @@ a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg);
 .settle { animation: settle 0.8s cubic-bezier(0.16, 0.84, 0.28, 1) backwards; }
 .fade   { animation: fade 1s ease backwards; }
 
-.reveal {
-  opacity: 0; transform: translateY(18px);
-  transition: opacity 0.85s cubic-bezier(0.16,0.84,0.28,1), transform 0.85s cubic-bezier(0.16,0.84,0.28,1);
-}
-.reveal.shown { opacity: 1; transform: none; }
-
-.lift { transition: transform 0.4s cubic-bezier(0.16,0.84,0.28,1), box-shadow 0.4s ease, border-color 0.4s ease; }
-.lift:hover { transform: translateY(-2px); box-shadow: var(--depth); border-color: var(--faint); }
+/* Hover answers the pointer and nothing more: the border darkens. Cards used
+   to float up with a shadow, and scroll-in fades ran on every section, which
+   spent the page's motion on nothing. The hero's load sequence is the one
+   orchestrated moment left. */
+.lift { transition: border-color 0.25s ease; }
+.lift:hover, .lift:focus-visible { border-color: var(--ink); }
 
 .rule { height: 1px; background: var(--line); border: 0; }
 
@@ -164,5 +175,4 @@ a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg);
     animation-duration: 0.01ms !important; animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
 }

@@ -24,6 +24,8 @@ const { programs } = await data('programs.ts');
 const { courses, liveRepos, toolkit } = await data('courses.ts');
 const { snippets } = await data('snippets.ts');
 const { languages, totalLines, figures } = await data('stats.ts');
+const { highlights } = await data('highlights.ts');
+const { languageIndex, citedCodes } = await import(path.join(root, 'src/dashboard/src/lib/languages.ts'));
 
 const inRepo = (p) => path.join(root, p);
 const courseCodes = new Set(courses.map((c) => c.code));
@@ -392,5 +394,60 @@ test('live repositories are labelled with a visibility we can honour', () => {
       !external.has(`patrickking67/${live.repo}`),
       `${live.repo} is private but sent to StackBlitz, which cannot open it`,
     );
+  }
+});
+
+test('the front-page highlights point at real courses, paths and programs', () => {
+  assert.ok(highlights.length > 0, 'no highlights parsed; this test is checking nothing');
+  // The Programs page derives each anchor from the program name the same way.
+  const anchor = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const runnable = new Set(programs.filter((p) => p.embed !== 'source').map((p) => anchor(p.name)));
+  for (const h of highlights) {
+    for (const code of h.courses) {
+      assert.ok(courseCodes.has(code), `${h.name}: ${code} is not a course`);
+    }
+    assert.ok(tracked(h.path).length > 0, `${h.name}: ${h.path} holds no tracked files`);
+    if (h.program) {
+      assert.ok(runnable.has(h.program), `${h.name}: #${h.program} is not a runnable program anchor`);
+    }
+  }
+});
+
+test('every counted language leads to at least one course', () => {
+  assert.deepEqual(citedCodes('CMSI 2021, 3801'), ['CMSI 2021', 'CMSI 3801']);
+  assert.deepEqual(citedCodes('this site'), []);
+  const index = languageIndex(languages, courses, toolkit, programs);
+  assert.equal(index.length, languages.length, 'the index dropped a language');
+  for (const entry of index) {
+    assert.ok(entry.courses.length > 0, `${entry.name} has a line count but no course on the Courses page`);
+  }
+});
+
+test('llms.txt is served from the site root, matches the repository copy, and links resolve', () => {
+  const rootCopy = fs.readFileSync(inRepo('llms.txt'), 'utf8');
+  const served = fs.readFileSync(inRepo('src/dashboard/public/llms.txt'), 'utf8');
+  assert.equal(served, rootCopy, 'src/dashboard/public/llms.txt and llms.txt have drifted');
+  assert.match(rootCopy, /^# .+\n\n> .+/, 'llms.txt must open with an H1 and a > summary');
+
+  const links = [...rootCopy.matchAll(/\]\((https:\/\/[^)\s]+)\)/g)].map((m) => m[1]);
+  assert.ok(links.length >= 5, `llms.txt parsed to ${links.length} link(s); fix the parse`);
+
+  const repoUrl = 'https://github.com/patrickking67/lmu-computer-science/';
+  const siteUrl = 'https://patrickking67.github.io/lmu-computer-science/';
+  const wiki = new Set(tracked('src/dashboard/src/content/wiki').map((p) => path.basename(p, '.md')));
+  const sections = new Set(['', 'programs/', 'courses/', 'wiki/', 'contact/']);
+  for (const link of links) {
+    if (link.startsWith(repoUrl)) {
+      const target = link.slice(repoUrl.length).replace(/^(blob|tree)\/main\//, '');
+      assert.ok(tracked(target).length > 0, `llms.txt links to ${target}, which is not tracked`);
+    } else if (link.startsWith(siteUrl)) {
+      const route = link.slice(siteUrl.length);
+      const page = route.match(/^wiki\/([\w-]+)\/$/);
+      const course = route.match(/^courses\/(cmsi-\d{4})\/$/);
+      assert.ok(
+        sections.has(route) || (page && wiki.has(page[1])) || (course && courseCodes.has(course[1].toUpperCase().replace('-', ' '))),
+        `llms.txt links to /${route}, which the site does not build`,
+      );
+    }
   }
 });

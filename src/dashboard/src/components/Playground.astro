@@ -126,8 +126,8 @@ const initial = examples[0];
     const explain = (error: string): string => {
       if (error.includes('TaskDeclaration')) {
         return 'This is a real defect in the submitted compiler, not a problem with the page. '
-          + 'generator.js has no case for TaskDeclaration, so every committed example — all of '
-          + 'which wrap their work in a task — throws here. The analyser handles task fine; the '
+          + 'generator.js has no case for TaskDeclaration, so every committed example (all of '
+          + 'which wrap their work in a task) throws here. The analyser handles task fine; the '
           + 'generator was never tested against one. Pick the "no task" program to see the back end work.';
       }
       return 'The compiler stopped here. Parse, analyse and optimise run in your browser on the '

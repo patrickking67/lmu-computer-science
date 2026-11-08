@@ -9,7 +9,7 @@ interface Props {
 }
 const {
   title,
-  description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages — with the programs running on the page.',
+  description = 'Computer science at Loyola Marymount University, Fall 2021 to Spring 2025. A compiler, a network stack, and thirteen languages, with the programs running on the page.',
 } = Astro.props as Props;
 
 const nav = [
@@ -34,6 +34,8 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.owner} />
+    <link rel="canonical" href={pageUrl} />
     {/* Shared links had no card at all, so every paste of this site rendered as a
         bare URL. The image is a static asset in public/ rather than a generated
         route: it changes about as often as the wordmark does. */}
@@ -42,11 +44,14 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={cardUrl} />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="640" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={cardUrl} />
+    <meta name="twitter:image:alt" content={`${site.name}: coursework and running programs from ${site.years}`} />
+    <meta property="og:image:alt" content={`${site.name}: coursework and running programs from ${site.years}`} />
     {/* Deliberately narrow. A script-src directive cannot go here: a sandboxed
         srcdoc iframe inherits this policy, the inline embed and the playground's
         Run stage both execute inline script inside one, and the playground's
@@ -88,7 +93,7 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
           document.documentElement.dataset.theme = stored;
           window.__paintChrome(stored);
         }
-      } catch (e) { /* private mode — fall through to prefers-color-scheme */ }
+      } catch (e) { /* private mode: fall through to prefers-color-scheme */ }
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -137,7 +142,7 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
 
     <footer class="border-t mt-28" style="border-color: var(--line)">
       <div class="mx-auto max-w-5xl px-4 sm:px-6 py-12 text-sm space-y-3" style="color: var(--muted)">
-        <p>{site.owner} — BS Computer Science, Loyola Marymount University, {site.years}.</p>
+        <p>{site.owner}, BS Computer Science, Loyola Marymount University, {site.years}.</p>
         <p>Advised by <strong style="color: var(--ink)">{site.advisor}</strong>, who taught most of what is in here.</p>
         <p class="flex flex-wrap gap-5 pt-2">
           <a href={site.github} class="hover:underline">GitHub</a>
@@ -169,22 +174,6 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
         label(next);
         try { localStorage.setItem('theme', next); } catch (e) { /* nothing to persist to */ }
       });
-
-      // Scroll reveal. Without IntersectionObserver, show everything rather
-      // than leaving the page permanently blank.
-      const revealed = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) {
-        revealed.forEach((el) => el.classList.add('shown'));
-      } else {
-        const observer = new IntersectionObserver((entries) => {
-          for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
-            entry.target.classList.add('shown');
-            observer.unobserve(entry.target);
-          }
-        }, { rootMargin: '0px 0px -12% 0px' });
-        revealed.forEach((el) => observer.observe(el));
-      }
     </script>
   </body>
 </html>

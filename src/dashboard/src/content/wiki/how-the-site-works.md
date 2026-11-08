@@ -10,7 +10,7 @@ The dashboard makes claims about this repository. It says a program lives at a
 path, that a snippet quotes particular lines of a particular file, that there
 are 15,950 lines of coursework here. Every one of those can go stale without
 breaking anything: a file moves, a course is renamed, a language is added, and
-the page keeps rendering — now wrong.
+the page keeps rendering, now wrong.
 
 So nothing on the site is retyped from the tree. It is read out of the tree, at
 build time, and checked by tests.
@@ -24,8 +24,8 @@ and it only reads. Two components use it:
   range, slices the real file, and throws if the range runs past the end. A
   snippet cannot show code that is not there, because the build fails first.
 - **`Embed.astro`** composes the compound interest calculator into a single
-  self-contained document — its own HTML, its own CSS, its own JavaScript, and
-  its own image as a data URI — and hands that to a sandboxed iframe.
+  self-contained document (its own HTML, its own CSS, its own JavaScript, and
+  its own image as a data URI) and hands that to a sandboxed iframe.
 
 Coursework under `src/courses/` stays exactly as submitted. The one exception
 is documented on the page it affects: `index.html` asks for `interest.jpg`
@@ -50,14 +50,14 @@ is a promise the page has to keep:
 | `inline` | Files are read at build time and rendered in a sandboxed iframe |
 | `playground` | The submitted compiler runs in the page, and so does what it emits |
 | `external` | A new tab, where StackBlitz installs and serves a **public** repository |
-| `source` | Nothing runs — a native toolchain, or a repository nothing can reach |
+| `source` | Nothing runs: a native toolchain, or a repository nothing can reach |
 
 There was a fifth mode that embedded a StackBlitz WebContainer in the page
 itself. It never worked and could not: a WebContainer needs the embedding
 document to be cross-origin isolated, GitHub Pages cannot send the headers that
 do it, and StackBlitz's own embed page pulls third-party resources carrying no
-CORP header regardless. So `external` opens a tab — StackBlitz's own documented
-workaround — and a test fails if the embedded mode is ever reintroduced.
+CORP header regardless. So `external` opens a tab (StackBlitz's own documented
+workaround), and a test fails if the embedded mode is ever reintroduced.
 
 StackBlitz also cannot load a private repository. That is not a configuration
 problem either, it is the whole design, and it is why Pathfinder and the
@@ -75,7 +75,7 @@ files and checks them against the tree:
 - the published language counts match a fresh count from `lmucs stats`
 - no program claims to embed a WebContainer in the page
 - the mode table above lists exactly the modes `programs.ts` declares
-- the calculator still has the broken image reference the embed rewrites —
+- the calculator still has the broken image reference the embed rewrites,
   because if the coursework were ever "fixed", the rewrite would become a
   silent no-op and the note on the page would be wrong
 

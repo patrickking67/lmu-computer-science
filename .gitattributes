@@ -1,0 +1,20 @@
+# Normalise line endings for maintained files.
+* text=auto eol=lf
+
+# Coursework is kept exactly as submitted, line endings included. Five files
+# under src/courses/cmsi-3300 were committed with CRLF; normalising them would
+# rewrite submitted work. See AGENTS.md.
+src/courses/** -text
+
+# Binary assets.
+*.png binary
+*.PNG binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.docx binary
+*.woff binary
+*.woff2 binary
+*.bundle binary

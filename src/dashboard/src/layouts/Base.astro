@@ -169,22 +169,6 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
         label(next);
         try { localStorage.setItem('theme', next); } catch (e) { /* nothing to persist to */ }
       });
-
-      // Scroll reveal. Without IntersectionObserver, show everything rather
-      // than leaving the page permanently blank.
-      const revealed = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) {
-        revealed.forEach((el) => el.classList.add('shown'));
-      } else {
-        const observer = new IntersectionObserver((entries) => {
-          for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
-            entry.target.classList.add('shown');
-            observer.unobserve(entry.target);
-          }
-        }, { rootMargin: '0px 0px -12% 0px' });
-        revealed.forEach((el) => observer.observe(el));
-      }
     </script>
   </body>
 </html>

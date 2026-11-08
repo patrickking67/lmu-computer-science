@@ -23,8 +23,8 @@ const withCode = courses.filter((c) => c.work).length;
       anything behind but a note.
     </p>
 
-    {years.map((year, y) => (
-      <section class="mt-14 reveal" style={`transition-delay: ${y * 50}ms`}>
+    {years.map((year) => (
+      <section class="mt-14">
         <h2 class="eyebrow pb-3 border-b" style="border-color: var(--line)">{year}</h2>
         <ul class="divide-y" style="border-color: var(--line-soft)">
           {byYear.get(year)!.map((c) => (

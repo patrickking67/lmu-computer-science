@@ -31,8 +31,8 @@ const featured = snippets.slice(0, 2);
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
     <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {figures.map((f, i) => (
-        <div class="reveal" style={`transition-delay: ${i * 70}ms`}>
+      {figures.map((f) => (
+        <div>
           <dt class="eyebrow">{f.label}</dt>
           <dd class="display text-[clamp(2rem,4.5vw,2.75rem)] mt-2" style="font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 60">{f.value}</dd>
           <p class="mt-2 text-xs leading-relaxed" style="color: var(--muted)">{f.note}</p>
@@ -42,16 +42,16 @@ const featured = snippets.slice(0, 2);
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
-    <h2 class="display text-3xl reveal">What I built</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">What I built</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Eight of the fifteen courses produced something that still runs.
     </p>
     <div class="grid sm:grid-cols-2 gap-4">
-      {built.map((c, i) => (
+      {built.map((c) => (
         <a
           href={href(`courses/${c.slug}`)}
-          class="reveal lift block p-6 rounded-2xl border"
-          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 45}ms`}
+          class="lift block p-6 rounded-2xl border"
+          style="border-color: var(--line); background: var(--surface)"
         >
           <div class="flex items-baseline justify-between gap-3">
             <span class="eyebrow">{c.code}</span>
@@ -66,35 +66,35 @@ const featured = snippets.slice(0, 2);
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
-    <h2 class="display text-3xl reveal">Some of it, up close</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">Some of it, up close</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Quoted straight out of the tree at build time, so none of it can drift from
       what is actually committed.
     </p>
     <div class="space-y-10">
       {featured.map((s) => (
-        <div class="reveal">
+        <div>
           <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{s.title}</h3>
           <p class="mt-2 mb-4 max-w-2xl text-sm leading-relaxed" style="color: var(--muted)">{s.caption}</p>
           <Snippet snippet={s} />
         </div>
       ))}
     </div>
-    <a href={href('programs')} class="mt-8 inline-block text-sm hover:underline reveal" style="color: var(--ink)">
+    <a href={href('programs')} class="mt-8 inline-block text-sm hover:underline" style="color: var(--ink)">
       More, and the programs that run →
     </a>
   </section>
 
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-12">
-    <h2 class="display text-3xl reveal">Still going</h2>
-    <p class="mt-3 mb-9 max-w-xl reveal" style="color: var(--muted)">
+    <h2 class="display text-3xl">Still going</h2>
+    <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
       Three projects outlived the course that started them.
     </p>
     <ul class="space-y-3">
-      {liveRepos.map((r, i) => (
+      {liveRepos.map((r) => (
         <li
-          class="reveal lift p-6 rounded-2xl border"
-          style={`border-color: var(--line); background: var(--surface); transition-delay: ${i * 60}ms`}
+          class="lift p-6 rounded-2xl border"
+          style="border-color: var(--line); background: var(--surface)"
         >
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h3 class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{r.name}</h3>

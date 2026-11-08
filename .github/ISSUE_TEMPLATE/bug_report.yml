@@ -1,0 +1,32 @@
+name: Bug report
+description: Something on the site, in the checks, or in the lmucs package is broken.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a personal coursework archive. Code under `src/courses/` is kept as submitted
+        and is not fixed; a report about it is recorded in `docs/building.md` instead.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - The site (src/dashboard)
+        - The lmucs package (src/packages/lmucs)
+        - Repository checks or CI
+        - Coursework (recorded, not fixed)
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead. A URL or command helps.
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser or environment
+      placeholder: e.g. Safari 19 on iOS, or Node 22.18 on macOS

@@ -1,0 +1,16 @@
+name: Suggestion
+description: An idea for the site or the tooling around the coursework.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Contributions here are limited to fixes and small improvements to the site and tooling.
+        New solutions to course assignments are out of scope.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What would change, and who it helps.
+    validations:
+      required: true

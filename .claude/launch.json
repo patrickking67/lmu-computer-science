@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lmu-computer-science-site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "src/dashboard", "run", "dev", "--", "--port", "4322", "--strictPort"],
+      "port": 4322
+    }
+  ]
+}

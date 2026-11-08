@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Patrick King's LMU computer science coursework, Fall 2021 – Spring 2025, plus the site
+Patrick King's LMU computer science coursework, Fall 2021 to Spring 2025, plus the site
 that presents it. The code itself lives here; this is not an index of links.
 
 ## Repository map
@@ -16,23 +16,47 @@ that presents it. The code itself lives here; this is not an index of links.
 - `docs/publication.md`: what publishing accepted, and what is still unresolved
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
 - `docs/building.md`: what compiles and runs, with verified commands and version pins
-- `tests/site-data.test.mjs`: checks the dashboard's claims against the tree
+- `tests/site-data.test.mjs`: checks the dashboard's claims (and `llms.txt`) against the tree
+- `scripts/check.sh`: the one offline check; runs everything below and builds the site
 - `scripts/check-ai-config.sh`: the repository check, also run in CI
-- `.github/workflows/`: the repository check, the Python package, the site-data tests, Pages
+- `llms.txt`: summary for language models; `src/dashboard/public/llms.txt` must stay identical
+- `.claude/launch.json`: the site dev server for the Claude preview pane, port 4322
+- `.github/workflows/`: the repository check, the Python package, `scripts/check.sh` (site data), Pages
 
-## Setup and validation
+## Commands
 
-No build at the repository root. `src/dashboard` and `src/packages/lmucs` carry their
-own, and each course project carries its own toolchain. Course projects are not
-maintained. Do not add a repository-level build that spans them.
+Everything runs from the repository root. Needs Node 22.18+ and Python 3.10+.
 
-- Validation: `scripts/check-ai-config.sh`
-- Site data: `node --test "tests/*.test.mjs"` (needs `lmucs` importable, Node 22.18+)
-- Package: `pytest` in `src/packages/lmucs`
+| Task | Command |
+|---|---|
+| Install | `python3 -m venv .venv && . .venv/bin/activate && python3 -m pip install -e src/packages/lmucs pytest && npm --prefix src/dashboard ci` |
+| Check everything | `./scripts/check.sh` (add `--no-build` to skip the site build) |
+| Repository check only | `/bin/bash scripts/check-ai-config.sh` |
+| Site-data tests only | `node --test "tests/*.test.mjs"` (a glob; `node --test tests/` fails) |
+| Package tests only | `cd src/packages/lmucs && python3 -m pytest -q -p no:cacheprovider tests` |
+| Preview the site | `npm --prefix src/dashboard run dev -- --port 4322`, then <http://localhost:4322/> |
+| Build as deployed | `cd src/dashboard && SITE_URL=https://patrickking67.github.io BASE_PATH=/lmu-computer-science npm run build` |
+| Refresh published counts | `lmucs stats --json`, then update `src/dashboard/src/data/stats.ts` |
 
-Running any of these leaves artifacts. `.pytest_cache/` and `lmucs.egg-info/` appear the
-moment pytest or an editable install runs, and `check-ai-config.sh` fails on them, which
-is the intended order: clean before committing.
+The dev server serves at `/`; production serves at `/lmu-computer-science/`.
+Links must go through `href()` in `src/dashboard/src/lib/site.ts` so both work.
+Astro 7 runs `astro dev` as a background daemon; stop it with
+`(cd src/dashboard && npx astro dev stop)`; `npx astro dev status` there shows it.
+
+Shipping: branch from `main` (`feat/`, `fix/`, `docs/`, `chore/`), one logical
+change per Conventional Commit, `./scripts/check.sh` green before each commit,
+a line under `[Unreleased]` in `CHANGELOG.md`, then a pull request. CI
+(`site-data.yml`) runs `scripts/check.sh`; merging to `main` deploys Pages.
+
+No build at the repository root spans the course projects. `src/dashboard` and
+`src/packages/lmucs` carry their own, and each course project carries its own
+toolchain. Course projects are not maintained. Do not add a repository-level
+build that spans them.
+
+Running pytest directly leaves `.pytest_cache/`, and `check-ai-config.sh` fails on it,
+which is the intended order: clean before committing. `scripts/check.sh` avoids it by
+running pytest without its cache and Python without bytecode. `lmucs.egg-info/` from an
+editable install is an ignored build artifact and is fine.
 
 The check runs in GitHub Actions on every push to `main` and on pull requests, on
 both `ubuntu-latest` and `macos-latest`. It warns rather than fails when the git
@@ -64,8 +88,9 @@ Two rules keep the local checks and CI honest about each other. Both were added 
   check on `fs.existsSync` silently turns it off on the runner, which is the one place
   it had to run. Keep the existence gate on the *tracked* half only, where a wrongly
   tracked file is checked out and so is always present anyway.
-  Agent state under `.remember/` and `.claude/` is ignored, is not coursework, and is
-  reported by the check as a warning rather than counted as a hole in the archive.
+  Agent state under `.remember/` and `.claude/` (other than the tracked
+  `.claude/settings.json` and `.claude/launch.json`) is not coursework, and when ignored
+  it is reported by the check as a warning rather than counted as a hole in the archive.
 
 ## Architecture
 
@@ -74,7 +99,7 @@ submitted; everything outside it is normal, maintained code.
 
 - Never repair submitted coursework to make a test pass. A test that fails because the
   original code was wrong is telling you something true, and editing it to pass just
-  deletes the information — it also contradicts the grade in `docs/record.md`. CMSI 3300's Homework 2 harness
+  deletes the information; it also contradicts the grade in `docs/record.md`. CMSI 3300's Homework 2 harness
   scores 7 of 19 against a homework the gradebook marks 51%, and four of those failures
   are a real bug: `ad_agent.py:44` calls `map_query` on a `pgmpy` `CausalInference`, which
   has never had that method. Record such defects in `docs/building.md`; do not edit them
@@ -84,12 +109,12 @@ submitted; everything outside it is normal, maintained code.
   pinned by tests in `tests/site-data.test.mjs`, described in
   `src/dashboard/src/content/wiki/cloudscribe.md`, and visible in the playground. Do not
   repair either one. First: `generator.js` has no case for `TaskDeclaration`, so every one
-  of the seven committed example programs dies at the `js` stage — `task` is the language's
+  of the seven committed example programs dies at the `js` stage. `task` is the language's
   reason to exist, `analyzer.test.js` exercises it sixteen times, `generator.test.js`
   never does. Second: four visitors in `optimizer.js` (`foldBinary`, `WhileStatement`,
   `UnaryExpression`, `Conditional`) fall off the end and return `undefined`, which
-  `exp()`'s `if (e == null) return ""` and `visitBlock`'s `r == null` filter then swallow
-  — so `print(x + 1)` emits `console.log()`, `let y = x + 1` emits `let y_1 = ;`, and a
+  `exp()`'s `if (e == null) return ""` and `visitBlock`'s `r == null` filter then swallow,
+  so `print(x + 1)` emits `console.log()`, `let y = x + 1` emits `let y_1 = ;`, and a
   `while` loop is deleted outright. The optimiser only breaks what it tries to optimise;
   everything it has no visitor for passes through and works, which is why generator tests
   written against literal arithmetic go green over all of it. Statement coverage measures
@@ -156,7 +181,7 @@ submitted; everything outside it is normal, maintained code.
   "Unable to run Embedded Project / Looks like this project is being embedded without
   proper isolation headers." An `embed: 'container'` mode existed for one round and was
   removed; a test in `tests/site-data.test.mjs` now fails if anything reintroduces it.
-  Open it in a new tab instead — that is StackBlitz's own documented workaround.
+  Open it in a new tab instead; that is StackBlitz's own documented workaround.
 - The page's `Content-Security-Policy` cannot carry a `script-src`, and
   `tests/site-data.test.mjs` fails if one appears. Measured in the browser on
   2026-08-22: a sandboxed `srcdoc` iframe inherits the embedding page's policy. The
@@ -173,7 +198,7 @@ submitted; everything outside it is normal, maintained code.
 - The cloudscribe playground (`src/dashboard/src/lib/cloudscribe.ts`) runs the submitted
   compiler in the browser, not a reimplementation of it: `analyzer.js`, `optimizer.js` and
   `generator.js` are imported from `src/courses/` unmodified. It substitutes exactly one
-  thing, and only because a browser cannot do it — `parser.js` loads the grammar with
+  thing, and only because a browser cannot do it: `parser.js` loads the grammar with
   `fs.readFileSync`, so the playground imports `cloudscribe.ohm` with Vite's `?raw` and
   calls `ohm.grammar` itself. It also carries a local tree-printer in place of
   `graph-stringify`. Anything beyond that substitution would make the page lie about what
@@ -183,13 +208,13 @@ submitted; everything outside it is normal, maintained code.
   therefore cannot be imported by plain Node, so the test that checks it reads it as text.
 - The inline embed reads out of `src/courses/` and writes nothing back. It also cannot
   resolve `Compound-Interest-Calculator/index.html`'s reference to `interest.jpg`, because
-  the file is `Interest.jpeg` — a real defect in the submitted work. The embed rewrites
+  the file is `Interest.jpeg`, a real defect in the submitted work. The embed rewrites
   that one `src` at build time; the coursework keeps the broken reference.
 - Astro rewrites `import.meta.url` in the built output, so a build-time file read must
   anchor on the repository root found by walking up from `process.cwd()`, not on the
   component's own URL. `src/dashboard/src/lib/repo.ts` is the only thing that reads the
   coursework, and it only reads.
-- The dashboard's data files make checkable claims — a path, a line range, a line count —
+- The dashboard's data files make checkable claims (a path, a line range, a line count),
   and every one of them can rot without breaking the build. `tests/site-data.test.mjs`
   checks them against the tree instead: paths exist, quoted ranges are inside their file,
   `courses.ts` and `src/courses/` agree both ways, no program claims to embed a
@@ -205,7 +230,7 @@ submitted; everything outside it is normal, maintained code.
   reader without repository access sees first. Two tests now pin it: the wiki's mode table
   must equal the `embed` union in `programs.ts` by set comparison, and `README.md` must not
   name a WebContainer. A test that parses a declaration has to refuse an empty parse
-  first — two empty sets compare equal, so the guard would otherwise go green while
+  first: two empty sets compare equal, so the guard would otherwise go green while
   measuring nothing.
 - Published numbers come from `lmucs stats`, never from a hand count. It counts tracked
   files only, so an untracked scratch file cannot inflate a total, and it excludes
@@ -247,6 +272,9 @@ submitted; everything outside it is normal, maintained code.
   `coverage/`, and a `package-lock.json` in any npm project that lacked one. Clean them
   before committing. `scripts/check-ai-config.sh` catches them.
 - Do not commit `*.bundle`. The largest exceeds GitHub's file size limit.
+- `.gitattributes` marks `src/courses/**` as `-text`, so five CMSI 3300 files committed with
+  CRLF keep their line endings. Do not remove that line; normalising would rewrite
+  submitted work.
 
 ## Generated files
 
@@ -264,6 +292,7 @@ None. Nothing in this repository is generated.
 
 - Requested behavior is complete.
 - No coursework under `src/courses/` was modified as a side effect.
-- Durable documentation is current.
-- `scripts/check-ai-config.sh` passes.
+- Any new claim the site makes has a test in `tests/site-data.test.mjs`.
+- Durable documentation is current, including `CHANGELOG.md` and `llms.txt`.
+- `./scripts/check.sh` passes.
 - Commands run and unresolved risks are reported.

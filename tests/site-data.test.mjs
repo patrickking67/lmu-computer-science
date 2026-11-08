@@ -422,3 +422,32 @@ test('every counted language leads to at least one course', () => {
     assert.ok(entry.courses.length > 0, `${entry.name} has a line count but no course on the Courses page`);
   }
 });
+
+test('llms.txt is served from the site root, matches the repository copy, and links resolve', () => {
+  const rootCopy = fs.readFileSync(inRepo('llms.txt'), 'utf8');
+  const served = fs.readFileSync(inRepo('src/dashboard/public/llms.txt'), 'utf8');
+  assert.equal(served, rootCopy, 'src/dashboard/public/llms.txt and llms.txt have drifted');
+  assert.match(rootCopy, /^# .+\n\n> .+/, 'llms.txt must open with an H1 and a > summary');
+
+  const links = [...rootCopy.matchAll(/\]\((https:\/\/[^)\s]+)\)/g)].map((m) => m[1]);
+  assert.ok(links.length >= 5, `llms.txt parsed to ${links.length} link(s); fix the parse`);
+
+  const repoUrl = 'https://github.com/patrickking67/lmu-computer-science/';
+  const siteUrl = 'https://patrickking67.github.io/lmu-computer-science/';
+  const wiki = new Set(tracked('src/dashboard/src/content/wiki').map((p) => path.basename(p, '.md')));
+  const sections = new Set(['', 'programs/', 'courses/', 'wiki/', 'contact/']);
+  for (const link of links) {
+    if (link.startsWith(repoUrl)) {
+      const target = link.slice(repoUrl.length).replace(/^(blob|tree)\/main\//, '');
+      assert.ok(tracked(target).length > 0, `llms.txt links to ${target}, which is not tracked`);
+    } else if (link.startsWith(siteUrl)) {
+      const route = link.slice(siteUrl.length);
+      const page = route.match(/^wiki\/([\w-]+)\/$/);
+      const course = route.match(/^courses\/(cmsi-\d{4})\/$/);
+      assert.ok(
+        sections.has(route) || (page && wiki.has(page[1])) || (course && courseCodes.has(course[1].toUpperCase().replace('-', ' '))),
+        `llms.txt links to /${route}, which the site does not build`,
+      );
+    }
+  }
+});

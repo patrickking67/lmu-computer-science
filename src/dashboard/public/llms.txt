@@ -1,0 +1,33 @@
+# LMU Computer Science
+
+> Patrick King's BS Computer Science coursework from Loyola Marymount University, Fall 2021 to Spring 2025: fifteen CMSI courses, 18 languages counted by line, and the code itself rather than links to it. Highlights are CloudScribe, a five-stage Ohm compiler to JavaScript (CMSI 3802); seven Rust networking projects ending in peer-to-peer file transfer (CMSI 3550); and Pathfinder, the two-semester senior project (CMSI 4071 and 4072). Coursework under src/courses is kept exactly as submitted, defects included. A static Astro site presents it and runs some programs in the browser.
+
+## Docs
+
+- [README](https://github.com/patrickking67/lmu-computer-science/blob/main/README.md): what is here, the course table, and how it is checked
+- [AGENTS.md](https://github.com/patrickking67/lmu-computer-science/blob/main/AGENTS.md): layout, commands and rules for working in the repository
+- [Building the coursework](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/building.md): per-language build and test commands with version pins, and recorded defects
+- [Course record](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/record.md): the authoritative course, term and title list
+- [Contributing](https://github.com/patrickking67/lmu-computer-science/blob/main/CONTRIBUTING.md): fixes only; this is a personal archive
+
+## Live demo
+
+- [Site](https://patrickking67.github.io/lmu-computer-science/): the coursework, presented
+- [Programs](https://patrickking67.github.io/lmu-computer-science/programs/): the CloudScribe compiler and a calculator running in the page
+- [Courses](https://patrickking67.github.io/lmu-computer-science/courses/): every course by year, and by language
+- [How the site works](https://patrickking67.github.io/lmu-computer-science/wiki/how-the-site-works/): run modes and why a WebContainer cannot be embedded
+
+## Source
+
+- [Courses](https://github.com/patrickking67/lmu-computer-science/tree/main/src/courses): one directory per course, as submitted
+- [CloudScribe compiler](https://github.com/patrickking67/lmu-computer-science/tree/main/src/courses/cmsi-3802/cloudscribe): course-era snapshot
+- [Networking projects](https://github.com/patrickking67/lmu-computer-science/tree/main/src/courses/cmsi-3550): Rust
+- [Pathfinder](https://github.com/patrickking67/lmu-computer-science/tree/main/src/courses/cmsi-4072/Pathfinder): senior project
+- [Site source](https://github.com/patrickking67/lmu-computer-science/tree/main/src/dashboard): Astro and Tailwind
+- [lmucs](https://github.com/patrickking67/lmu-computer-science/tree/main/src/packages/lmucs): Python package that verifies the record and counts lines
+
+## Optional
+
+- [CloudScribe, live repository](https://github.com/patrickking67/cloudscribe): developed past the course snapshot
+- [Wiki: CloudScribe](https://patrickking67.github.io/lmu-computer-science/wiki/cloudscribe/): the two back-end defects a 99.66%-coverage suite missed
+- [Security policy](https://github.com/patrickking67/lmu-computer-science/blob/main/SECURITY.md)

@@ -26,24 +26,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
+          cache-dependency-path: src/dashboard/package-lock.json
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install lmucs
+      - name: Install lmucs and pytest
         # Build isolation on purpose: unlike the conda job, this runner has no
         # setuptools of its own, so pip has to fetch the build backend itself.
-        run: python -m pip install -e src/packages/lmucs
+        run: python -m pip install -e src/packages/lmucs pytest
 
-      - name: Test
-        # A glob, not a directory: node --test <dir> tries to load the
-        # directory as a module and fails. Type stripping needs no flag on
-        # Node 22.18 and later, which is why the .ts data files import here.
-        run: node --test "tests/*.test.mjs"
-
-      - name: Build the site
+      - name: Install site dependencies
         working-directory: src/dashboard
-        run: |
-          npm ci
-          npm run build
+        run: npm ci --no-audit --no-fund
+
+      - name: Check, test and build
+        # The same command a contributor runs locally: the repository check,
+        # the site-data tests (a glob, since node --test <dir> fails; type
+        # stripping needs no flag on Node 22.18 and later, which is why the .ts
+        # data files import), the lmucs tests, and the site build. Running the
+        # one script here is what keeps it honest.
+        run: ./scripts/check.sh

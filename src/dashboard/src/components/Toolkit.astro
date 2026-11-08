@@ -1,5 +1,6 @@
 ---
 import { toolkit } from '../data/courses';
+import { href } from '../lib/site';
 // Weight is depth, not decoration: three tiers, sized and coloured so the
 // languages actually worked in read louder than the ones touched once.
 const size = { 3: 'text-2xl sm:text-3xl', 2: 'text-lg sm:text-xl', 1: 'text-sm sm:text-base' };
@@ -16,5 +17,6 @@ const size = { 3: 'text-2xl sm:text-3xl', 2: 'text-lg sm:text-xl', 1: 'text-sm s
   </ul>
   <figcaption class="mt-6 text-xs" style="color: var(--muted)">
     Sized by how much I actually wrote in each.
+    <a href={href('courses#languages')} class="ml-1 underline underline-offset-4" style="color: var(--ink)">Lines per language, by course</a>
   </figcaption>
 </figure>

@@ -25,6 +25,7 @@ const { courses, liveRepos, toolkit } = await data('courses.ts');
 const { snippets } = await data('snippets.ts');
 const { languages, totalLines, figures } = await data('stats.ts');
 const { highlights } = await data('highlights.ts');
+const { languageIndex, citedCodes } = await import(path.join(root, 'src/dashboard/src/lib/languages.ts'));
 
 const inRepo = (p) => path.join(root, p);
 const courseCodes = new Set(courses.map((c) => c.code));
@@ -409,5 +410,15 @@ test('the front-page highlights point at real courses, paths and programs', () =
     if (h.program) {
       assert.ok(runnable.has(h.program), `${h.name}: #${h.program} is not a runnable program anchor`);
     }
+  }
+});
+
+test('every counted language leads to at least one course', () => {
+  assert.deepEqual(citedCodes('CMSI 2021, 3801'), ['CMSI 2021', 'CMSI 3801']);
+  assert.deepEqual(citedCodes('this site'), []);
+  const index = languageIndex(languages, courses, toolkit, programs);
+  assert.equal(index.length, languages.length, 'the index dropped a language');
+  for (const entry of index) {
+    assert.ok(entry.courses.length > 0, `${entry.name} has a line count but no course on the Courses page`);
   }
 });

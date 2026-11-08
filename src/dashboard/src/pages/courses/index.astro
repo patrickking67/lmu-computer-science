@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { courses } from '../../data/courses';
+import { courses, toolkit } from '../../data/courses';
+import { programs } from '../../data/programs';
+import { languages } from '../../data/stats';
+import { languageIndex } from '../../lib/languages';
 import { href } from '../../lib/site';
 
 // Grouped by calendar year of the term, which is how anyone reading a
@@ -12,10 +15,15 @@ for (const course of courses) {
 }
 const years = [...byYear.keys()].sort();
 const withCode = courses.filter((c) => c.work).length;
+
+// The other way in: by language, sized by lines actually written. Counts are
+// from `lmucs stats` (see data/stats.ts) and are tested against a fresh count.
+const byLanguage = languageIndex(languages, courses, toolkit, programs);
+const most = Math.max(...byLanguage.map((l) => l.lines));
 ---
-<Base title="Courses" description="Fifteen CMSI courses at Loyola Marymount University, Fall 2021 to Spring 2025.">
+<Base title="Courses" description="Fifteen CMSI courses at Loyola Marymount University, Fall 2021 to Spring 2025, by term and by language.">
   <div class="mx-auto max-w-4xl px-4 sm:px-6 py-20">
-    <p class="eyebrow settle">{courses.length} courses · {withCode} produced code</p>
+    <p class="eyebrow settle">{courses.length} courses, {withCode} of them with code</p>
     <h1 class="display text-[clamp(2.25rem,5.5vw,3.5rem)] mt-4 settle" style="animation-delay: 100ms">Courses.</h1>
     <p class="mt-6 max-w-xl text-lg leading-relaxed settle" style="animation-delay: 180ms; color: var(--muted)">
       In the order I took them. Fifteen courses, thirteen repositories: CMSI 1900
@@ -23,9 +31,16 @@ const withCode = courses.filter((c) => c.work).length;
       anything behind but a note.
     </p>
 
+    <nav aria-label="Jump to" class="mt-10 flex flex-wrap gap-2 text-sm settle" style="animation-delay: 240ms">
+      {years.map((year) => (
+        <a href={`#year-${year}`} class="px-3 py-1.5 rounded-full border lift" style="border-color: var(--line)">{year}</a>
+      ))}
+      <a href="#languages" class="px-3 py-1.5 rounded-full border lift" style="border-color: var(--line)">By language</a>
+    </nav>
+
     {years.map((year) => (
-      <section class="mt-14">
-        <h2 class="eyebrow pb-3 border-b" style="border-color: var(--line)">{year}</h2>
+      <section class="mt-14 scroll-mt-24" id={`year-${year}`} aria-labelledby={`year-${year}-h`}>
+        <h2 id={`year-${year}-h`} class="eyebrow pb-3 border-b" style="border-color: var(--line)">{year}</h2>
         <ul class="divide-y" style="border-color: var(--line-soft)">
           {byYear.get(year)!.map((c) => (
             <li>
@@ -42,5 +57,36 @@ const withCode = courses.filter((c) => c.work).length;
         </ul>
       </section>
     ))}
+
+    <section id="languages" class="mt-24 scroll-mt-24" aria-labelledby="languages-h">
+      <h2 id="languages-h" class="display text-3xl">By language</h2>
+      <p class="mt-3 max-w-xl leading-relaxed" style="color: var(--muted)">
+        Lines of coursework in each of the {byLanguage.length} languages, counted
+        over tracked files, and the courses they were written in.
+      </p>
+      <table class="mt-8 w-full text-sm border-collapse">
+        <thead class="sr-only">
+          <tr><th scope="col">Language</th><th scope="col">Lines</th><th scope="col">Courses</th></tr>
+        </thead>
+        <tbody>
+          {byLanguage.map((l) => (
+            <tr class="border-t align-top" style="border-color: var(--line-soft)">
+              <th scope="row" class="py-3 pr-4 text-left font-medium whitespace-nowrap">{l.name}</th>
+              <td class="py-3 pr-4 w-[38%]">
+                <span class="block tabular-nums" style="color: var(--muted)">{l.lines.toLocaleString('en-US')}</span>
+                <span aria-hidden="true" class="mt-1.5 block h-1 rounded-full" style={`width: ${Math.max(2, (l.lines / most) * 100)}%; background: var(--ink)`}></span>
+              </td>
+              <td class="py-3">
+                <span class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs">
+                  {l.courses.map((c) => (
+                    <a href={href(`courses/${c.slug}`)} class="py-0.5 hover:underline" title={c.title}>{c.code}</a>
+                  ))}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
   </div>
 </Base>

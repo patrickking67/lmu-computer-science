@@ -6,7 +6,8 @@ order: 4
 
 # Building the coursework
 
-Verified 2026-08-22. Where a suite fails, the useful question is whether the cause is the
+First verified 2026-08-22; every suite with an installed toolchain was re-run on
+2026-11-11. Where a suite fails, the useful question is whether the cause is the
 code or the environment. Those are different facts.
 
 ## Verified working
@@ -18,9 +19,19 @@ code or the environment. Those are different facts.
 | CMSI 3801 | Python | 61 passed |
 | CMSI 3801 | JavaScript | 19 passed |
 | CMSI 3801 | TypeScript | 15 passed |
+| CMSI 3801 | Swift | 68 passed |
+| CMSI 3801 | Go | vets clean and runs; ships no tests |
 | CMSI 3802 | cloudscribe | 143 passed, 99.66% statements |
+| CMSI 3802 | Homework 5 regex exercise | 159 passed |
 
-## Two traps
+Rust, Java, Kotlin, Haskell, Lua and OCaml were not run: none of those toolchains is
+installed on the machine that ran these.
+
+## Three traps
+
+**`swift a.swift b.swift` runs only the first file.** The second is passed to it as an
+argument. The Swift row was recorded as "exit 0, no output" for that reason until
+2026-11-11: the file holding the 68 assertions had never run. Compile both with `swiftc`.
 
 **Python needs 3.10 or newer.** `exercises.py` annotates with `str | None` at module
 level. On Python 3.9 that raises at *import* time, so the suite does not fail; it never

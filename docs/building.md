@@ -1,7 +1,8 @@
 # Building and running the code
 
-What in this archive still compiles and runs, verified on 2026-08-22, with the exact
-commands used. Where a suite fails, this file says whether the cause is the coursework or
+What in this archive still compiles and runs, with the exact commands used. First
+verified on 2026-08-22; the suites with an installed toolchain were re-run on
+2026-11-11. Where a suite fails, this file says whether the cause is the coursework or
 the environment, because those are different facts and the distinction matters more than
 the pass rate.
 
@@ -9,22 +10,57 @@ the pass rate.
 that fails because the submitted code was wrong is the record doing its job; see
 "Do not repair the coursework" below.
 
-## Verified working
+## Suites run on 2026-11-11
 
-Run from the repository root unless a `cd` is shown.
+Every suite whose toolchain was installed on the machine was re-run on 2026-11-11 from a
+clean checkout. Run from the repository root unless a `cd` is shown. Compiled test
+binaries go to `$TMPDIR` so nothing lands in the tree.
 
-| Course | Component | Command | Result |
-|---|---|---|---|
-| CMSI 3801 | C | `gcc -o /tmp/t c/string_stack.c c/string_stack_test.c && /tmp/t` | 25 passed, 0 failed |
-| CMSI 3801 | C++ | `g++ -std=c++20 -o /tmp/t cpp/stack_test.cpp && /tmp/t` | 27 passed, 0 failed |
-| CMSI 3801 | Python | `cd src/courses/cmsi-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
-| CMSI 3801 | JavaScript | `cd src/courses/cmsi-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
-| CMSI 3801 | TypeScript | `cd src/courses/cmsi-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
-| CMSI 3801 | Swift | `cd src/courses/cmsi-3801/swift && swift exercises.swift main.swift` | exit 0, no output |
-| CMSI 3802 | cloudscribe | `cd src/courses/cmsi-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
+| Course | Suite | Toolchain | Command | Result |
+|---|---|---|---|---|
+| CMSI 3801 | C | Apple clang 21.0.0 | `cd src/courses/cmsi-3801 && gcc -o "$TMPDIR/c_t" c/string_stack.c c/string_stack_test.c && "$TMPDIR/c_t"` | 25 passed, 0 failed |
+| CMSI 3801 | C++ | Apple clang 21.0.0, `-std=c++20` | `cd src/courses/cmsi-3801 && g++ -std=c++20 -o "$TMPDIR/cpp_t" cpp/stack_test.cpp && "$TMPDIR/cpp_t"` | 27 passed, 0 failed |
+| CMSI 3801 | Python | Python 3.14.10 | `cd src/courses/cmsi-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
+| CMSI 3801 | JavaScript | Node 24.22.2 | `cd src/courses/cmsi-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
+| CMSI 3801 | TypeScript | Node 24.22.2, TypeScript 5.9.3 | `cd src/courses/cmsi-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
+| CMSI 3801 | Swift | Apple Swift 6.4.2 | `cd src/courses/cmsi-3801/swift && swiftc -o "$TMPDIR/swift_t" exercises.swift main.swift && "$TMPDIR/swift_t"` | 68 passed, 0 failed |
+| CMSI 3801 | Go | Go 1.27.3 | `cd src/courses/cmsi-3801/go && go vet restaurant.go && go run restaurant.go` | vets clean, runs to "Restaurant has closed" in about 30 s; the file has no tests |
+| CMSI 3802 | cloudscribe | Node 24.22.2, c8 10 | `cd src/courses/cmsi-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
+| CMSI 3802 | Homework 5, Exercise 1 (regex) | Node 24.22.2 | `cd "src/courses/cmsi-3802/cloudscribe/assignments/Homework 5/Exercise 1" && node --test` | 159 passed, 0 failed |
 
-Toolchains these were verified against: Node 24.18.0, Python 3.14.7, Apple Swift 6.4,
-Apple clang/gcc as shipped with the Xcode command line tools.
+Nine suites run, nine green, no coursework edited. One breakage was real and it was in
+this file, not in the coursework; see the next section.
+
+Skipped on 2026-11-11, because the toolchain is not installed and nothing large was
+installed to change that:
+
+| Course | Suite | Missing |
+|---|---|---|
+| CMSI 3550 | 7 Rust crates | `cargo`, `rustc` |
+| CMSI 3801 | Rust `stack` crate | `cargo`, `rustc` |
+| CMSI 3801 | Java, Kotlin | a JDK, `kotlinc` |
+| CMSI 3801 | Haskell, Lua, OCaml | `ghc`, `lua`, `ocaml` |
+| CMSI 2130 | 5 Java projects | a JDK, and a build file (see below) |
+| CMSI 3300 | Homework 2 and 4 harnesses | the solution bundles in `~/Backups/lmu-cs-history-2026-08-22/` were not on this machine; last run 2026-08-22, results below |
+| CMSI 2021, 3550, 4072 | React and Vite front ends | not attempted: no test suites beyond the Create React App placeholder |
+
+### The Swift command used to verify nothing
+
+Until 2026-11-11 this file recorded Swift as
+`swift exercises.swift main.swift`, "exit 0, no output". That command does not run the
+tests. `swift a.swift b.swift` interprets the first file as a script and passes the
+second to it as an argument, so only `exercises.swift` ran, which defines functions and
+prints nothing. `main.swift` holds the 68 assertions and its last line prints the tally,
+and it was never executed. Compiling the two files together with `swiftc` runs them:
+68 passed, 0 failed. The coursework was right all along; the check was empty.
+
+### Go has no tests to run
+
+`go/restaurant.go` is the Homework 5 concurrency simulation: ten customers and three cooks
+as goroutines, a buffered channel of three orders standing in for the waiter, a
+`sync.WaitGroup` and an atomic order counter. It
+ships no `_test.go`. `go vet` is clean and the program runs to completion, which is all
+that can be claimed.
 
 ### Python needs 3.10 or newer
 
@@ -34,17 +70,7 @@ file raises `TypeError: unsupported operand type(s) for |` at *import* time, so 
 does not fail, it never collects. Use 3.10 or newer. This was not recorded anywhere before
 2026-08-22 and reads as broken code if you hit it on the system interpreter.
 
-## Not verifiable on this machine
-
-Absent toolchains, not evidence of broken code. Nothing was concluded about these.
-
-| Course | Component | Missing |
-|---|---|---|
-| CMSI 3550 | 6 Rust crates | `cargo`, `rustc` |
-| CMSI 3801 | Rust `stack` crate | `cargo`, `rustc` |
-| CMSI 3801 | Go, Haskell, Kotlin, Lua, OCaml | `go`, `ghc`, `kotlinc`, `lua`, `ocaml` |
-| CMSI 2130 | 5 Java projects | a JDK, and a build file (see below) |
-| CMSI 2021, 3550, 4072 | React and Vite front ends | not attempted |
+## Toolchain traps
 
 `/usr/bin/java` and `/usr/bin/javac` exist on macOS as stubs that only print an install
 prompt. `command -v javac` succeeding does **not** mean a JDK is present.

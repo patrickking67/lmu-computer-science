@@ -518,10 +518,12 @@ test('the proof figures on the front page are counted, not typed', () => {
   assert.equal(checks.lmucsTests, py.join('\n').match(/^def test_/gm).length, 'stats.ts checks.lmucsTests is stale');
 
   const building = fs.readFileSync(inRepo('docs/building.md'), 'utf8');
-  const section = building.slice(building.indexOf(`## Suites run on ${checks.suitesDate}`));
-  assert.ok(section.length > 0 && building.includes(`## Suites run on ${checks.suitesDate}`), 'building.md has no matrix for that date');
-  const table = section.slice(0, section.indexOf('\n\n', section.indexOf('|---')));
-  const rows = table.split('\n').filter((line) => /^\| CMSI \d{4} \|/.test(line));
+  assert.ok(building.includes(`## Suites run on ${checks.suitesDate}`), 'building.md has no matrix for that date');
+  const rows = [];
+  for (const part of building.split(/^## /m).filter((p) => p.startsWith('Suites run on '))) {
+    const table = part.slice(0, part.indexOf('\n\n', part.indexOf('|---')));
+    rows.push(...table.split('\n').filter((line) => /^\| CMSI \d{4} \|/.test(line)));
+  }
   assert.equal(checks.suitesRun, rows.length, 'stats.ts checks.suitesRun does not match the matrix');
   assert.ok(rows.some((r) => r.includes(`${checks.cloudscribeTests} passed`)), 'the cloudscribe row disagrees with stats.ts');
 
@@ -549,7 +551,7 @@ test('the README leads with the three projects, each with a picture, its code an
   assert.equal(/\u2014/.test(readme), false, 'README.md contains an em dash');
   assert.ok(readme.includes(`| Site-data tests | ${checks.siteDataTests},`), 'README.md site-data test count is stale');
   assert.ok(readme.includes(`| Package tests | ${checks.lmucsTests} in`), 'README.md package test count is stale');
-  assert.ok(readme.includes(`| Course suites | ${checks.suitesRun} re-run on ${checks.suitesDate},`), 'README.md suite count is stale');
+  assert.ok(readme.includes(`| Course suites | ${checks.suitesRun} run by ${checks.suitesDate},`), 'README.md suite count is stale');
 });
 
 test('llms.txt is served from the site root, matches the repository copy, and links resolve', () => {

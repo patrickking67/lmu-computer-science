@@ -132,7 +132,7 @@ export const courses: Course[] = [
       'Same six exercises in every language, so the differences are the language',
       'Manual memory in C against garbage collection everywhere else',
       'Either in Haskell against exceptions in OCaml, for the identical function',
-      'Six suites pass as re-run on 2026-11-11: C, C++, Python, JavaScript, TypeScript and Swift',
+      'Eleven suites pass as run on 2026-11-11 and 2026-11-12: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Java, Kotlin, Haskell and OCaml. Lua fails to load on Lua 5.5',
     ],
   },
   {

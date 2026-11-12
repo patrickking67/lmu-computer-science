@@ -129,6 +129,6 @@ export const programs: Program[] = [
       'One problem set, solved thirteen times over: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java. The problems stop being the interesting part around the fourth language; what each one makes easy or impossible is.',
     stack: ['13 languages'],
     embed: 'source',
-    note: 'Thirteen toolchains. Six test suites pass and the Go program runs, as re-run on 2026-11-11; the commands are in docs/building.md.',
+    note: 'Thirteen toolchains. Eleven test suites pass and the Go program runs, as run on 2026-11-11 and 2026-11-12; the Lua suite fails to load on Lua 5.5; the commands are in docs/building.md.',
   },
 ];

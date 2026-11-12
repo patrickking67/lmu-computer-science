@@ -216,8 +216,8 @@ against it in both directions.
 |---|---|
 | Site-data tests | 36, checking every path, line range, count and link the site publishes |
 | Package tests | 24 in `lmucs`, the record parser and line counter |
-| Course suites | 9 re-run on 2026-11-11, all passing, toolchain versions recorded in [`docs/building.md`](docs/building.md) |
-| Not run | Rust, Java, Kotlin, Haskell, Lua and OCaml suites: toolchains not installed |
+| Course suites | 17 run by 2026-11-12, 15 clean and 2 failing for recorded reasons (Lua 5.5 rejects the submitted module; one Rust crate was submitted unfinished). Toolchain versions in [`docs/building.md`](docs/building.md) |
+| Not run | The CMSI 2130 Java projects (no build file, no JUnit on the machine), the CMSI 3300 harnesses and the React front ends |
 | CI | `scripts/check.sh` on every pull request; the repository check on Ubuntu and macOS (bash 3.2) |
 | Security checks | No tracked credentials, compiled binaries or build output; narrow CSP; sandboxed execution |
 | Accessibility | Checked by hand at 1280 and 375 pixels in both themes; no automated audit |

@@ -6,7 +6,7 @@
  * rather than editing these by hand; tests/site-data.test.mjs checks the
  * totals against a fresh count and fails when they drift.
  *
- * Last counted 2026-11-11.
+ * Last counted 2026-11-12.
  */
 export type LanguageCount = { name: string; lines: number };
 
@@ -67,8 +67,8 @@ export const figures = [
 export const checks = {
   siteDataTests: 36,
   lmucsTests: 24,
-  suitesRun: 9,
-  suitesDate: '2026-11-11',
+  suitesRun: 17,
+  suitesDate: '2026-11-12',
   cloudscribeTests: 143,
   ciRunners: ['ubuntu-latest', 'macos-latest'],
 } as const;

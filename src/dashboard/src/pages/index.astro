@@ -166,8 +166,8 @@ const featured = snippets.slice(0, 2);
           <td class="py-4" style="color: var(--muted)">The course record parser and the line counter behind every number here.</td>
         </tr>
         <tr class="border-t align-top" style="border-color: var(--line)">
-          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">{checks.suitesRun} course suites re-run</th>
-          <td class="py-4" style="color: var(--muted)">On {checks.suitesDate}, every suite with an installed toolchain, all passing, with versions recorded. Rust, Java, Kotlin, Haskell, Lua and OCaml were not installed and are listed as skipped. <a href={inRepo('docs/building.md')} class="underline underline-offset-4 decoration-1" style="color: var(--ink)">The matrix</a></td>
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">{checks.suitesRun} course suites run</th>
+          <td class="py-4" style="color: var(--muted)">Run by {checks.suitesDate}, every suite with an installed toolchain, with versions recorded: 15 clean and 2 failing, both for recorded reasons (Lua 5.5 rejects the submitted module; one Rust crate was submitted unfinished). The CMSI 2130 Java projects have no build file and are listed as skipped. <a href={inRepo('docs/building.md')} class="underline underline-offset-4 decoration-1" style="color: var(--ink)">The matrix</a></td>
         </tr>
         <tr class="border-t align-top" style="border-color: var(--line)">
           <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">Repository check on {checks.ciRunners.length} runners</th>

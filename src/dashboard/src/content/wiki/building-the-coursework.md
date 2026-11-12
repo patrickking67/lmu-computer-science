@@ -7,7 +7,8 @@ order: 4
 # Building the coursework
 
 First verified 2026-08-22; every suite with an installed toolchain was re-run on
-2026-11-11. Where a suite fails, the useful question is whether the cause is the
+2026-11-11, and the Rust, Java, Kotlin, Haskell, Lua and OCaml suites were run on
+2026-11-12. Where a suite fails, the useful question is whether the cause is the
 code or the environment. Those are different facts.
 
 ## Verified working
@@ -23,9 +24,21 @@ code or the environment. Those are different facts.
 | CMSI 3801 | Go | vets clean and runs; ships no tests |
 | CMSI 3802 | cloudscribe | 143 passed, 99.66% statements |
 | CMSI 3802 | Homework 5 regex exercise | 159 passed |
+| CMSI 3801 | Rust `stack` | 4 passed |
+| CMSI 3801 | Java | 71 passed |
+| CMSI 3801 | Kotlin | 67 passed |
+| CMSI 3801 | Haskell | 41 passed |
+| CMSI 3801 | OCaml | 7 passed |
+| CMSI 3550 | 6 Rust crates | build; define no tests |
 
-Rust, Java, Kotlin, Haskell, Lua and OCaml were not run: none of those toolchains is
-installed on the machine that ran these.
+## Failing, and why
+
+| Suite | Cause |
+|---|---|
+| CMSI 3801 Lua | Lua 5.5 made for-loop variables read-only; `exercises.lua:60` assigns to one, so the module fails to load. The course used Lua 5.4. |
+| CMSI 3550 `cmsi3550-pgt-p2p` | A literal `...` placeholder at `src/main.rs:112` and a misplaced block: the crate was submitted unfinished and does not compile on any Rust version. |
+
+Neither was repaired. The CMSI 2130 Java projects were not run: see Known gap.
 
 ## Three traps
 
@@ -45,8 +58,8 @@ that prints an install prompt. `command -v javac` succeeds anyway.
 CMSI 2130 has five Java projects, 27 sources, seven JUnit test files, and no build file
 of any kind. The JUnit imports are also split across versions 4 and 5, so a single build
 file would need the JUnit 5 engine plus the vintage engine. None has been added, because
-one cannot be verified without a JDK, and an unverified build file is a claim rather than
-a fact.
+one cannot be verified without fetching the JUnit jars, and an unverified build file is a
+claim rather than a fact. The main sources of four of the five compile with plain `javac`.
 
 Full detail, including the pinned dependency stack the CMSI 3300 work needs, is in
 `docs/building.md`.

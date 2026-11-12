@@ -8,7 +8,7 @@
 - [Architecture](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/architecture.md): six Mermaid diagrams, one per project plus the repository, the course progression and the browser playground
 - [Course map](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/course-map.md): generated timeline, courses by term, and the language by course matrix
 - [AGENTS.md](https://github.com/patrickking67/lmu-computer-science/blob/main/AGENTS.md): layout, commands and rules for working in the repository
-- [Building the coursework](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/building.md): the 2026-11-11 suite matrix with toolchain versions, build and test commands, and recorded defects
+- [Building the coursework](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/building.md): the 2026-11-11 and 2026-11-12 suite matrices with toolchain versions, build and test commands, and recorded defects
 - [Course record](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/record.md): the authoritative course, term and title list
 - [Contributing](https://github.com/patrickking67/lmu-computer-science/blob/main/CONTRIBUTING.md): fixes only; this is a personal archive
 

@@ -26,7 +26,9 @@ change; entries describe the site, the checks and the tooling around it.
 - Course pages show lines per language, what a course builds on and leads to,
   and, for the eight courses whose directory holds only a README, why.
 - `docs/building.md`: a dated matrix of the nine suites re-run on 2026-11-11,
-  with toolchain versions and results, and a list of what was skipped.
+  with toolchain versions and results, and a list of what was skipped. A second
+  matrix covers the Rust, Java, Kotlin, Haskell, Lua and OCaml suites, run on
+  2026-11-12: six clean, two failing for recorded reasons.
 - README screenshots in `docs/assets/`, light and dark, and a 1200x630 social
   card taken from the real front page.
 - Eight site-data tests covering the case studies, figures, course

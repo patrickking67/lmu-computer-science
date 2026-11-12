@@ -1,12 +1,14 @@
 # LMU Computer Science
 
-> Patrick King's BS Computer Science coursework from Loyola Marymount University, Fall 2021 to Spring 2025: fifteen CMSI courses, 18 languages counted by line, and the code itself rather than links to it. Highlights are CloudScribe, a five-stage Ohm compiler to JavaScript (CMSI 3802); seven Rust networking projects ending in peer-to-peer file transfer (CMSI 3550); and Pathfinder, the two-semester senior project (CMSI 4071 and 4072). Coursework under src/courses is kept exactly as submitted, defects included. A static Astro site presents it and runs some programs in the browser.
+> Patrick King's BS Computer Science coursework from Loyola Marymount University, Fall 2021 to Spring 2025: fifteen CMSI courses, 18 languages counted by line, and the code itself rather than links to it. Highlights are CloudScribe, a four-stage Ohm compiler to JavaScript (CMSI 3802); seven Rust networking projects ending in a libp2p peer-to-peer trading card network (CMSI 3550); and Pathfinder, the two-semester senior project (CMSI 4071 and 4072). Each has a case study on the site. Coursework under src/courses is kept exactly as submitted, defects included. A static Astro site presents it and runs some programs in the browser.
 
 ## Docs
 
-- [README](https://github.com/patrickking67/lmu-computer-science/blob/main/README.md): what is here, the course table, and how it is checked
+- [README](https://github.com/patrickking67/lmu-computer-science/blob/main/README.md): the three projects, the course map, and how it is checked
+- [Architecture](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/architecture.md): six Mermaid diagrams, one per project plus the repository, the course progression and the browser playground
+- [Course map](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/course-map.md): generated timeline, courses by term, and the language by course matrix
 - [AGENTS.md](https://github.com/patrickking67/lmu-computer-science/blob/main/AGENTS.md): layout, commands and rules for working in the repository
-- [Building the coursework](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/building.md): per-language build and test commands with version pins, and recorded defects
+- [Building the coursework](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/building.md): the 2026-11-11 suite matrix with toolchain versions, build and test commands, and recorded defects
 - [Course record](https://github.com/patrickking67/lmu-computer-science/blob/main/docs/record.md): the authoritative course, term and title list
 - [Contributing](https://github.com/patrickking67/lmu-computer-science/blob/main/CONTRIBUTING.md): fixes only; this is a personal archive
 
@@ -14,6 +16,9 @@
 
 - [Site](https://patrickking67.github.io/lmu-computer-science/): the coursework, presented
 - [Programs](https://patrickking67.github.io/lmu-computer-science/programs/): the CloudScribe compiler and a calculator running in the page
+- [Case study: CloudScribe](https://patrickking67.github.io/lmu-computer-science/projects/cloudscribe/): problem, approach, pipeline, and what the tests missed
+- [Case study: the network stack](https://patrickking67.github.io/lmu-computer-science/projects/network-stack/): the libp2p layers and request and response over Floodsub
+- [Case study: Pathfinder](https://patrickking67.github.io/lmu-computer-science/projects/pathfinder/): the senior project as submitted, and what I would do differently
 - [Courses](https://patrickking67.github.io/lmu-computer-science/courses/): every course by year, and by language
 - [How the site works](https://patrickking67.github.io/lmu-computer-science/wiki/how-the-site-works/): run modes and why a WebContainer cannot be embedded
 

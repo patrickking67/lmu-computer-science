@@ -7,7 +7,7 @@ Titles in this file are the titles as recorded on the audit, which differ from t
 [LMU Academic Bulletin](https://bulletin.lmu.edu/course-descriptions/cmsi/) titles used
 in `README.md` for three courses. Both are listed where they diverge.
 
-34 courses completed, 32 credit-bearing, 121 credits earned against a 124 minimum.
+34 courses completed, 32 credit-bearing.
 MATH 132 Calculus II outstanding.
 
 ## Computer science courses

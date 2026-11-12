@@ -176,3 +176,35 @@ a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg);
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Architecture figures ────────────────────────────────────
+   Inline SVG drawn at build time (components/Figure.astro). Theme
+   variables only, so one drawing serves both themes. The frame
+   scrolls sideways when the screen is narrower than the drawing;
+   the page never does.                                         */
+.figure { min-width: 0; }
+.figure-frame {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  padding: 1rem;
+}
+.figure-frame svg { display: block; margin-inline: auto; max-width: none; }
+.figure-node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.25; }
+.figure-node.quiet { stroke: var(--line); }
+.figure-node.fault { stroke-dasharray: 5 4; }
+.figure-node.solid { fill: var(--ink); }
+.figure-node.solid ~ .figure-title { fill: var(--paper); }
+.figure-node.solid ~ .figure-sub { fill: var(--paper); }
+.figure-group { fill: none; stroke: var(--line); stroke-width: 1; }
+.figure-group-label { font: 600 12px var(--font-sans); fill: var(--muted); }
+.figure-title { font: 600 13.5px var(--font-sans); fill: var(--ink); }
+.figure-title.mono { font: 500 12.5px var(--font-mono); }
+.figure-sub { font: 400 11.5px var(--font-sans); fill: var(--muted); }
+.figure-edge { fill: none; stroke: var(--ink); stroke-width: 1.25; }
+.figure-edge.dashed { stroke-dasharray: 4 4; }
+.figure-label {
+  font: 400 11.5px var(--font-sans); fill: var(--ink);
+  paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round;
+}

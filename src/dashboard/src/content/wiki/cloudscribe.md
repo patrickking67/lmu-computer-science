@@ -1,6 +1,6 @@
 ---
 title: Building cloudscribe
-description: A statically typed language for IT automation, and the five stages it compiles through.
+description: A statically typed language for IT automation, and the four stages it compiles through.
 order: 3
 ---
 
@@ -13,7 +13,7 @@ The problem it targets: shell scripts are fast to write and impossible to trust.
 a variable name is a runtime failure at 3am. cloudscribe keeps the terseness and adds a
 type checker.
 
-## Five stages
+## Four stages
 
 ```text
 source → parse → analyse → optimise → generate → JavaScript

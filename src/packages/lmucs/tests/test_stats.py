@@ -13,7 +13,13 @@ from pathlib import Path
 import pytest
 
 from lmucs.record import find_repo_root
-from lmucs.stats import EXCLUDED_NAMES, LANGUAGES, count_lines, total_lines
+from lmucs.stats import (
+    EXCLUDED_NAMES,
+    LANGUAGES,
+    count_lines,
+    count_lines_by_course,
+    total_lines,
+)
 
 
 @pytest.fixture
@@ -67,3 +73,26 @@ def test_real_repository_counts_the_languages_the_site_claims() -> None:
     assert {"JavaScript", "Java", "Rust", "CloudScribe"} <= names
     assert total_lines(counts) > 10_000
     assert all(c.lines > 0 for c in counts)
+
+
+def test_by_course_splits_on_the_course_directory(tree: Path) -> None:
+    other = tree / "src" / "courses" / "cmsi-8888" / "nested" / "deep"
+    other.mkdir(parents=True)
+    (other / "e.py").write_text("a\nb\n")
+    by_course = {
+        course: {c.name: c.lines for c in counts}
+        for course, counts in count_lines_by_course(tree).items()
+    }
+    assert by_course == {
+        "cmsi-8888": {"Python": 2},
+        "cmsi-9999": {"Python": 3, "JavaScript": 3, "Rust": 1},
+    }
+
+
+def test_by_course_sums_to_the_language_totals() -> None:
+    root = find_repo_root()
+    summed: dict[str, int] = {}
+    for counts in count_lines_by_course(root).values():
+        for c in counts:
+            summed[c.name] = summed.get(c.name, 0) + c.lines
+    assert summed == {c.name: c.lines for c in count_lines(root)}

@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projects } from '../../data/projects';
+import { href } from '../../lib/site';
+---
+<Base title="Projects" description="Three projects in depth: a compiler, a peer-to-peer network in Rust, and the senior project. Problem, approach, architecture, and what I would do differently.">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-20">
+    <h1 class="display text-[clamp(2.25rem,5.5vw,3.5rem)] settle">Projects.</h1>
+    <p class="mt-6 max-w-xl text-lg leading-relaxed settle" style="animation-delay: 100ms; color: var(--muted)">
+      Three of them, written up properly: the problem, how it was built, a
+      diagram drawn from the code, and what I would do differently now.
+    </p>
+
+    <ul class="mt-14">
+      {projects.map((p) => (
+        <li class="border-t py-9" style="border-color: var(--line)">
+          <p class="text-sm" style="color: var(--muted)">
+            <span class="font-mono" style="color: var(--ink)">{p.courses.join(', ')}</span>, {p.term}
+          </p>
+          <h2 class="display text-[clamp(1.875rem,4vw,2.5rem)] mt-2" style="font-variation-settings: 'SOFT' 40, 'WONK' 1, 'opsz' 72">
+            <a href={href(`projects/${p.slug}`)} class="hover:underline decoration-1 underline-offset-8">{p.name}</a>
+          </h2>
+          <p class="mt-3 leading-relaxed max-w-2xl" style="color: var(--muted)">{p.tagline}</p>
+          <p class="mt-3 text-sm leading-relaxed max-w-2xl"><span class="font-medium">The hard part.</span> {p.hard.summary}</p>
+          <a href={href(`projects/${p.slug}`)} class="mt-5 inline-block text-sm font-medium underline underline-offset-4 decoration-1 hover:decoration-2">Read the case study</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

@@ -41,7 +41,7 @@ export const programs: Program[] = [
     course: 'CMSI 3802',
     path: 'src/courses/cmsi-3802/cloudscribe',
     blurb:
-      'A statically typed language for the kind of work that usually ends up in a fragile shell script: provisioning, deployment, scheduled jobs. Five stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and a generator emits JavaScript. The playground below is the submitted compiler itself, bundled and run in your browser.',
+      'A statically typed language for the kind of work that usually ends up in a fragile shell script: provisioning, deployment, scheduled jobs. Four stages: an Ohm grammar parses, a semantic pass builds the typed representation and rejects the programs that should not run, an optimiser folds what it can prove, and a generator emits JavaScript. The playground below is the submitted compiler itself, bundled and run in your browser.',
     stack: ['Ohm', 'JavaScript', 'Node 20'],
     embed: 'playground',
     source: 'https://github.com/patrickking67/cloudscribe',
@@ -72,14 +72,14 @@ export const programs: Program[] = [
       'Running exactly as submitted, save for one thing: the markup asks for interest.jpg where the file is Interest.jpeg, so the embed resolves the image rather than showing a broken one.',
   },
   {
-    name: 'Peer-to-peer file transfer',
+    name: 'Peer-to-peer trading card network',
     course: 'CMSI 3550',
     path: 'src/courses/cmsi-3550/Final',
     blurb:
-      'File transfer with no server in the middle. Two peers find each other, open a socket, and move bytes directly; the Rust side handles framing and the transfer loop, and a React front end sits on top of it.',
-    stack: ['Rust', 'React'],
+      'Trading cards with no server in the middle. Peers on a local network find each other by mDNS, connect over TCP encrypted with Noise, and list each other’s public cards over Floodsub. A React front end is in the project, not yet connected to the peer.',
+    stack: ['Rust', 'libp2p', 'Tokio', 'React'],
     embed: 'source',
-    note: 'Raw sockets and a native toolchain. Neither survives a browser sandbox.',
+    note: 'TCP listeners, multicast discovery and a native toolchain. None of them survives a browser sandbox.',
   },
   {
     name: 'Subnet calculator',
@@ -96,7 +96,7 @@ export const programs: Program[] = [
     course: 'CMSI 4072',
     path: 'src/courses/cmsi-4072/Pathfinder',
     blurb:
-      'The senior capstone: career guidance that reads a student’s coursework and interests and proposes routes through them. A Vite front end, an Express API, and Firebase Cloud Functions behind that.',
+      'The senior capstone, built by a team of four: career guidance behind a short questionnaire, with a chat coach, a resume reviewer and a salary estimator. A Vite front end, Firebase Auth, an Express API and two Cloud Functions.',
     stack: ['React', 'Vite', 'Express', 'Firebase'],
     embed: 'source',
     note: 'The backend wants a service account that is deliberately not in this repository, and the working version is private.',
@@ -119,7 +119,7 @@ export const programs: Program[] = [
       'Type a musician’s name and it queries MusicBrainz, disambiguates the result, and lays out the catalogue: releases, dates, and the aliases the same artist has recorded under.',
     stack: ['React', 'MusicBrainz'],
     embed: 'source',
-    note: 'Lives in this repository, which is not public, so no container can reach it.',
+    note: 'A Create React App project that is not set up to run from this page. Read the source.',
   },
   {
     name: 'Thirteen-language exercise set',
@@ -129,6 +129,6 @@ export const programs: Program[] = [
       'One problem set, solved thirteen times over: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Go, Haskell, Kotlin, Lua, OCaml and Java. The problems stop being the interesting part around the fourth language; what each one makes easy or impossible is.',
     stack: ['13 languages'],
     embed: 'source',
-    note: 'Thirteen toolchains. Six were verified end to end; the commands are in docs/building.md.',
+    note: 'Thirteen toolchains. Eleven test suites pass and the Go program runs, as run on 2026-11-11 and 2026-11-12; the Lua suite fails to load on Lua 5.5; the commands are in docs/building.md.',
   },
 ];

@@ -18,6 +18,10 @@ export type Highlight = {
   path: string;
   /** Anchor on the Programs page when the project runs there. */
   program?: string;
+  /** Slug of its case study in data/projects.ts. */
+  project: string;
+  /** The one hard thing, in a sentence. */
+  hard: string;
 };
 
 export const highlights: Highlight[] = [
@@ -27,13 +31,15 @@ export const highlights: Highlight[] = [
     courses: ['CMSI 3802'],
     term: 'Spring 2025',
     summary:
-      'A statically typed language for the jobs that usually end up in a shell script, compiled to JavaScript in five stages from an Ohm grammar. The submitted compiler runs in your browser on the Programs page.',
+      'A statically typed language for the jobs that usually end up in a shell script, compiled to JavaScript in four stages from an Ohm grammar. The submitted compiler runs in your browser.',
     facts: [
       '143 tests at 99.66% statement coverage',
       'Two back-end defects the suite never reached, kept and shown',
     ],
     path: 'src/courses/cmsi-3802/cloudscribe',
     program: 'cloudscribe',
+    project: 'cloudscribe',
+    hard: 'Rejecting a bad program with a line and column before any output exists: the static analyzer is 462 of the compiler’s 1,040 lines.',
   },
   {
     name: 'The network stack',
@@ -41,9 +47,11 @@ export const highlights: Highlight[] = [
     courses: ['CMSI 3550'],
     term: 'Spring 2024',
     summary:
-      'Working down the stack instead of reading about it: subnet arithmetic from bit operations, then sockets, then two peers moving a file with no server in the middle.',
-    facts: ['Subnet calculator from bit operations', 'Peer-to-peer file transfer over raw sockets'],
+      'Working up from an address to an application: subnet arithmetic from bit operations, then a peer-to-peer trading card network on libp2p, with TCP, Noise, mplex, mDNS and Floodsub and no server in the middle.',
+    facts: ['Subnet calculator from bit operations alone', 'Peers discover each other by mDNS and talk over an encrypted, multiplexed TCP stream'],
     path: 'src/courses/cmsi-3550',
+    project: 'network-stack',
+    hard: 'Getting request and response out of Floodsub, a protocol that only broadcasts: every reply names the peer it is for, and everyone else drops it.',
   },
   {
     name: 'Pathfinder',
@@ -51,8 +59,10 @@ export const highlights: Highlight[] = [
     courses: ['CMSI 4071', 'CMSI 4072'],
     term: 'Fall 2024 to Spring 2025',
     summary:
-      'Specified and defended in the first semester before any code existed, then built to that specification in the second: career guidance that reads a student’s coursework and proposes routes through it.',
-    facts: ['Vite and React, an Express API, Firebase Cloud Functions', 'Full deliverable set, from specification to demonstration'],
+      'Specified and reviewed in the first semester before any code existed, then built in the second by a team of four: a questionnaire, a chat coach, a resume reviewer and a salary estimator behind one sign-in.',
+    facts: ['Vite and React, Firebase Auth, an Express API, Cloud Functions', 'Seven deliverable documents, from proposal to test procedure'],
     path: 'src/courses/cmsi-4072/Pathfinder',
+    project: 'pathfinder',
+    hard: 'Holding a four-person build to a specification written a semester earlier, and keeping the app answering when the model call fails.',
   },
 ];

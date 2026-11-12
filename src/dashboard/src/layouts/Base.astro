@@ -13,6 +13,7 @@ const {
 } = Astro.props as Props;
 
 const nav = [
+  { path: 'projects', label: 'Projects' },
   { path: 'programs', label: 'Programs' },
   { path: 'courses', label: 'Courses' },
   { path: 'wiki', label: 'Wiki' },
@@ -46,8 +47,8 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
     <meta property="og:url" content={pageUrl} />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={cardUrl} />
-    <meta property="og:image:width" content="1280" />
-    <meta property="og:image:height" content="640" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={cardUrl} />
     <meta name="twitter:image:alt" content={`${site.name}: coursework and running programs from ${site.years}`} />
@@ -107,14 +108,16 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
       class="sticky top-0 z-40 border-b backdrop-blur-md"
       style="border-color: var(--line); background: color-mix(in oklch, var(--paper) 82%, transparent)"
     >
-      <nav class="mx-auto max-w-5xl px-4 sm:px-6 h-16 flex items-center gap-4 sm:gap-7" aria-label="Main">
+      {/* Five links do not fit beside the mark at phone width, and a hidden
+          scroller hid the last one. Below 640px the links take a second row. */}
+      <nav class="mx-auto max-w-5xl px-4 sm:px-6 py-3 sm:py-0 sm:h-16 flex flex-wrap items-center gap-x-4 gap-y-2.5 sm:gap-7" aria-label="Main">
         <a href={href()} class="shrink-0 text-lg" aria-label={`${site.name}, home`}>
           <Wordmark size={24} />
         </a>
 
-        <ul class="flex items-center gap-3.5 sm:gap-5 text-sm min-w-0 overflow-x-auto no-scrollbar">
+        <ul class="order-3 sm:order-none w-full sm:w-auto flex items-center gap-4 sm:gap-5 text-sm min-w-0">
           {nav.map((item) => {
-            const current = isCurrent(here, item.path);
+            const current = isCurrent(here, item.path) || here.replace(/\/$/, '').startsWith(href(item.path).replace(/\/$/, '') + '/');
             return (
               <li class="shrink-0">
                 <a
@@ -145,9 +148,11 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.o
         <p>{site.owner}, BS Computer Science, Loyola Marymount University, {site.years}.</p>
         <p>Advised by <strong style="color: var(--ink)">{site.advisor}</strong>, who taught most of what is in here.</p>
         <p class="flex flex-wrap gap-5 pt-2">
-          <a href={site.github} class="hover:underline">GitHub</a>
+          <a href={site.repo} class="hover:underline">Source</a>
+          <a href={`${site.repo}/blob/main/docs/architecture.md`} class="hover:underline">Architecture</a>
+          <a href={`${site.repo}/blob/main/docs/building.md`} class="hover:underline">Build notes</a>
+          <a href={site.github} class="hover:underline">GitHub profile</a>
           <a href={site.linkedin} class="hover:underline">LinkedIn</a>
-          <a href={site.repo} class="hover:underline">This repository</a>
         </p>
       </div>
     </footer>

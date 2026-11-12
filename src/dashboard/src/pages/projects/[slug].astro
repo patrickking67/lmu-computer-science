@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import Figure from '../../components/Figure.astro';
+import Tags from '../../components/Tags.astro';
+import { projects } from '../../data/projects';
+import { figures } from '../../data/figures';
+import { href, inRepo, treeInRepo } from '../../lib/site';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+const { project } = Astro.props;
+
+const courseSlug = (code: string) => code.toLowerCase().replace(' ', '-');
+// A path with an extension is a file and gets a blob URL; anything else is a directory.
+const sourceUrl = (path: string) => (/\.[a-z0-9]+$/i.test(path) ? inRepo(path) : treeInRepo(path));
+const index = projects.findIndex((p) => p.slug === project.slug);
+const next = projects[(index + 1) % projects.length];
+const h2 = "font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 36";
+---
+<Base title={project.name} description={project.tagline}>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 py-16">
+    <a href={href('projects')} class="text-sm hover:underline" style="color: var(--muted)">All three projects</a>
+
+    <header class="mt-8">
+      <p class="text-sm settle" style="color: var(--muted)">
+        {project.courses.map((code, i) => (
+          <Fragment>{i > 0 && ' and '}<a href={href(`courses/${courseSlug(code)}`)} class="font-mono hover:underline" style="color: var(--ink)">{code}</a></Fragment>
+        ))}, {project.term}. {project.team}.
+      </p>
+      <h1 class="display text-[clamp(2.5rem,6vw,4rem)] mt-3 settle" style="animation-delay: 90ms">{project.name}</h1>
+      <p class="mt-5 text-lg leading-relaxed max-w-2xl settle" style="animation-delay: 170ms; color: var(--muted)">{project.tagline}</p>
+      <Tags items={project.stack} class="mt-6" />
+      <p class="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+        {project.program && (
+          <a href={href(`programs#${project.program}`)} class="underline underline-offset-4 decoration-1 hover:decoration-2">Run it in your browser</a>
+        )}
+        <a href="#source" class="underline underline-offset-4 decoration-1 hover:decoration-2">Jump to the source</a>
+        {project.live && (
+          <a href={project.live} class="underline underline-offset-4 decoration-1 hover:decoration-2">Live repository</a>
+        )}
+      </p>
+    </header>
+
+    <dl class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8 py-8 border-y" style="border-color: var(--line)">
+      {project.facts.map((f) => (
+        <div>
+          <dd class="display text-3xl" style="font-variation-settings: 'SOFT' 20, 'WONK' 1, 'opsz' 48">{f.value}</dd>
+          <dt class="mt-2 text-xs leading-relaxed" style="color: var(--muted)">{f.label}</dt>
+        </div>
+      ))}
+    </dl>
+
+    <section class="mt-14" aria-labelledby="problem">
+      <h2 id="problem" class="display text-2xl" style={h2}>The problem</h2>
+      <div class="mt-4 space-y-4 leading-relaxed max-w-2xl">
+        {project.problem.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+
+    <section class="mt-14" aria-labelledby="approach">
+      <h2 id="approach" class="display text-2xl" style={h2}>The approach</h2>
+      <dl class="mt-6 grid sm:grid-cols-2 gap-x-10 gap-y-8">
+        {project.approach.map((a) => (
+          <div>
+            <dt class="font-medium">{a.title}</dt>
+            <dd class="mt-2 text-sm leading-relaxed" style="color: var(--muted)">{a.body}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14" aria-labelledby="architecture">
+      <h2 id="architecture" class="display text-2xl" style={h2}>Architecture</h2>
+      <div class="mt-6">
+        <Figure figure={figures[project.slug]} caption={project.figure} />
+      </div>
+      {project.slug === 'pathfinder' && (
+        <figure class="mt-10">
+          <img
+            src={href('shots/pathfinder-tools.png')}
+            width="1200" height="785" loading="lazy" decoding="async"
+            alt="Pathfinder's Career Tools page: a resume analyzer with a file drop area, and a salary estimator with job title and location fields."
+            class="w-full h-auto rounded-2xl border" style="border-color: var(--line)"
+          />
+          <figcaption class="mt-3 text-sm" style="color: var(--muted)">
+            The Tools page, from the screenshots submitted with the final delivery.
+          </figcaption>
+        </figure>
+      )}
+    </section>
+
+    <section class="mt-14" aria-labelledby="hard">
+      <h2 id="hard" class="display text-2xl" style={h2}>What was hard</h2>
+      <p class="mt-4 text-lg leading-relaxed max-w-2xl">{project.hard.summary}</p>
+      <p class="mt-4 leading-relaxed max-w-2xl" style="color: var(--muted)">{project.hard.detail}</p>
+    </section>
+
+    <section class="mt-14" aria-labelledby="differently">
+      <h2 id="differently" class="display text-2xl" style={h2}>What I would do differently</h2>
+      <ul class="mt-6 space-y-7 max-w-2xl">
+        {project.differently.map((d) => (
+          <li class="pl-5 border-l" style="border-color: var(--ink)">
+            <p class="font-medium">{d.title}</p>
+            <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted)">{d.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mt-14 scroll-mt-24" id="source" aria-labelledby="source-h">
+      <h2 id="source-h" class="display text-2xl" style={h2}>Source</h2>
+      <ul class="mt-5 divide-y border-y" style="border-color: var(--line)">
+        {project.sources.map((s) => (
+          <li style="border-color: var(--line-soft)">
+            <a href={sourceUrl(s.path)} class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3.5 hover:opacity-70 transition-opacity">
+              <span class="font-medium">{s.label}</span>
+              <span class="font-mono text-xs break-all" style="color: var(--muted)">{s.path.replace(/^src\/courses\//, '')}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <nav class="mt-16 pt-8 border-t text-sm" style="border-color: var(--line)" aria-label="More projects">
+      <a href={href(`projects/${next.slug}`)} class="hover:underline">
+        <span style="color: var(--muted)">Next project:</span> <span class="font-medium">{next.name}</span>
+      </a>
+    </nav>
+  </article>
+</Base>

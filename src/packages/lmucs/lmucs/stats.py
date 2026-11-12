@@ -70,9 +70,10 @@ def tracked_files(root: Path, subtree: str = "src/courses") -> list[Path]:
         return [p for p in (root / subtree).rglob("*") if p.is_file()]
 
 
-def count_lines(root: Path, subtree: str = "src/courses") -> list[LanguageCount]:
-    """Lines per language, largest first."""
-    totals: Counter[str] = Counter()
+def _line_totals(root: Path, subtree: str) -> Counter[tuple[str, str]]:
+    """Lines keyed by (course directory, language) for every counted file."""
+    totals: Counter[tuple[str, str]] = Counter()
+    base = root / subtree
     for path in tracked_files(root, subtree):
         if path.name in EXCLUDED_NAMES:
             continue
@@ -81,13 +82,41 @@ def count_lines(root: Path, subtree: str = "src/courses") -> list[LanguageCount]
             continue
         try:
             text = path.read_bytes()
-        except OSError:
+            course = path.relative_to(base).parts[0]
+        except (OSError, ValueError, IndexError):
             continue
-        totals[language] += text.count(b"\n")
+        totals[(course, language)] += text.count(b"\n")
+    return totals
+
+
+def _largest_first(totals: Counter[str]) -> list[LanguageCount]:
     return [
         LanguageCount(name, lines)
         for name, lines in sorted(totals.items(), key=lambda kv: (-kv[1], kv[0]))
     ]
+
+
+def count_lines(root: Path, subtree: str = "src/courses") -> list[LanguageCount]:
+    """Lines per language, largest first."""
+    totals: Counter[str] = Counter()
+    for (_course, language), lines in _line_totals(root, subtree).items():
+        totals[language] += lines
+    return _largest_first(totals)
+
+
+def count_lines_by_course(
+    root: Path, subtree: str = "src/courses"
+) -> dict[str, list[LanguageCount]]:
+    """Lines per language inside each course directory, courses in name order.
+
+    A course is the first path segment under ``subtree`` (``cmsi-3801``). Summed
+    over every course this equals :func:`count_lines`, because both are built
+    from the same pass. Courses with no counted code are absent.
+    """
+    per_course: dict[str, Counter[str]] = {}
+    for (course, language), lines in _line_totals(root, subtree).items():
+        per_course.setdefault(course, Counter())[language] += lines
+    return {course: _largest_first(per_course[course]) for course in sorted(per_course)}
 
 
 def total_lines(counts: list[LanguageCount]) -> int:

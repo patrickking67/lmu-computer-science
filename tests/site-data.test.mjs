@@ -21,11 +21,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const data = (name) => import(path.join(root, 'src/dashboard/src/data', name));
 
 const { programs } = await data('programs.ts');
-const { courses, liveRepos, toolkit } = await data('courses.ts');
+const { courses, liveRepos, toolkit, progression } = await data('courses.ts');
 const { snippets } = await data('snippets.ts');
-const { languages, totalLines, figures } = await data('stats.ts');
+const { languages, totalLines, figures, linesByCourse, checks } = await data('stats.ts');
 const { highlights } = await data('highlights.ts');
-const { languageIndex, citedCodes } = await import(path.join(root, 'src/dashboard/src/lib/languages.ts'));
+const { projects } = await data('projects.ts');
+const { figures: diagrams } = await data('figures.ts');
+const courseMap = await import(path.join(root, 'scripts/course-map.mjs'));
 
 const inRepo = (p) => path.join(root, p);
 const courseCodes = new Set(courses.map((c) => c.code));
@@ -413,14 +415,143 @@ test('the front-page highlights point at real courses, paths and programs', () =
   }
 });
 
-test('every counted language leads to at least one course', () => {
-  assert.deepEqual(citedCodes('CMSI 2021, 3801'), ['CMSI 2021', 'CMSI 3801']);
-  assert.deepEqual(citedCodes('this site'), []);
-  const index = languageIndex(languages, courses, toolkit, programs);
-  assert.equal(index.length, languages.length, 'the index dropped a language');
-  for (const entry of index) {
-    assert.ok(entry.courses.length > 0, `${entry.name} has a line count but no course on the Courses page`);
+test('every counted language is found in at least one course directory', () => {
+  assert.ok(linesByCourse.length > 0, 'no per-course counts parsed; this test is checking nothing');
+  const found = new Set(linesByCourse.flatMap((c) => c.languages.map((l) => l.name)));
+  for (const l of languages) {
+    assert.ok(found.has(l.name), `${l.name} has a line count but no course holds a file in it`);
   }
+});
+
+test('the per-course line counts match a fresh count and sum to the totals', () => {
+  const raw = execFileSync('python3', ['-m', 'lmucs.cli', 'stats', '--json', '--root', root], {
+    cwd: path.join(root, 'src/packages/lmucs'),
+    encoding: 'utf8',
+  });
+  const fresh = JSON.parse(raw).by_course.map((c) => [
+    c.course.toUpperCase().replace('-', ' '),
+    c.languages.map((l) => [l.name, l.lines]),
+  ]);
+  assert.deepEqual(
+    linesByCourse.map((c) => [c.course, c.languages.map((l) => [l.name, l.lines])]),
+    fresh,
+    'stats.ts linesByCourse is stale; re-run lmucs stats --json',
+  );
+  const summed = new Map();
+  for (const c of linesByCourse) {
+    assert.ok(courseCodes.has(c.course), `${c.course} is not a course`);
+    for (const l of c.languages) summed.set(l.name, (summed.get(l.name) ?? 0) + l.lines);
+  }
+  assert.deepEqual(Object.fromEntries(summed), Object.fromEntries(languages.map((l) => [l.name, l.lines])));
+});
+
+test('the generated course map in README.md and docs/course-map.md is current', async () => {
+  const { doc, block } = await courseMap.build();
+  assert.ok(doc.includes('| Language |') && block.includes('| Term |'), 'the generator produced no tables');
+  assert.deepEqual(await courseMap.stale(), [], 'run: node scripts/course-map.mjs');
+});
+
+test('every case study points at real courses, paths, programs and figures', () => {
+  assert.equal(projects.length, 3, 'the site leads with three projects');
+  const anchor = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const runnable = new Set(programs.filter((p) => p.embed !== 'source').map((p) => anchor(p.name)));
+  for (const p of projects) {
+    for (const code of p.courses) assert.ok(courseCodes.has(code), `${p.name}: ${code} is not a course`);
+    assert.ok(p.sources.length > 0, `${p.name} links to no source`);
+    for (const s of p.sources) assert.ok(tracked(s.path).length > 0, `${p.name}: ${s.path} is not tracked`);
+    if (p.program) assert.ok(runnable.has(p.program), `${p.name}: #${p.program} is not a runnable program`);
+    assert.ok(diagrams[p.slug], `${p.name} has no figure`);
+    assert.ok(p.differently.length >= 3 && p.problem.length > 0 && p.approach.length > 0, `${p.name} is missing a section`);
+  }
+  const slugs = new Set(projects.map((p) => p.slug));
+  for (const h of highlights) assert.ok(slugs.has(h.project), `${h.name}: no case study "${h.project}"`);
+  assert.ok(tracked('src/dashboard/public/shots/pathfinder-tools.png').length > 0, 'the Pathfinder screenshot is missing');
+});
+
+test('every figure names real files and only connects boxes it draws', () => {
+  for (const figure of Object.values(diagrams)) {
+    const ids = new Set(figure.nodes.map((n) => n.id));
+    assert.equal(ids.size, figure.nodes.length, `${figure.id}: duplicate node id`);
+    for (const n of figure.nodes) {
+      if (n.path) assert.ok(tracked(n.path).length > 0, `${figure.id}: ${n.path} is not tracked`);
+      assert.ok(n.x >= 0 && n.x + n.w <= figure.width && n.y + n.h <= figure.height, `${figure.id}: ${n.id} is outside the drawing`);
+    }
+    for (const e of figure.edges) {
+      assert.ok(ids.has(e.from) && ids.has(e.to), `${figure.id}: edge ${e.from} to ${e.to} names a missing box`);
+    }
+  }
+});
+
+test('the course progression runs forward in time and matches the diagram in docs/architecture.md', () => {
+  const when = new Map(courses.map((c) => [c.code, courseMap.termOrder(c.term)]));
+  for (const step of progression) {
+    assert.ok(when.has(step.from) && when.has(step.to), `${step.from} to ${step.to}: not a course`);
+    assert.ok(when.get(step.from) < when.get(step.to), `${step.from} was not taken before ${step.to}`);
+  }
+  const doc = fs.readFileSync(inRepo('docs/architecture.md'), 'utf8');
+  const chart = doc.slice(doc.indexOf('## 2.'), doc.indexOf('## 3.'));
+  const code = (id) => `CMSI ${id.slice(1)}`;
+  const drawn = [...chart.matchAll(/^\s+(c\d{4}) -->\|"[^"]*"\| (c\d{4})$/gm)].map((m) => `${code(m[1])}>${code(m[2])}`);
+  assert.ok(drawn.length > 0, 'no edges parsed from the flowchart; fix the parse');
+  assert.deepEqual(drawn.sort(), progression.map((s) => `${s.from}>${s.to}`).sort());
+  const boxes = new Set([...chart.matchAll(/^\s+(c\d{4})\["/gm)].map((m) => code(m[1])));
+  assert.deepEqual([...boxes].sort(), [...courseCodes].sort(), 'the flowchart must draw every course exactly once');
+});
+
+test('docs/architecture.md links only to paths that exist', () => {
+  const doc = fs.readFileSync(inRepo('docs/architecture.md'), 'utf8');
+  const links = [...doc.matchAll(/\]\((\.\.\/[^)]+|[a-z-]+\.md)\)/g)].map((m) => m[1]);
+  assert.ok(links.length >= 6, `parsed ${links.length} link(s) from architecture.md; fix the parse`);
+  for (const link of links) {
+    const target = path.posix.normalize(path.posix.join('docs', link));
+    assert.ok(tracked(target).length > 0, `architecture.md links to ${target}, which is not tracked`);
+  }
+  assert.equal([...doc.matchAll(/^```mermaid$/gm)].length, 6, 'architecture.md promises six diagrams');
+});
+
+test('the proof figures on the front page are counted, not typed', () => {
+  const own = fs.readFileSync(inRepo('tests/site-data.test.mjs'), 'utf8');
+  assert.equal(checks.siteDataTests, [...own.matchAll(/^test\(/gm)].length, 'stats.ts checks.siteDataTests is stale');
+  const py = tracked('src/packages/lmucs/tests')
+    .filter((p) => p.endsWith('.py'))
+    .map((p) => fs.readFileSync(inRepo(p), 'utf8'));
+  assert.equal(checks.lmucsTests, py.join('\n').match(/^def test_/gm).length, 'stats.ts checks.lmucsTests is stale');
+
+  const building = fs.readFileSync(inRepo('docs/building.md'), 'utf8');
+  assert.ok(building.includes(`## Suites run on ${checks.suitesDate}`), 'building.md has no matrix for that date');
+  const rows = [];
+  for (const part of building.split(/^## /m).filter((p) => p.startsWith('Suites run on '))) {
+    const table = part.slice(0, part.indexOf('\n\n', part.indexOf('|---')));
+    rows.push(...table.split('\n').filter((line) => /^\| CMSI \d{4} \|/.test(line)));
+  }
+  assert.equal(checks.suitesRun, rows.length, 'stats.ts checks.suitesRun does not match the matrix');
+  assert.ok(rows.some((r) => r.includes(`${checks.cloudscribeTests} passed`)), 'the cloudscribe row disagrees with stats.ts');
+
+  const workflow = fs.readFileSync(inRepo('.github/workflows/check-ai-config.yml'), 'utf8');
+  assert.match(workflow, new RegExp(`os: \\[${checks.ciRunners.join(', ')}\\]`), 'the runner list is stale');
+});
+
+test('the README leads with the three projects, each with a picture, its code and its page', () => {
+  const readme = fs.readFileSync(inRepo('README.md'), 'utf8');
+  const siteUrl = 'https://patrickking67.github.io/lmu-computer-science/';
+  const firstCourseTable = readme.indexOf(courseMap.START);
+  assert.ok(firstCourseTable > 0, 'README.md has no generated course map');
+  for (const p of projects) {
+    const page = readme.indexOf(`${siteUrl}projects/${p.slug}/`);
+    assert.ok(page > 0 && page < firstCourseTable, `${p.name}: its site page must be linked above the course map`);
+  }
+  const images = [...readme.matchAll(/(?:src|srcset)="([^"]+\.(?:png|webp|svg))"/g)].map((m) => m[1]);
+  assert.ok(images.length >= 4, `parsed ${images.length} image(s) from README.md; fix the parse`);
+  for (const image of images) assert.ok(tracked(image).length > 0, `README.md shows ${image}, which is not tracked`);
+  for (const image of tracked('docs/assets')) {
+    assert.ok(fs.statSync(inRepo(image)).size < 300 * 1024, `${image} is over 300 KB`);
+  }
+  const badges = [...readme.matchAll(/^\[!\[/gm)].length;
+  assert.ok(badges >= 2 && badges <= 4, `README.md carries ${badges} badges; the limit is four`);
+  assert.equal(/\u2014/.test(readme), false, 'README.md contains an em dash');
+  assert.ok(readme.includes(`| Site-data tests | ${checks.siteDataTests},`), 'README.md site-data test count is stale');
+  assert.ok(readme.includes(`| Package tests | ${checks.lmucsTests} in`), 'README.md package test count is stale');
+  assert.ok(readme.includes(`| Course suites | ${checks.suitesRun} run by ${checks.suitesDate},`), 'README.md suite count is stale');
 });
 
 test('llms.txt is served from the site root, matches the repository copy, and links resolve', () => {
@@ -435,7 +566,7 @@ test('llms.txt is served from the site root, matches the repository copy, and li
   const repoUrl = 'https://github.com/patrickking67/lmu-computer-science/';
   const siteUrl = 'https://patrickking67.github.io/lmu-computer-science/';
   const wiki = new Set(tracked('src/dashboard/src/content/wiki').map((p) => path.basename(p, '.md')));
-  const sections = new Set(['', 'programs/', 'courses/', 'wiki/', 'contact/']);
+  const sections = new Set(['', 'programs/', 'projects/', 'courses/', 'wiki/', 'contact/', ...projects.map((p) => `projects/${p.slug}/`)]);
   for (const link of links) {
     if (link.startsWith(repoUrl)) {
       const target = link.slice(repoUrl.length).replace(/^(blob|tree)\/main\//, '');

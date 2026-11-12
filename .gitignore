@@ -30,6 +30,14 @@ coverage/
 *.class
 *.o
 *.obj
+# Haskell and OCaml build output
+dist-newstyle/
+_build/
+*.hi
+*.cmi
+*.cmx
+*.cmo
+*.cmxa
 
 # Secrets. This guards against a future .env; it is not a statement that the
 # tree is clean. It is not: a Google service-account private key and a RapidAPI

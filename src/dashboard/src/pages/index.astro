@@ -3,15 +3,23 @@ import Base from '../layouts/Base.astro';
 import Toolkit from '../components/Toolkit.astro';
 import Tags from '../components/Tags.astro';
 import Snippet from '../components/Snippet.astro';
+import Playground from '../components/Playground.astro';
+import Figure from '../components/Figure.astro';
 import { courses, liveRepos } from '../data/courses';
-import { figures } from '../data/stats';
+import { figures, checks, languages } from '../data/stats';
+import { figures as diagrams } from '../data/figures';
+import { programs } from '../data/programs';
 import { snippets } from '../data/snippets';
 import { highlights } from '../data/highlights';
-import { href, treeInRepo } from '../lib/site';
+import { href, treeInRepo, inRepo } from '../lib/site';
 
 const slug = (code: string) => code.toLowerCase().replace(' ', '-');
 
 const built = courses.filter((c) => c.work);
+const anchor = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+// The demos that are not the playground, which runs on this page itself.
+const otherDemos = programs.filter((p) => p.embed === 'inline' || p.embed === 'external');
+const demoVerb: Record<string, string> = { inline: 'Runs in the page', external: 'Opens in a StackBlitz tab' };
 // Two on the front page. The rest are on the courses they came from.
 const featured = snippets.slice(0, 2);
 ---
@@ -22,22 +30,52 @@ const featured = snippets.slice(0, 2);
       A compiler, a network stack, and thirteen languages.
     </h1>
     <p class="mt-7 text-lg max-w-xl leading-relaxed settle" style="animation-delay: 240ms; color: var(--muted)">
-      Four years of computer science at LMU, and the code that came out of it. The
-      programs that fit in a browser tab run right here on the page.
+      Four years of computer science at LMU, and the code that came out of it:{' '}
+      {courses.length} courses, {languages.length} languages, three projects worth
+      reading closely. The compiler runs right here on the page.
     </p>
     <div class="mt-9 flex flex-wrap gap-3 settle" style="animation-delay: 320ms">
-      <a href={href('programs')} class="px-5 py-2.5 rounded-full text-sm font-medium lift" style="background: var(--ink); color: var(--paper)">Run the programs</a>
+      <a href="#run" class="px-5 py-2.5 rounded-full text-sm font-medium lift border" style="background: var(--ink); color: var(--paper); border-color: var(--ink)">Run the compiler</a>
+      <a href="#start-here" class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">Read the three projects</a>
       <a href={href('courses')} class="px-5 py-2.5 rounded-full text-sm font-medium border lift" style="border-color: var(--line)">Browse the courses</a>
     </div>
     <Toolkit />
   </section>
 
+  <section id="run" class="mx-auto max-w-5xl px-4 sm:px-6 pt-20 scroll-mt-20" aria-labelledby="run-h">
+    <h2 id="run-h" class="display text-3xl">Run it here</h2>
+    <p class="mt-3 mb-8 max-w-2xl leading-relaxed" style="color: var(--muted)">
+      This is the CloudScribe compiler exactly as submitted for CMSI 3802,
+      running in your browser. Edit the program, step through the stages, and
+      press Run. The committed examples stop at Generate; that is a real defect,
+      shown instead of hidden.{' '}
+      <a href={href('projects/cloudscribe')} class="underline underline-offset-4 decoration-1 hover:decoration-2" style="color: var(--ink)">How it was built</a>
+    </p>
+    <Playground />
 
-  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24" aria-labelledby="start-here">
+    <h3 class="mt-12 text-sm font-semibold" style="color: var(--muted)">Two more that run</h3>
+    <ul class="mt-4 grid sm:grid-cols-2 gap-4">
+      {otherDemos.map((p) => (
+        <li>
+          <a href={href(`programs#${anchor(p.name)}`)} class="lift block h-full p-5 rounded-2xl border" style="border-color: var(--line); background: var(--surface)">
+            <span class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+              <span class="display text-xl" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 24">{p.name}</span>
+              <span class="text-xs" style="color: var(--muted)">{demoVerb[p.embed]}</span>
+            </span>
+            <span class="mt-2 block text-sm leading-relaxed" style="color: var(--muted)">{p.blurb.split('. ')[0]}.</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24 scroll-mt-20" id="projects" aria-labelledby="start-here">
     <h2 id="start-here" class="display text-3xl">Start with these three</h2>
     <p class="mt-3 mb-10 max-w-xl" style="color: var(--muted)">
       A compiler, a network stack and a senior project. Each one is in this
-      repository as it was handed in.
+      repository as it was handed in, and each has a case study: the problem,
+      the architecture, and what I would do differently.
     </p>
     <ul>
       {highlights.map((h) => (
@@ -54,6 +92,7 @@ const featured = snippets.slice(0, 2);
             <p class="eyebrow">{h.kind}</p>
             <h3 class="display text-[clamp(1.875rem,4vw,2.75rem)] mt-1" style="font-variation-settings: 'SOFT' 40, 'WONK' 1, 'opsz' 72">{h.name}</h3>
             <p class="mt-4 leading-relaxed" style="color: var(--muted)">{h.summary}</p>
+            <p class="mt-3 leading-relaxed"><span class="font-medium">The hard part.</span> {h.hard}</p>
             <ul class="mt-4 space-y-1.5 text-sm">
               {h.facts.map((fact) => (
                 <li class="flex gap-3">
@@ -63,6 +102,7 @@ const featured = snippets.slice(0, 2);
               ))}
             </ul>
             <p class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+              <a href={href(`projects/${h.project}`)} class="underline underline-offset-4 decoration-1 hover:decoration-2">Read the case study</a>
               {h.program && (
                 <a href={href(`programs#${h.program}`)} class="underline underline-offset-4 decoration-1 hover:decoration-2">Run it in your browser</a>
               )}
@@ -86,10 +126,66 @@ const featured = snippets.slice(0, 2);
     </dl>
   </section>
 
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24" aria-labelledby="how-h">
+    <h2 id="how-h" class="display text-3xl">How it works</h2>
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] gap-x-12 gap-y-8 items-start">
+      <Figure figure={diagrams.site} />
+      <div class="space-y-4 leading-relaxed" style="color: var(--muted)">
+        <p>
+          Nothing on this site is retyped from the repository. Snippets are sliced
+          out of the real files when the site builds, and the build fails if a
+          quoted line is no longer there.
+        </p>
+        <p>
+          The line counts come from a counter that reads tracked files, and a test
+          re-runs it. Coursework is read and never written: it stays as submitted,
+          defects included.
+        </p>
+        <p>
+          <a href={href('wiki/how-the-site-works')} class="underline underline-offset-4 decoration-1 hover:decoration-2" style="color: var(--ink)">The longer version</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24" aria-labelledby="proof-h">
+    <h2 id="proof-h" class="display text-3xl">What checks it</h2>
+    <p class="mt-3 max-w-xl" style="color: var(--muted)">
+      One command, <code class="font-mono text-[0.9em]" style="color: var(--ink)">./scripts/check.sh</code>,
+      runs all of this locally and on every pull request.
+    </p>
+    <table class="mt-8 w-full text-sm border-collapse">
+      <thead class="sr-only"><tr><th scope="col">Check</th><th scope="col">What it covers</th></tr></thead>
+      <tbody>
+        <tr class="border-t align-top" style="border-color: var(--line)">
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">{checks.siteDataTests} site-data tests</th>
+          <td class="py-4" style="color: var(--muted)">Every path, line range, count and run mode this site publishes, checked against the tree. <a href={inRepo('tests/site-data.test.mjs')} class="underline underline-offset-4 decoration-1" style="color: var(--ink)">The test file</a></td>
+        </tr>
+        <tr class="border-t align-top" style="border-color: var(--line)">
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">{checks.lmucsTests} package tests</th>
+          <td class="py-4" style="color: var(--muted)">The course record parser and the line counter behind every number here.</td>
+        </tr>
+        <tr class="border-t align-top" style="border-color: var(--line)">
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">{checks.suitesRun} course suites run</th>
+          <td class="py-4" style="color: var(--muted)">Run by {checks.suitesDate}, every suite with an installed toolchain, with versions recorded: 15 clean and 2 failing, both for recorded reasons (Lua 5.5 rejects the submitted module; one Rust crate was submitted unfinished). The CMSI 2130 Java projects have no build file and are listed as skipped. <a href={inRepo('docs/building.md')} class="underline underline-offset-4 decoration-1" style="color: var(--ink)">The matrix</a></td>
+        </tr>
+        <tr class="border-t align-top" style="border-color: var(--line)">
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">Repository check on {checks.ciRunners.length} runners</th>
+          <td class="py-4" style="color: var(--muted)">Ubuntu and macOS, the latter under bash 3.2: no tracked credentials, compiled binaries or build output, and no coursework hidden by an ignore rule.</td>
+        </tr>
+        <tr class="border-y align-top" style="border-color: var(--line)">
+          <th scope="row" class="py-4 pr-6 text-left font-medium sm:whitespace-nowrap">Sandboxed execution</th>
+          <td class="py-4" style="color: var(--muted)">Code you run here executes in an iframe with an opaque origin and scripts only. The page policy blocks plugins, base-tag injection and off-site form posts.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
   <section class="mx-auto max-w-5xl px-4 sm:px-6 pt-24">
-    <h2 class="display text-3xl">Every course that left code behind</h2>
+    <h2 class="display text-3xl">Every course that left work behind</h2>
     <p class="mt-3 mb-9 max-w-xl" style="color: var(--muted)">
-      Eight of the fifteen courses produced something that still runs.
+      Seven of the fifteen courses hold code in this repository. An eighth,
+      Senior Project I, produced the specification Pathfinder was built to.
     </p>
     <div class="grid sm:grid-cols-2 gap-4">
       {built.map((c) => (

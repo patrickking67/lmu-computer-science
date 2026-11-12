@@ -15,10 +15,14 @@ that presents it. The code itself lives here; this is not an index of links.
 - `docs/record.md`: authoritative course, term, title, grade, and credit record
 - `docs/publication.md`: what publishing accepted, and what is still unresolved
 - `docs/vendoring.md`: what was vendored from iCloud, and every exclusion rule
-- `docs/building.md`: what compiles and runs, with verified commands and version pins
+- `docs/building.md`: what compiles and runs, the dated suite matrix with toolchain versions, and version pins
+- `docs/architecture.md`: six Mermaid diagrams: the repository, the course progression, the three projects, the playground
+- `docs/course-map.md`: generated timeline, courses by term, and language by course matrix
+- `docs/assets/`: README screenshots, each under 300 KB
 - `tests/site-data.test.mjs`: checks the dashboard's claims (and `llms.txt`) against the tree
 - `scripts/check.sh`: the one offline check; runs everything below and builds the site
 - `scripts/check-ai-config.sh`: the repository check, also run in CI
+- `scripts/course-map.mjs`: generates `docs/course-map.md` and the course map block in `README.md` from the site data
 - `llms.txt`: summary for language models; `src/dashboard/public/llms.txt` must stay identical
 - `.claude/launch.json`: the site dev server for the Claude preview pane, port 4322
 - `.github/workflows/`: the repository check, the Python package, `scripts/check.sh` (site data), Pages
@@ -36,7 +40,8 @@ Everything runs from the repository root. Needs Node 22.18+ and Python 3.10+.
 | Package tests only | `cd src/packages/lmucs && python3 -m pytest -q -p no:cacheprovider tests` |
 | Preview the site | `npm --prefix src/dashboard run dev -- --port 4322`, then <http://localhost:4322/> |
 | Build as deployed | `cd src/dashboard && SITE_URL=https://patrickking67.github.io BASE_PATH=/lmu-computer-science npm run build` |
-| Refresh published counts | `lmucs stats --json`, then update `src/dashboard/src/data/stats.ts` |
+| Refresh published counts | `lmucs stats --json`, then update `languages` and `linesByCourse` in `src/dashboard/src/data/stats.ts` |
+| Regenerate the course map | `node scripts/course-map.mjs` (`--check` exits 1 when stale) |
 
 The dev server serves at `/`; production serves at `/lmu-computer-science/`.
 Links must go through `href()` in `src/dashboard/src/lib/site.ts` so both work.
@@ -135,6 +140,30 @@ submitted; everything outside it is normal, maintained code.
   commits behind the live [`cloudscribe`](https://github.com/patrickking67/cloudscribe).
   Never push it to that remote.
 - Work that continues in its own repository is referenced, never copied in.
+- The site leads with three projects, each with a case study at `/projects/<slug>/`. The
+  copy is in `src/dashboard/src/data/projects.ts` and the architecture figure for each in
+  `data/figures.ts`, drawn as inline SVG by `components/Figure.astro` with no diagram
+  script on the page. `docs/architecture.md` holds the same diagrams in Mermaid. Both
+  describe what the submitted code does, read from the code, not what its README or
+  design document says it does. Three earlier claims on the site were wrong for that
+  reason and were corrected on 2026-11-11: the compiler has four stages, not five; the
+  CMSI 3550 final project is a libp2p trading card network, not file transfer over raw
+  sockets; and the Pathfinder front end never calls its own Express API or Cloud
+  Functions.
+- CloudScribe, the CMSI 3550 final project and Pathfinder were built with classmates.
+  The submitted READMEs name them and stay as written. Anything written outside
+  `src/courses` gives the team size and the author's role, never a classmate's name.
+- `swift a.swift b.swift` runs only the first file and passes the second as an argument.
+  The CMSI 3801 Swift tests need `swiftc` over both files; see `docs/building.md`.
+- The language by course numbers come from the tree, per course directory
+  (`lmucs stats --json`, key `by_course`), not from each course's `stack` list. A course
+  taught in a language whose work was not preserved has no line count and does not
+  appear in the matrix.
+- `progression` in `courses.ts` is the list of edges between courses, drawn in
+  `docs/architecture.md` and shown on each course page. A test requires every edge to
+  run forward in time and the diagram to match the list. They are what the code shows a
+  later course reused, not the catalog's prerequisites; do not add an edge the tree
+  cannot support.
 - Course terms and the course list are checked in three places, and all three must agree:
   `docs/record.md`, `src/courses/`, and `src/dashboard/src/data/courses.ts`.
 - Fifteen computer science courses, thirteen of which produced a repository. CMSI 1900 is
@@ -278,7 +307,13 @@ submitted; everything outside it is normal, maintained code.
 
 ## Generated files
 
-None. Nothing in this repository is generated.
+Two, both written by `node scripts/course-map.mjs` from `courses.ts` and `stats.ts`:
+`docs/course-map.md` in full, and the text between the `course-map` markers in
+`README.md`. Never edit either by hand. A test fails when they are stale.
+
+`docs/assets/*.png` and `src/dashboard/public/social-preview.png` are screenshots of the
+built site (`astro preview`, not `astro dev`, which draws its toolbar into the picture).
+Retake them when the pages they show change; nothing regenerates them automatically.
 
 ## AI configuration maintenance
 
@@ -292,7 +327,8 @@ None. Nothing in this repository is generated.
 
 - Requested behavior is complete.
 - No coursework under `src/courses/` was modified as a side effect.
-- Any new claim the site makes has a test in `tests/site-data.test.mjs`.
+- Any new claim the site makes has a test in `tests/site-data.test.mjs`. That file counts
+  its own tests for the front page, so adding one means updating `checks` in `stats.ts`.
 - Durable documentation is current, including `CHANGELOG.md` and `llms.txt`.
 - `./scripts/check.sh` passes.
 - Commands run and unresolved risks are reported.

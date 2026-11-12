@@ -18,6 +18,8 @@ export type Course = {
   stack: string[];
   /** Specific artefacts, for the course page. */
   highlights?: string[];
+  /** For a course whose directory holds only a README: what happened to the work. */
+  preserved?: string;
 };
 
 export const courses: Course[] = [
@@ -26,12 +28,16 @@ export const courses: Course[] = [
     blurb:
       'Where it started. Control flow, functions, decomposition, and the habit, enforced from week one, of writing the test before you trust the answer.',
     work: null, stack: ['Python'],
+    preserved:
+      'No coursework preserved. The original repository was deleted from GitHub and no local clone existed when this archive was assembled.',
   },
   {
     code: 'CMSI 1900', slug: 'cmsi-1900', title: 'Exploring Computer Science', term: 'Fall 2021',
     blurb:
       'A zero-unit first-year seminar on what the field actually contains, taught by the people doing each part of it. No repository, which is why a directory count of this tree returns thirteen instead of fifteen.',
     work: null, stack: [],
+    preserved:
+      'A zero-unit seminar with no assignments to keep. Its directory holds a README so the course list stays complete.',
   },
   {
     code: 'CMSI 2021', slug: 'cmsi-2021', title: 'Web Application Development', term: 'Fall 2022',
@@ -50,6 +56,8 @@ export const courses: Course[] = [
     blurb:
       'Lists, trees, hash tables and graphs, and the part that matters: what each one costs, and how expensive it is to have chosen wrong three months later.',
     work: null, stack: ['Java'],
+    preserved:
+      'No coursework preserved. A repository once labelled CMSI 2120 turned out to hold the CMSI 2130 projects, and is filed there.',
   },
   {
     code: 'CMSI 2130', slug: 'cmsi-2130', title: 'Algorithms and Analysis', term: 'Spring 2023',
@@ -69,12 +77,16 @@ export const courses: Course[] = [
     blurb:
       'Assembly, registers, addressing modes and memory layout. The course that turns a pointer from a rule you follow into a number you can see.',
     work: null, stack: ['Assembly', 'C'],
+    preserved:
+      'No coursework from this course was preserved. Its directory holds a README and nothing else.',
   },
   {
     code: 'CMSI 2820', slug: 'cmsi-2820', title: 'Discrete Mathematics for Computer Science', term: 'Fall 2022',
     blurb:
       'Logic, proof technique, combinatorics, relations and graph theory. Nothing here compiles, and everything above it depends on it.',
     work: null, stack: [],
+    preserved:
+      'No coursework from this course was preserved. Its directory holds a README and nothing else.',
   },
   {
     code: 'CMSI 3300', slug: 'cmsi-3300', title: 'Artificial Intelligence', term: 'Fall 2024',
@@ -91,12 +103,13 @@ export const courses: Course[] = [
   {
     code: 'CMSI 3550', slug: 'cmsi-3550', title: 'Networks and the Internet', term: 'Spring 2024',
     blurb:
-      'Seven projects in Rust, working down the stack rather than reading about it: subnet arithmetic by hand, then sockets, then two peers moving a file between them with no server in the middle.',
-    work: '7 projects, Rust', stack: ['Rust', 'Cargo', 'React', 'TCP/IP'],
+      'Seven projects in Rust, working up from an address to an application: a local address lookup, subnet arithmetic from bit operations, and a final team project where peers find each other and trade cards with no server in the middle.',
+    work: '7 projects, Rust', stack: ['Rust', 'Cargo', 'libp2p', 'Tokio', 'React'],
     highlights: [
       'Subnet calculator: network, broadcast, usable range and CIDR, from bit operations',
-      'Peer-to-peer file transfer over raw sockets, with a React front end',
-      'Socket programming exercises across the transport layer',
+      'Peer-to-peer trading card network on libp2p: TCP, Noise, mplex, mDNS discovery and Floodsub messaging',
+      'One tokio::select! loop over stdin, outgoing responses and network events',
+      'A React front end for it, not yet connected to the peer',
     ],
   },
   {
@@ -104,6 +117,8 @@ export const courses: Course[] = [
     blurb:
       'Mechanics, systems and level design, with playtesting treated as a method rather than a formality. It is the only course here where the failure mode is "technically works, nobody enjoys it".',
     work: null, stack: [],
+    preserved:
+      'No coursework from this course was preserved. Its directory holds a README and nothing else.',
   },
   {
     code: 'CMSI 3801', slug: 'cmsi-3801', title: 'Theories of Computer and Human Languages', term: 'Fall 2024',
@@ -117,16 +132,16 @@ export const courses: Course[] = [
       'Same six exercises in every language, so the differences are the language',
       'Manual memory in C against garbage collection everywhere else',
       'Either in Haskell against exceptions in OCaml, for the identical function',
-      'Six verified end to end: C, C++, Python, JavaScript, TypeScript and Swift',
+      'Eleven suites pass as run on 2026-11-11 and 2026-11-12: C, C++, Python, JavaScript, TypeScript, Swift, Rust, Java, Kotlin, Haskell and OCaml. Lua fails to load on Lua 5.5',
     ],
   },
   {
     code: 'CMSI 3802', slug: 'cmsi-3802', title: 'Programming Language Concepts and Implementation', term: 'Spring 2025',
     blurb:
-      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through five stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and a generator emits. The playground on the Programs page runs that compiler in your browser, including the two back-end defects a 99.66%-coverage test suite never caught.',
+      'CloudScribe: a statically typed language for IT automation, compiled to JavaScript through four stages. An Ohm grammar parses, a semantic pass builds the typed representation and rejects what should not run, an optimiser folds what it can prove, and a generator emits. The playground on the Programs page runs that compiler in your browser, including the two back-end defects a 99.66%-coverage test suite never caught.',
     work: 'CloudScribe compiler', stack: ['Ohm', 'JavaScript', 'Node', 'Mocha', 'c8'],
     highlights: [
-      'Five stages: parse, analyse, optimise, generate, emit',
+      'Four stages: parse, analyse, optimise, generate',
       '143 tests holding 99.66% statement coverage, over a back end that is broken',
       'Seven example programs, all of which parse, analyse and optimise',
       'None of which reach JavaScript: the generator has no case for task',
@@ -138,22 +153,26 @@ export const courses: Course[] = [
     blurb:
       'Who software affects, who it excludes, and who answers for it when it goes wrong. Appears only in the course audit, which is the other reason a directory count of this tree undercounts.',
     work: null, stack: [],
+    preserved:
+      'A summer session. Nothing from it is committed to this repository.',
   },
   {
     code: 'CMSI 4071', slug: 'cmsi-4071', title: 'Senior Project I', term: 'Fall 2024',
     blurb:
-      'The half of a capstone nobody puts in a portfolio: requirements, specification, architecture and a defended design review, all of it before a line of the thing exists. Built in CMSI 4072.',
+      'The half of a capstone nobody puts in a portfolio: proposal, requirements, architecture and a reviewed design, all of it before a line of the thing exists. Built in CMSI 4072.',
     work: 'design and specification', stack: ['UML'],
+    preserved:
+      'The planning semester for Pathfinder. The proposal, requirements and design documents it produced are filed with CMSI 4072, because all seven deliverables were exported together.',
   },
   {
     code: 'CMSI 4072', slug: 'cmsi-4072', title: 'Senior Project II', term: 'Spring 2025',
     blurb:
-      'Pathfinder, built to the previous semester’s specification: career guidance that reads a student’s coursework and interests and proposes routes through them. Vite front end, Express API, Firebase Cloud Functions, shipped as a complete deliverable set.',
+      'Pathfinder, built to the previous semester’s specification by a team of four: career guidance behind a short questionnaire, with a chat coach, a resume reviewer and a salary estimator. Vite front end, Firebase Auth, an Express API and Cloud Functions, shipped with a complete deliverable set.',
     work: 'Pathfinder', stack: ['React', 'Vite', 'Express', 'Firebase', 'Cloud Functions', 'Node'],
     highlights: [
-      'Vite and React front end, deployable standalone',
-      'Express API with Firebase Cloud Functions behind it',
-      'Full deliverable set: specification, design, test plan, demonstration',
+      'Vite and React front end behind a Google sign-in and a three-step questionnaire',
+      'Express API that verifies Firebase ID tokens; two Cloud Functions proxying outside APIs',
+      'Seven deliverable documents: proposal, requirements, design, test procedure, poster and presentations',
       'Continues privately as a product',
     ],
   },
@@ -174,7 +193,7 @@ export const liveRepos: LiveRepo[] = [
   {
     name: 'CloudScribe', repo: 'cloudscribe',
     url: 'https://github.com/patrickking67/cloudscribe', visibility: 'public',
-    blurb: 'The language and its five-stage compiler, still under development past the course snapshot.',
+    blurb: 'The language and its four-stage compiler, still under development past the course snapshot.',
     from: 'CMSI 3802',
   },
   {
@@ -232,5 +251,27 @@ export const toolkit: Tool[] = [
   { name: 'pytest',       weight: 1, where: 'CMSI 3300' },
   { name: 'Mocha',        weight: 1, where: 'CMSI 3802' },
   { name: 'Cargo',        weight: 1, where: 'CMSI 3550, 3801' },
+  { name: 'libp2p',       weight: 1, where: 'CMSI 3550' },
+  { name: 'Tokio',        weight: 1, where: 'CMSI 3550' },
   { name: 'Astro',        weight: 1, where: 'this site' },
+];
+
+/**
+ * What a later course reused from an earlier one, read from the code in this
+ * repository and the order the courses were taken. Not the catalog's
+ * prerequisite list. docs/architecture.md draws the same edges as a Mermaid
+ * flowchart, and a test fails if the two disagree.
+ */
+export type Step = { from: string; to: string; what: string };
+
+export const progression: Step[] = [
+  { from: 'CMSI 1010', to: 'CMSI 2120', what: 'programming' },
+  { from: 'CMSI 1010', to: 'CMSI 2021', what: 'programming' },
+  { from: 'CMSI 2120', to: 'CMSI 2130', what: 'data structures' },
+  { from: 'CMSI 2130', to: 'CMSI 3300', what: 'search' },
+  { from: 'CMSI 2130', to: 'CMSI 3801', what: 'Java, algorithms' },
+  { from: 'CMSI 3550', to: 'CMSI 3801', what: 'Rust' },
+  { from: 'CMSI 3801', to: 'CMSI 3802', what: 'use thirteen languages, then build one' },
+  { from: 'CMSI 2021', to: 'CMSI 4072', what: 'React and Firebase' },
+  { from: 'CMSI 4071', to: 'CMSI 4072', what: 'specification' },
 ];

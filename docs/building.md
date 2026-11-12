@@ -1,7 +1,9 @@
 # Building and running the code
 
-What in this archive still compiles and runs, verified on 2026-08-22, with the exact
-commands used. Where a suite fails, this file says whether the cause is the coursework or
+What in this archive still compiles and runs, with the exact commands used. First
+verified on 2026-08-22; the suites with an installed toolchain were re-run on
+2026-11-11, and the Rust, Java, Kotlin, Haskell, Lua and OCaml suites were run once
+those toolchains were installed, on 2026-11-12. Where a suite fails, this file says whether the cause is the coursework or
 the environment, because those are different facts and the distinction matters more than
 the pass rate.
 
@@ -9,22 +11,102 @@ the pass rate.
 that fails because the submitted code was wrong is the record doing its job; see
 "Do not repair the coursework" below.
 
-## Verified working
+## Suites run on 2026-11-11
 
-Run from the repository root unless a `cd` is shown.
+Every suite whose toolchain was installed on the machine was re-run on 2026-11-11 from a
+clean checkout. Run from the repository root unless a `cd` is shown. Compiled test
+binaries go to `$TMPDIR` so nothing lands in the tree.
 
-| Course | Component | Command | Result |
-|---|---|---|---|
-| CMSI 3801 | C | `gcc -o /tmp/t c/string_stack.c c/string_stack_test.c && /tmp/t` | 25 passed, 0 failed |
-| CMSI 3801 | C++ | `g++ -std=c++20 -o /tmp/t cpp/stack_test.cpp && /tmp/t` | 27 passed, 0 failed |
-| CMSI 3801 | Python | `cd src/courses/cmsi-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
-| CMSI 3801 | JavaScript | `cd src/courses/cmsi-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
-| CMSI 3801 | TypeScript | `cd src/courses/cmsi-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
-| CMSI 3801 | Swift | `cd src/courses/cmsi-3801/swift && swift exercises.swift main.swift` | exit 0, no output |
-| CMSI 3802 | cloudscribe | `cd src/courses/cmsi-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
+| Course | Suite | Toolchain | Command | Result |
+|---|---|---|---|---|
+| CMSI 3801 | C | Apple clang 21.0.0 | `cd src/courses/cmsi-3801 && gcc -o "$TMPDIR/c_t" c/string_stack.c c/string_stack_test.c && "$TMPDIR/c_t"` | 25 passed, 0 failed |
+| CMSI 3801 | C++ | Apple clang 21.0.0, `-std=c++20` | `cd src/courses/cmsi-3801 && g++ -std=c++20 -o "$TMPDIR/cpp_t" cpp/stack_test.cpp && "$TMPDIR/cpp_t"` | 27 passed, 0 failed |
+| CMSI 3801 | Python | Python 3.14.10 | `cd src/courses/cmsi-3801/python && python3.14 -m unittest -q exercises_test` | 61 passed, 0 failed |
+| CMSI 3801 | JavaScript | Node 24.22.2 | `cd src/courses/cmsi-3801/javascript && node --test exercises.test.js` | 19 passed, 0 failed |
+| CMSI 3801 | TypeScript | Node 24.22.2, TypeScript 5.9.3 | `cd src/courses/cmsi-3801/typescript && npm install && npm test` | 15 passed, 0 failed |
+| CMSI 3801 | Swift | Apple Swift 6.4.2 | `cd src/courses/cmsi-3801/swift && swiftc -o "$TMPDIR/swift_t" exercises.swift main.swift && "$TMPDIR/swift_t"` | 68 passed, 0 failed |
+| CMSI 3801 | Go | Go 1.27.3 | `cd src/courses/cmsi-3801/go && go vet restaurant.go && go run restaurant.go` | vets clean, runs to "Restaurant has closed" in about 30 s; the file has no tests |
+| CMSI 3802 | cloudscribe | Node 24.22.2, c8 10 | `cd src/courses/cmsi-3802/cloudscribe && npm install && npm test` | 143 passed, 0 failed, 99.66% statements |
+| CMSI 3802 | Homework 5, Exercise 1 (regex) | Node 24.22.2 | `cd "src/courses/cmsi-3802/cloudscribe/assignments/Homework 5/Exercise 1" && node --test` | 159 passed, 0 failed |
 
-Toolchains these were verified against: Node 24.18.0, Python 3.14.7, Apple Swift 6.4,
-Apple clang/gcc as shipped with the Xcode command line tools.
+Nine suites run, nine green, no coursework edited. One breakage was real and it was in
+this file, not in the coursework; see the next section.
+
+## Suites run on 2026-11-12
+
+Six toolchains were installed after the first matrix and their suites run the same day.
+Same rules as above: run from the repository root unless a `cd` is shown, and every
+build output goes to `$TMPDIR` so nothing lands in the tree. Toolchains: rustc and
+cargo 1.99.1, OpenJDK 27.0.1, kotlinc 2.4.21, ghc 9.14.1, Lua 5.5.1, OCaml 5.5.2. The
+Rust crates fetch their dependencies from crates.io, so they need a network.
+
+| Course | Suite | Toolchain | Command | Result |
+|---|---|---|---|---|
+| CMSI 3801 | Rust `stack` | rustc 1.99.1, edition 2021 | `cd src/courses/cmsi-3801/rust/stack && CARGO_TARGET_DIR="$TMPDIR/rust_t" cargo test --locked` | 4 passed, 0 failed |
+| CMSI 3801 | Java | OpenJDK 27.0.1 | `cd src/courses/cmsi-3801/java && javac -d "$TMPDIR/java_t" Exercises.java ExercisesTest.java && java -cp "$TMPDIR/java_t" ExercisesTest` | 71 passed, 0 failed |
+| CMSI 3801 | Kotlin | kotlinc 2.4.21 on OpenJDK 27.0.1 | `cd src/courses/cmsi-3801/kotlin && kotlinc Exercises.kt ExercisesTest.kt -include-runtime -d "$TMPDIR/kotlin_t.jar" && java -cp "$TMPDIR/kotlin_t.jar" ExercisesTestKt` | 67 passed, 0 failed |
+| CMSI 3801 | Haskell | ghc 9.14.1 | `cd src/courses/cmsi-3801/haskell && ghc -outputdir "$TMPDIR/hs_o" -o "$TMPDIR/hs_t" Exercises.hs ExercisesTest.hs && "$TMPDIR/hs_t"` | 41 passed, 0 failed |
+| CMSI 3801 | OCaml | ocamlopt 5.5.2 | `cd src/courses/cmsi-3801/ocaml && cp exercises.ml exercises_test.ml "$TMPDIR/" && (cd "$TMPDIR" && ocamlopt exercises.ml exercises_test.ml -o ocaml_t) && "$TMPDIR/ocaml_t"` | 7 passed, 0 failed |
+| CMSI 3801 | Lua | Lua 5.5.1 | `cd src/courses/cmsi-3801/lua && lua exercises_test.lua` | fails to load: `exercises.lua:60: attempt to assign to const variable 'line'` (see below) |
+| CMSI 3550 | 6 Rust crates | rustc 1.99.1, edition 2021 | `for c in quiz_feb21 homework1_myip guessing_game Final homework2_subcalc demo/hello_cargo; do (cd src/courses/cmsi-3550/$c && CARGO_TARGET_DIR="$TMPDIR/rust_t" cargo test --locked); done` | all six build and run; each defines 0 tests, so 0 passed, 0 failed |
+| CMSI 3550 | Rust `cmsi3550-pgt-p2p` | rustc 1.99.1, edition 2024 | `cd src/courses/cmsi-3550/cmsi3550-pgt-p2p && CARGO_TARGET_DIR="$TMPDIR/rust_p2p" cargo build` | does not compile: 3 errors in `src/main.rs` (see below) |
+
+Eight suites run: six clean (one of them is six crates that define no tests), two
+failing, and both failures are the coursework or its language edition, not the
+environment. No coursework was edited. The crate `cmsi3550-pgt-p2p` has no `Cargo.lock`,
+so `cargo build` writes an untracked one into the crate; delete it afterwards.
+
+Together with the first matrix that is 17 suites run: 15 clean, 2 failing.
+
+### Lua 5.5 rejects the submitted `exercises.lua`
+
+`lua/exercises.lua:60` reassigns the loop variable of `for line in file:lines()` with
+`line = line:match("^%s*(.*)")`. Lua 5.5 made for-loop control variables read-only, so
+the module raises `attempt to assign to const variable 'line'` when it loads and no test
+runs. The course ran on Lua 5.4, where the assignment is legal. This is the language
+changing under the code, not a defect in the answer.
+
+As a diagnostic only, with nothing committed: a copy of the module in `$TMPDIR` with
+`local ` added in front of that one assignment loads, and the suite then reports 55
+passed, 0 failed. The tracked file is unchanged. To run it as submitted, use a Lua 5.4
+interpreter.
+
+### Rust `cmsi3550-pgt-p2p` was never finished
+
+`src/main.rs:112` is a literal `...` placeholder inside the event loop. The loop closes at
+line 113 and `main` closes at line 114, which leaves the `if let Some(event) = evt` block
+at line 116 at file level, outside any item. rustc reports three errors
+(`unexpected token: '...'`, `inclusive range with no end`, `expected item, found keyword
+'if'`). That is syntax, so it fails the same way on any Rust edition and version; the
+file was submitted unfinished. The crate has no `Cargo.lock` and asks for `libp2p` 0.39,
+which cargo fetched and compiled before reaching the error. `cards.json` in the same
+directory is the 0-byte file listed under known content defects.
+
+### Skipped
+
+| Course | Suite | Why |
+|---|---|---|
+| CMSI 2130 | 5 Java projects | no build file and no JUnit jars on the machine; see below for what was checked |
+| CMSI 3300 | Homework 2 and 4 harnesses | the solution bundles in `~/Backups/lmu-cs-history-2026-08-22/` were not on this machine; last run 2026-08-22, results below |
+| CMSI 2021, 3550, 4072 | React and Vite front ends | not attempted: no test suites beyond the Create React App placeholder |
+
+### The Swift command used to verify nothing
+
+Until 2026-11-11 this file recorded Swift as
+`swift exercises.swift main.swift`, "exit 0, no output". That command does not run the
+tests. `swift a.swift b.swift` interprets the first file as a script and passes the
+second to it as an argument, so only `exercises.swift` ran, which defines functions and
+prints nothing. `main.swift` holds the 68 assertions and its last line prints the tally,
+and it was never executed. Compiling the two files together with `swiftc` runs them:
+68 passed, 0 failed. The coursework was right all along; the check was empty.
+
+### Go has no tests to run
+
+`go/restaurant.go` is the Homework 5 concurrency simulation: ten customers and three cooks
+as goroutines, a buffered channel of three orders standing in for the waiter, a
+`sync.WaitGroup` and an atomic order counter. It
+ships no `_test.go`. `go vet` is clean and the program runs to completion, which is all
+that can be claimed.
 
 ### Python needs 3.10 or newer
 
@@ -34,20 +116,12 @@ file raises `TypeError: unsupported operand type(s) for |` at *import* time, so 
 does not fail, it never collects. Use 3.10 or newer. This was not recorded anywhere before
 2026-08-22 and reads as broken code if you hit it on the system interpreter.
 
-## Not verifiable on this machine
-
-Absent toolchains, not evidence of broken code. Nothing was concluded about these.
-
-| Course | Component | Missing |
-|---|---|---|
-| CMSI 3550 | 6 Rust crates | `cargo`, `rustc` |
-| CMSI 3801 | Rust `stack` crate | `cargo`, `rustc` |
-| CMSI 3801 | Go, Haskell, Kotlin, Lua, OCaml | `go`, `ghc`, `kotlinc`, `lua`, `ocaml` |
-| CMSI 2130 | 5 Java projects | a JDK, and a build file (see below) |
-| CMSI 2021, 3550, 4072 | React and Vite front ends | not attempted |
+## Toolchain traps
 
 `/usr/bin/java` and `/usr/bin/javac` exist on macOS as stubs that only print an install
-prompt. `command -v javac` succeeding does **not** mean a JDK is present.
+prompt. `command -v javac` succeeding does **not** mean a JDK is present. Homebrew's
+OpenJDK is keg-only: put `/opt/homebrew/opt/openjdk/bin` on `PATH` or the stub is what
+runs. Non-interactive shells that skip the profile need this explicitly.
 
 ### CMSI 2130 has no build file
 
@@ -67,9 +141,18 @@ The JUnit imports are also not consistent:
 | `Tic Tac Toe Game` | 1 | 0 |
 
 So a single build file would need the JUnit 5 engine plus the vintage engine for the
-JUnit 4 tests. No build file has been added here, because one cannot be verified without a
-JDK on the machine, and an unverified build file is a claim rather than a fact. This is the
-largest open item in the archive.
+JUnit 4 tests. No build file has been added here. A JDK is now installed, but the JUnit
+jars are not, and fetching them to prove a build file would mean adding a dependency
+declaration to submitted projects; an unverified build file is a claim rather than a
+fact. This is the largest open item in the archive.
+
+What a JDK does establish, checked on 2026-11-12 with OpenJDK 27.0.1 and no build file:
+the `src/main` tree of four of the five projects compiles with plain `javac` (`A*
+Pathfinder`, `Distle Game`, `Huffman Coding Compression`, `Tic Tac Toe Game`), with
+`find "$p/src/main" -name '*.java' -print0 | xargs -0 javac -d "$TMPDIR/j2/$p"`. The
+fifth, `Constraint Satisfaction Problem`, does not: `src/main/csp/CSPSolver.java`
+imports `test.csp.CSPTests`, a test class, so its main tree needs the test sources and
+JUnit on the classpath. No test in any of the five was run.
 
 ## CMSI 3300: the harness is here, the solutions are in a bundle
 

@@ -2,7 +2,9 @@
 import Base from '../../layouts/Base.astro';
 import Tags from '../../components/Tags.astro';
 import Snippet from '../../components/Snippet.astro';
-import { courses } from '../../data/courses';
+import { courses, progression } from '../../data/courses';
+import { projects } from '../../data/projects';
+import { linesByCourse } from '../../data/stats';
 import { programs } from '../../data/programs';
 import { snippets } from '../../data/snippets';
 import { href, treeInRepo } from '../../lib/site';
@@ -17,16 +19,39 @@ const quoted = snippets.filter((s) => s.course === course.code);
 const index = courses.findIndex((c) => c.slug === course.slug);
 const previous = courses[index - 1];
 const next = courses[index + 1];
+
+const lines = linesByCourse.find((c) => c.course === course.code)?.languages ?? [];
+const lineTotal = lines.reduce((n, l) => n + l.lines, 0);
+const most = Math.max(1, ...lines.map((l) => l.lines));
+const caseStudies = projects.filter((p) => p.courses.includes(course.code));
+const byCode = new Map(courses.map((c) => [c.code, c]));
+const buildsOn = progression.filter((s) => s.to === course.code);
+const leadsTo = progression.filter((s) => s.from === course.code);
 ---
 <Base title={course.code} description={course.blurb}>
   <div class="mx-auto max-w-3xl px-4 sm:px-6 py-16">
     <a href={href('courses')} class="text-sm hover:underline" style="color: var(--muted)">← All courses</a>
 
-    <p class="eyebrow mt-8 settle">{course.code} · {course.term}</p>
+    <p class="mt-8 text-sm settle" style="color: var(--muted)"><span class="font-mono" style="color: var(--ink)">{course.code}</span>, {course.term}</p>
     <h1 class="display text-[clamp(2rem,5vw,3.25rem)] mt-3 settle" style="animation-delay: 90ms">{course.title}</h1>
     <p class="mt-6 text-lg leading-relaxed settle" style="animation-delay: 170ms; color: var(--muted)">{course.blurb}</p>
 
     <Tags items={course.stack} class="mt-8 settle" />
+
+    {caseStudies.map((p) => (
+      <a href={href(`projects/${p.slug}`)} class="mt-10 block p-6 rounded-2xl border lift" style="border-color: var(--ink)">
+        <p class="text-sm" style="color: var(--muted)">Case study</p>
+        <p class="display text-2xl mt-1" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 28">{p.name}</p>
+        <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted)">{p.tagline}</p>
+      </a>
+    ))}
+
+    {course.preserved && (
+      <section class="mt-12" aria-labelledby="preserved-h">
+        <h2 id="preserved-h" class="eyebrow">What is in the repository</h2>
+        <p class="mt-3 leading-relaxed max-w-2xl">{course.preserved}</p>
+      </section>
+    )}
 
     {course.highlights && (
       <section class="mt-12">
@@ -64,12 +89,12 @@ const next = courses[index + 1];
               <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <h3 class="display text-lg" style="font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 22">{p.name}</h3>
                 <span class="ml-auto text-[11px] px-2.5 py-1 rounded-full border" style="border-color: var(--line); color: var(--muted)">
-                  {p.embed === 'source' ? 'Source only' : 'Runs in the page'}
+                  {p.embed === 'source' ? 'Source only' : p.embed === 'external' ? 'Runs in a new tab' : 'Runs in the page'}
                 </span>
               </div>
               <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted)">{p.blurb}</p>
-              <a href={href('programs')} class="mt-3 inline-block text-sm hover:underline" style="color: var(--ink)">
-                {p.embed === 'source' ? 'See it on Programs →' : 'Run it →'}
+              <a href={href(`programs#${p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`)} class="mt-3 inline-block text-sm underline underline-offset-4 decoration-1 hover:decoration-2" style="color: var(--ink)">
+                {p.embed === 'source' ? 'See it on Programs' : 'Run it'}
               </a>
             </li>
           ))}
@@ -77,15 +102,66 @@ const next = courses[index + 1];
       </section>
     )}
 
-    {course.work && (
-      <div class="mt-14 p-6 rounded-2xl border lift" style="border-color: var(--line); background: var(--surface)">
-        <p class="text-sm font-medium">In this repository</p>
-        <p class="mt-1 text-sm" style="color: var(--muted)">{course.work}</p>
-        <a href={treeInRepo(`src/courses/${course.slug}`)} class="mt-4 inline-block text-sm hover:underline" style="color: var(--ink)">
-          Browse the source →
-        </a>
-      </div>
+    {lines.length > 0 && (
+      <section class="mt-14" aria-labelledby="lines-h">
+        <h2 id="lines-h" class="eyebrow">Lines in this repository</h2>
+        <p class="mt-2 text-sm" style="color: var(--muted)">
+          {lineTotal.toLocaleString('en-US')} lines in tracked files under this course, lockfiles excluded.
+        </p>
+        <table class="mt-4 w-full text-sm border-collapse">
+          <thead class="sr-only"><tr><th scope="col">Language</th><th scope="col">Lines</th></tr></thead>
+          <tbody>
+            {lines.map((l) => (
+              <tr class="border-t" style="border-color: var(--line-soft)">
+                <th scope="row" class="py-2.5 pr-4 text-left font-medium whitespace-nowrap w-32">{l.name}</th>
+                <td class="py-2.5">
+                  <span class="flex items-center gap-3">
+                    <span aria-hidden="true" class="block h-1 rounded-full" style={`width: ${Math.max(1.5, (l.lines / most) * 70)}%; background: var(--ink)`}></span>
+                    <span class="tabular-nums" style="color: var(--muted)">{l.lines.toLocaleString('en-US')}</span>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     )}
+
+    {(buildsOn.length > 0 || leadsTo.length > 0) && (
+      <section class="mt-14" aria-labelledby="fits-h">
+        <h2 id="fits-h" class="eyebrow">Where it fits</h2>
+        <dl class="mt-4 grid sm:grid-cols-2 gap-x-10 gap-y-6 text-sm">
+          {buildsOn.length > 0 && (
+            <div>
+              <dt class="font-medium">Builds on</dt>
+              {buildsOn.map((s) => (
+                <dd class="mt-2" style="color: var(--muted)">
+                  <a href={href(`courses/${byCode.get(s.from)!.slug}`)} class="font-mono hover:underline" style="color: var(--ink)">{s.from}</a>, for {s.what}
+                </dd>
+              ))}
+            </div>
+          )}
+          {leadsTo.length > 0 && (
+            <div>
+              <dt class="font-medium">Leads to</dt>
+              {leadsTo.map((s) => (
+                <dd class="mt-2" style="color: var(--muted)">
+                  <a href={href(`courses/${byCode.get(s.to)!.slug}`)} class="font-mono hover:underline" style="color: var(--ink)">{s.to}</a>, for {s.what}
+                </dd>
+              ))}
+            </div>
+          )}
+        </dl>
+      </section>
+    )}
+
+    <div class="mt-14 p-6 rounded-2xl border lift" style="border-color: var(--line); background: var(--surface)">
+      <p class="text-sm font-medium">In this repository</p>
+      <p class="mt-1 text-sm" style="color: var(--muted)">{course.work ?? 'A README recording the course.'}</p>
+      <a href={treeInRepo(`src/courses/${course.slug}`)} class="mt-4 inline-block text-sm underline underline-offset-4 decoration-1 hover:decoration-2" style="color: var(--ink)">
+        Browse the directory
+      </a>
+    </div>
 
     <nav class="mt-16 pt-8 border-t flex flex-wrap justify-between gap-4 text-sm" style="border-color: var(--line)" aria-label="Adjacent courses">
       {previous

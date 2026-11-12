@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from .record import CourseRecord, RecordError, find_repo_root
-from .stats import count_lines, total_lines
+from .stats import count_lines, count_lines_by_course, total_lines
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -38,6 +38,13 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({
                 "languages": [{"name": c.name, "lines": c.lines} for c in counts],
                 "total": total_lines(counts),
+                "by_course": [
+                    {
+                        "course": course,
+                        "languages": [{"name": c.name, "lines": c.lines} for c in per],
+                    }
+                    for course, per in count_lines_by_course(root).items()
+                ],
             }, indent=2))
         else:
             width = max((len(c.name) for c in counts), default=0)

@@ -1,10 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { courses, toolkit } from '../../data/courses';
-import { programs } from '../../data/programs';
-import { languages } from '../../data/stats';
-import { languageIndex } from '../../lib/languages';
-import { href } from '../../lib/site';
+import { courses } from '../../data/courses';
+import { languages, linesByCourse } from '../../data/stats';
+import { href, inRepo } from '../../lib/site';
 
 // Grouped by calendar year of the term, which is how anyone reading a
 // transcript actually scans it.
@@ -14,11 +12,21 @@ for (const course of courses) {
   byYear.set(year, [...(byYear.get(year) ?? []), course]);
 }
 const years = [...byYear.keys()].sort();
-const withCode = courses.filter((c) => c.work).length;
+const withCode = linesByCourse.length;
 
-// The other way in: by language, sized by lines actually written. Counts are
-// from `lmucs stats` (see data/stats.ts) and are tested against a fresh count.
-const byLanguage = languageIndex(languages, courses, toolkit, programs);
+// The other way in: by language, sized by lines in the tree. A language links
+// to the courses whose directories hold files in it, with the count for each;
+// both come from `lmucs stats` (see data/stats.ts) and are tested against a
+// fresh count. A course taught in a language whose work was not preserved does
+// not appear, because there is nothing to count.
+const byCode = new Map(courses.map((c) => [c.code, c]));
+const byLanguage = languages.map((l) => ({
+  ...l,
+  courses: linesByCourse
+    .map((c) => ({ course: byCode.get(c.course)!, lines: c.languages.find((x) => x.name === l.name)?.lines ?? 0 }))
+    .filter((c) => c.lines > 0)
+    .sort((a, b) => b.lines - a.lines),
+}));
 const most = Math.max(...byLanguage.map((l) => l.lines));
 ---
 <Base title="Courses" description="Fifteen CMSI courses at Loyola Marymount University, Fall 2021 to Spring 2025, by term and by language.">
@@ -61,8 +69,9 @@ const most = Math.max(...byLanguage.map((l) => l.lines));
     <section id="languages" class="mt-24 scroll-mt-24" aria-labelledby="languages-h">
       <h2 id="languages-h" class="display text-3xl">By language</h2>
       <p class="mt-3 max-w-xl leading-relaxed" style="color: var(--muted)">
-        Lines of coursework in each of the {byLanguage.length} languages, counted
-        over tracked files, and the courses they were written in.
+        Lines in each of the {byLanguage.length} languages, counted over tracked
+        files, and the courses whose directories hold them. The same numbers as a
+        <a href={inRepo('docs/course-map.md')} class="underline underline-offset-4 decoration-1" style="color: var(--ink)">language by course matrix</a>.
       </p>
       <table class="mt-8 w-full text-sm border-collapse">
         <thead class="sr-only">
@@ -79,7 +88,9 @@ const most = Math.max(...byLanguage.map((l) => l.lines));
               <td class="py-3">
                 <span class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs">
                   {l.courses.map((c) => (
-                    <a href={href(`courses/${c.slug}`)} class="py-0.5 hover:underline" title={c.title}>{c.code}</a>
+                    <a href={href(`courses/${c.course.slug}`)} class="py-0.5 hover:underline" title={c.course.title}>
+                      {c.course.code}<span style="color: var(--muted)"> {c.lines.toLocaleString('en-US')}</span>
+                    </a>
                   ))}
                 </span>
               </td>

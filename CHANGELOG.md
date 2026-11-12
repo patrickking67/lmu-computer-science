@@ -9,6 +9,28 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Added
 
+- Case-study pages for CloudScribe, the network stack and Pathfinder at
+  `/projects/<slug>/`: problem, approach, architecture figure, what was hard,
+  what I would do differently, and links to source. A Projects entry in the nav.
+- Architecture figures drawn as inline SVG at build time, one per project and
+  one for the site itself. No diagram script ships to the browser.
+- The front page runs the CloudScribe playground directly, links the other two
+  demos, and adds "How it works" and "What checks it" sections with counted
+  numbers.
+- `docs/architecture.md`: six Mermaid diagrams, including how the courses build
+  on each other.
+- `scripts/course-map.mjs`, which generates `docs/course-map.md` and the course
+  map in `README.md` (timeline, courses by term, language by course matrix) from
+  the site data. A test fails when either is stale.
+- `lmucs stats --json` reports lines per language for each course directory.
+- Course pages show lines per language, what a course builds on and leads to,
+  and, for the eight courses whose directory holds only a README, why.
+- `docs/building.md`: a dated matrix of the nine suites re-run on 2026-11-11,
+  with toolchain versions and results, and a list of what was skipped.
+- README screenshots in `docs/assets/`, light and dark, and a 1200x630 social
+  card taken from the real front page.
+- Eight site-data tests covering the case studies, figures, course
+  progression, generated course map, proof numbers and README.
 - `scripts/check.sh`: one command for the repository check, the site-data
   tests, the `lmucs` tests and the site build. CI runs it on every pull request.
 - Front page leads with three projects: the CloudScribe compiler, the CMSI 3550
@@ -25,6 +47,13 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Changed
 
+- README rewritten to open with the three projects, each with what was hard, a
+  picture, its code and its page on the site.
+- The Courses page's "By language" table lists the courses whose directories
+  hold files in each language, with the count for each, instead of the courses
+  that name the language in their stack.
+- The header puts its links on a second row below 640px, so all five are
+  visible at 375px.
 - Faint text now meets WCAG AA contrast in both themes (4.9:1 light, 5.4:1 dark).
 - Section labels are set in sentence case in the body face instead of tracked
   monospace capitals.
@@ -32,6 +61,16 @@ change; entries describe the site, the checks and the tooling around it.
   gone. Hover darkens a card's border.
 - The header drops the LMU lettering below 640px so every nav link fits at 375px.
 - Em dashes are gone from the site copy, `README.md`, `AGENTS.md` and `SECURITY.md`.
+
+### Fixed
+
+- The recorded Swift command (`swift exercises.swift main.swift`) ran only the
+  first file and never executed the 68 assertions. `docs/building.md` now
+  compiles both with `swiftc`: 68 passed.
+- Three claims that did not match the code: the compiler has four stages, not
+  five; the CMSI 3550 final project is a libp2p trading card network, not file
+  transfer over raw sockets; Pathfinder is described as submitted.
+- A program note said this repository was not public.
 
 ## [1.0.0] - 2026-08-25
 

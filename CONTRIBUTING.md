@@ -56,4 +56,6 @@ the CMSI 3801 languages) are not part of it; their commands are in
 - [ ] `./scripts/check.sh` passes
 - [ ] Nothing under `src/courses/` changed
 - [ ] Any new claim the site makes (a path, a count, a line range) has a test in `tests/site-data.test.mjs`
+- [ ] `node scripts/course-map.mjs` re-run if `courses.ts` or `stats.ts` changed
+- [ ] No classmate named outside `src/courses/`
 - [ ] No secrets, grades, student IDs or other personal data added

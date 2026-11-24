@@ -9,6 +9,10 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Added
 
+- `astro check` (`@astrojs/check` 0.9 and `typescript` 7, both dev dependencies)
+  runs in `scripts/check.sh` before the site build, so type errors in the
+  dashboard fail CI. The tsconfig already extends Astro's strict preset; the
+  first run found no errors.
 - Case-study pages for CloudScribe, the network stack and Pathfinder at
   `/projects/<slug>/`: problem, approach, architecture figure, what was hard,
   what I would do differently, and links to source. A Projects entry in the nav.
@@ -79,6 +83,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Fixed
 
+- Dashboard: import `z` from `astro/zod` (the `astro:content` export is
+  deprecated for Astro 8) and drop an unused import in the playground.
 - The clone command in `README.md` and `CONTRIBUTING.md` used an SSH URL, which
   fails for anyone without a GitHub SSH key. It now uses HTTPS.
 - GitHub's language bar listed GSC and Rich Text Format. `.gitattributes` now

@@ -63,13 +63,13 @@ step "lmucs tests"
 record $? "lmucs tests"
 
 if [ "$build" -eq 1 ]; then
-  step "Site build"
+  step "Site type check and build"
   (
     cd src/dashboard || exit 1
     [ -d node_modules ] || npm ci --no-audit --no-fund || exit 1
-    npm run build
+    npm run check && npm run build
   )
-  record $? "site build"
+  record $? "site type check and build"
 fi
 
 cd "$root" || exit 1

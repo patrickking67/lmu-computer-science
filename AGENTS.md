@@ -25,7 +25,7 @@ that presents it. The code itself lives here; this is not an index of links.
 - `scripts/course-map.mjs`: generates `docs/course-map.md` and the course map block in `README.md` from the site data
 - `llms.txt`: summary for language models; `src/dashboard/public/llms.txt` must stay identical
 - `.claude/launch.json`: the site dev server for the Claude preview pane, port 4322
-- `.github/workflows/`: the repository check, the Python package, `scripts/check.sh` (site data), Pages
+- `.github/workflows/`: the repository check, the Python package, `scripts/check.sh` (site data), the gitleaks scan, Pages
 
 ## Commands
 

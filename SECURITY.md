@@ -61,4 +61,5 @@ Rules and API-key restrictions. The check reports them and does not fail.
 
 `.gitleaks.toml` allowlists exactly those three files for that key shape, so
 `gitleaks dir .` and `gitleaks detect` report nothing on a clean tree and any new
-finding stands out.
+finding stands out. CI runs the same scan on every push and pull request
+(`.github/workflows/gitleaks.yml`).

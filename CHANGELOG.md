@@ -9,6 +9,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Added
 
+- `gitleaks.yml`: scans the tree and the full history on every push and pull
+  request with a pinned, checksum-verified gitleaks binary and `.gitleaks.toml`.
 - `astro check` (`@astrojs/check` 0.9 and `typescript` 7, both dev dependencies)
   runs in `scripts/check.sh` before the site build, so type errors in the
   dashboard fail CI. The tsconfig already extends Astro's strict preset; the

@@ -208,3 +208,14 @@ a:focus-visible > .wordmark .shield { transform: translateY(-1px) rotate(-3deg);
   font: 400 11.5px var(--font-sans); fill: var(--ink);
   paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round;
 }
+
+/* A screenshot taken in both themes: show the one that matches the page. The
+   page theme can differ from the OS preference once the toggle is used, so this
+   keys off the same attribute as the colour tokens instead of a <picture>. */
+.shot-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .shot-light { display: none; }
+  :root:not([data-theme="light"]) .shot-dark { display: block; }
+}
+:root[data-theme="dark"] .shot-light { display: none; }
+:root[data-theme="dark"] .shot-dark { display: block; }

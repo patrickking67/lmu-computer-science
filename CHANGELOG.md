@@ -9,6 +9,11 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Added
 
+- Courses page: a term-by-term timeline of the four years, nine terms with each
+  course as a link. Filled means the repository holds code for it. A row on
+  desktop, a vertical list below 768px, no script.
+- The CloudScribe case study shows the real playground stopping at Generate,
+  in light and dark, matched to the page theme rather than the OS setting.
 - `gitleaks.yml`: scans the tree and the full history on every push and pull
   request with a pinned, checksum-verified gitleaks binary and `.gitleaks.toml`.
 - `astro check` (`@astrojs/check` 0.9 and `typescript` 7, both dev dependencies)

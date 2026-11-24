@@ -56,6 +56,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Changed
 
+- The conda workflow also tests `lmucs` on Python 3.13, and the package lists
+  it as a supported version.
 - The documented Node floor is 22.23.4, set by Astro's integrations, and the
   dashboard declares it in `engines`. `scripts/check.sh` still only needs 22.18
   for the data tests.

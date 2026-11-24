@@ -75,6 +75,21 @@ const h2 = "font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 36";
       <div class="mt-6">
         <Figure figure={figures[project.slug]} caption={project.figure} />
       </div>
+      {project.slug === 'cloudscribe' && (
+        <figure class="mt-10">
+          {['light', 'dark'].map((theme) => (
+            <img
+              src={href(`shots/playground-${theme}.png`)}
+              width="848" height="546" loading="lazy" decoding="async"
+              alt="The CloudScribe playground on this site: source for a network monitoring task on the left; on the right the Generate stage reports 'generator: unhandled node kind TaskDeclaration', with a note that this is a real defect in the submitted compiler."
+              class={`shot-${theme} w-full h-auto rounded-2xl border`} style="border-color: var(--line)"
+            />
+          ))}
+          <figcaption class="mt-3 text-sm" style="color: var(--muted)">
+            The playground stopping at Generate. The defect is in the submitted compiler and is shown, not hidden.
+          </figcaption>
+        </figure>
+      )}
       {project.slug === 'pathfinder' && (
         <figure class="mt-10">
           <img

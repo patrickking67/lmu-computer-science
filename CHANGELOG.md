@@ -52,6 +52,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Changed
 
+- Every workflow job has a `timeout-minutes`, so a hung runner fails in minutes
+  instead of holding the queue for six hours.
 - README rewritten to open with the three projects, each with what was hard, a
   picture, its code and its page on the site.
 - The Courses page's "By language" table lists the courses whose directories

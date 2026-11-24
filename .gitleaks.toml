@@ -1,0 +1,20 @@
+# gitleaks configuration. Scans of this repository (`gitleaks dir .` and
+# `gitleaks detect`) report three findings, all the same kind, all accepted.
+# Anything else gitleaks reports is new and should be treated as real.
+
+title = "lmu-computer-science"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Firebase web API keys in three submitted front ends"
+# These identify a Firebase project to the browser SDK and ship in every
+# deployed bundle. Access is controlled by Security Rules and key restrictions,
+# not by keeping the string private. The coursework stays as submitted.
+# docs/publication.md records the decision.
+condition = "AND"
+regexTarget = "match"
+regexes = ['''AIza[0-9A-Za-z_\-]{35}''']
+# Case-insensitive: history holds the same files under CMSI-2021/ and CMSI-4072/.
+paths = ['''(?i)cmsi-(2021|4072)/.*firebaseConfig\.js''']

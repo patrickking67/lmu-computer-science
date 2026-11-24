@@ -12,6 +12,7 @@ permissions:
 jobs:
   check:
     name: ${{ matrix.os }}
+    timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
       # Report both. A failure on one platform should not hide the other's result.

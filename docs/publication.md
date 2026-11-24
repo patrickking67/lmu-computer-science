@@ -145,7 +145,7 @@ The check now scans every tracked file for private-key blocks, service-account
 |---|---|---|
 | Google service-account private key | `Pathfinder/backend/serviceAccountKey.json` | File removed from the working tree and purged from every commit |
 | RapidAPI key | `Pathfinder/backend/functions/index.js` | Replaced with `REVOKED-RAPIDAPI-KEY` across all history; the file itself is coursework and stays |
-| Firebase Web API keys | three front ends | Kept. Not secrets — Google ships them in every web bundle, guarded by Security Rules and API-key restrictions. Reported by the check, never failed. |
+| Firebase Web API keys | three front ends | Kept. Not secrets: Google ships them in every web bundle, guarded by Security Rules and API-key restrictions. Reported by the check, never failed. |
 
 The repository was private throughout, so neither credential was ever published by it.
 

@@ -23,7 +23,7 @@ The [front page](https://patrickking67.github.io/lmu-computer-science/#run) runs
 CloudScribe compiler on whatever you type. Or locally, with Node 22.18+ and Python 3.10+:
 
 ```bash
-git clone git@github.com:patrickking67/lmu-computer-science.git && cd lmu-computer-science
+git clone https://github.com/patrickking67/lmu-computer-science.git && cd lmu-computer-science
 python3 -m venv .venv && . .venv/bin/activate
 python3 -m pip install -e src/packages/lmucs pytest && npm --prefix src/dashboard ci
 npm --prefix src/dashboard run dev -- --port 4322   # http://localhost:4322/

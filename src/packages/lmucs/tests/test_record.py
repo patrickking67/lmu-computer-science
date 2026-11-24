@@ -43,7 +43,7 @@ def test_title_prefers_bulletin_and_resolves_same():
 
 
 def test_rows_from_the_no_credit_table_are_not_courses():
-    # That table is | Course | Grade | Term | — three columns, not six.
+    # That table has three columns (Course, Grade, Term), not six.
     text = TABLE + "| CMSI 2130 | D | Fall 2022 |\n"
     assert len(CourseRecord.from_text(text).courses) == 3
 

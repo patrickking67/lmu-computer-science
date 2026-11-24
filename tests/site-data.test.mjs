@@ -1,8 +1,8 @@
 /**
  * The site publishes claims about the repository: that a program lives at a
  * path, that a snippet quotes real lines, that 15,950 lines of coursework
- * exist. Each of those can rot silently — a file moves, a course is renamed, a
- * count goes stale — and the page keeps rendering, now lying.
+ * exist. Each of those can rot silently: a file moves, a course is renamed, a
+ * count goes stale, and the page keeps rendering, now lying.
  *
  * These tests read the site's own data files and check every claim against the
  * tree. Run with:  node --test "tests/*.test.mjs"
@@ -105,7 +105,7 @@ test("the generator still has no case for the language's own task construct", ()
   const generator = fs.readFileSync(inRepo(`${cloudscribe}/src/generator.js`), 'utf8');
   assert.ok(
     !generator.includes('TaskDeclaration'),
-    'generator.js now handles TaskDeclaration — the pages saying it does not are stale',
+    'generator.js now handles TaskDeclaration: the pages saying it does not are stale',
   );
   // The analyser was always the half that handled it: it builds the node via
   // core.taskDeclaration, which is what stamps kind: "TaskDeclaration".
@@ -131,7 +131,7 @@ test('the optimiser visitor that falls through still falls through', () => {
   const body = fold.slice(0, fold.indexOf('\n}'));
   assert.ok(
     !body.includes('core.binary'),
-    'foldBinary now rebuilds the node it declined to fold — the defect is fixed, so fix the docs',
+    'foldBinary now rebuilds the node it declined to fold: the defect is fixed, so fix the docs',
   );
 });
 
@@ -140,7 +140,7 @@ test('the generator still swallows an undefined expression instead of failing', 
   assert.match(
     generator,
     /if \(e == null\) return ""/,
-    'exp() no longer turns undefined into an empty string — half the silent-output defect is gone',
+    'exp() no longer turns undefined into an empty string: half the silent-output defect is gone',
   );
 });
 
@@ -181,7 +181,7 @@ test('the wiki documents exactly the run modes that exist', () => {
   // the work. Set equality against the declaration catches both directions.
   const source = fs.readFileSync(inRepo('src/dashboard/src/data/programs.ts'), 'utf8');
   const union = source.match(/embed:\s*((?:'[a-z]+'\s*\|\s*)*'[a-z]+')\s*;/);
-  assert.ok(union, 'no embed union found in programs.ts — this test is checking nothing');
+  assert.ok(union, 'no embed union found in programs.ts: this test is checking nothing');
   const declared = new Set([...union[1].matchAll(/'([a-z]+)'/g)].map((m) => m[1]));
   // Two empty sets compare equal, which is the way this test would go green
   // while measuring nothing at all. Refuse that before comparing.
@@ -190,7 +190,7 @@ test('the wiki documents exactly the run modes that exist', () => {
   const page = 'src/dashboard/src/content/wiki/how-the-site-works.md';
   // The first cell of a table row, and nowhere else. The page backticks
   // filenames and component names freely in its prose, and a backticked word
-  // in the *description* column — `npm install`, say — would read as a mode and
+  // in the *description* column (`npm install`, say) would read as a mode and
   // fail this test for no reason, sending someone off to edit the union type.
   const documented = new Set(
     fs
@@ -360,11 +360,11 @@ test('the published language counts match a fresh count', () => {
     encoding: 'utf8',
   });
   const fresh = JSON.parse(raw);
-  assert.equal(totalLines, fresh.total, 'stats.ts total is stale — re-run lmucs stats');
+  assert.equal(totalLines, fresh.total, 'stats.ts total is stale; re-run lmucs stats');
   assert.deepEqual(
     languages.map((l) => [l.name, l.lines]),
     fresh.languages.map((l) => [l.name, l.lines]),
-    'stats.ts language table is stale — re-run lmucs stats',
+    'stats.ts language table is stale; re-run lmucs stats',
   );
 });
 

@@ -43,12 +43,17 @@ change; entries describe the site, the checks and the tooling around it.
   by a test.
 - Canonical URLs and alt text for the social card.
 - `.claude/launch.json` for the site dev server on port 4322.
+- `.gitleaks.toml`, which allowlists the three Firebase web API keys already
+  recorded in `docs/publication.md`, so a gitleaks scan of the tree or history
+  is clean and any new finding is real.
 - `CONTRIBUTING.md`, this changelog, `.editorconfig`, `.gitattributes`,
   `CODEOWNERS`, Dependabot for the site and workflows, issue and pull request
   templates.
 
 ### Changed
 
+- Every workflow job has a `timeout-minutes`, so a hung runner fails in minutes
+  instead of holding the queue for six hours.
 - README rewritten to open with the three projects, each with what was hard, a
   picture, its code and its page on the site.
 - The Courses page's "By language" table lists the courses whose directories
@@ -62,10 +67,16 @@ change; entries describe the site, the checks and the tooling around it.
 - Motion is limited to the opening sequence; scroll-in fades and card lifts are
   gone. Hover darkens a card's border.
 - The header drops the LMU lettering below 640px so every nav link fits at 375px.
-- Em dashes are gone from the site copy, `README.md`, `AGENTS.md` and `SECURITY.md`.
+- Em dashes are gone from the site copy, `README.md`, `AGENTS.md` and `SECURITY.md`,
+  and now also from `docs/`, the `lmucs` package and the site-data tests.
 
 ### Fixed
 
+- The clone command in `README.md` and `CONTRIBUTING.md` used an SSH URL, which
+  fails for anyone without a GitHub SSH key. It now uses HTTPS.
+- GitHub's language bar listed GSC and Rich Text Format. `.gitattributes` now
+  counts CloudScribe's `.csc` examples as text and the two instructor `.rtf`
+  files as documentation.
 - The recorded Swift command (`swift exercises.swift main.swift`) ran only the
   first file and never executed the 68 assertions. `docs/building.md` now
   compiles both with `swiftc`: 68 passed.
@@ -73,6 +84,9 @@ change; entries describe the site, the checks and the tooling around it.
   five; the CMSI 3550 final project is a libp2p trading card network, not file
   transfer over raw sockets; Pathfinder is described as submitted.
 - A program note said this repository was not public.
+- Dashboard lockfile: transitive `devalue` 5.9.1 to 5.9.4 and `js-yaml` 4.3.1 to
+  4.3.2, which clears the two high severity `npm audit` advisories. Patch
+  releases only, no change to `package.json`.
 
 ## [1.0.0] - 2026-08-25
 

@@ -43,6 +43,9 @@ change; entries describe the site, the checks and the tooling around it.
   by a test.
 - Canonical URLs and alt text for the social card.
 - `.claude/launch.json` for the site dev server on port 4322.
+- `.gitleaks.toml`, which allowlists the three Firebase web API keys already
+  recorded in `docs/publication.md`, so a gitleaks scan of the tree or history
+  is clean and any new finding is real.
 - `CONTRIBUTING.md`, this changelog, `.editorconfig`, `.gitattributes`,
   `CODEOWNERS`, Dependabot for the site and workflows, issue and pull request
   templates.

@@ -58,3 +58,7 @@ API keys in request headers.
 Firebase Web API keys (`AIza…`) appear in three front ends. They are not
 secrets: Google ships them in every web bundle, and they are guarded by Security
 Rules and API-key restrictions. The check reports them and does not fail.
+
+`.gitleaks.toml` allowlists exactly those three files for that key shape, so
+`gitleaks dir .` and `gitleaks detect` report nothing on a clean tree and any new
+finding stands out.

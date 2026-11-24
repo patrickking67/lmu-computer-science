@@ -2,6 +2,9 @@
   "name": "@lmu/dashboard",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
   "type": "module",
   "scripts": {
     "dev": "astro dev",

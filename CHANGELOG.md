@@ -52,6 +52,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Changed
 
+- `@astrojs/react` 6.0.6 to 7.1.9. 42 fewer transitive packages. No source
+  change; the playground island builds and the site-data tests pass.
 - `@astrojs/mdx` 7.0.8 to 8.1.6. The new major drops 123 transitive packages
   from the lockfile and needs Node 22.23.4 or later. No source change.
 - Every workflow job has a `timeout-minutes`, so a hung runner fails in minutes

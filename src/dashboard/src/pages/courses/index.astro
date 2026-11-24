@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Timeline from '../../components/Timeline.astro';
 import { courses } from '../../data/courses';
 import { languages, linesByCourse } from '../../data/stats';
 import { href, inRepo } from '../../lib/site';
@@ -45,6 +46,8 @@ const most = Math.max(...byLanguage.map((l) => l.lines));
       ))}
       <a href="#languages" class="px-3 py-1.5 rounded-full border lift" style="border-color: var(--line)">By language</a>
     </nav>
+
+    <Timeline />
 
     {years.map((year) => (
       <section class="mt-14 scroll-mt-24" id={`year-${year}`} aria-labelledby={`year-${year}-h`}>

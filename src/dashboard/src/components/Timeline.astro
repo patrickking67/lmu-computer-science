@@ -1,0 +1,52 @@
+---
+/**
+ * The four years as a row of terms. Each course sits in the term it was taken,
+ * and is filled when the repository holds code for it (a README-only course is
+ * outlined). Built from the same course list as everything else, so a course
+ * cannot appear here without appearing on its page. Below 768px the row becomes
+ * a vertical list; there is no script.
+ */
+import { courses } from '../data/courses';
+import { linesByCourse } from '../data/stats';
+import { href } from '../lib/site';
+
+const season: Record<string, number> = { Spring: 0, Summer: 1, Fall: 2 };
+function order(term: string) {
+  const [s, y] = term.split(' ');
+  return Number(y) * 3 + season[s];
+}
+const terms = [...new Set(courses.map((c) => c.term))].sort((a, b) => order(a) - order(b));
+const withCode = new Set(linesByCourse.map((c) => c.course));
+const columns = terms.map((term) => ({
+  term,
+  courses: courses.filter((c) => c.term === term),
+}));
+---
+<section aria-labelledby="timeline-h" class="mt-14">
+  <h2 id="timeline-h" class="eyebrow pb-3 border-b" style="border-color: var(--line)">The four years, term by term</h2>
+  <ol class="mt-6 grid gap-6 md:gap-3 md:grid-cols-9 relative">
+    {columns.map((col) => (
+      <li class="relative pl-5 md:pl-0 md:pt-5 border-l md:border-l-0 md:border-t" style="border-color: var(--line)">
+        <span aria-hidden="true" class="absolute -left-[5px] top-1 md:left-0 md:-top-[5px] block h-2.5 w-2.5 rounded-full" style="background: var(--ink)"></span>
+        <p class="text-xs font-medium leading-tight">{col.term.replace(/ I$/, '')}</p>
+        <ul class="mt-2 flex flex-wrap md:flex-col gap-1.5">
+          {col.courses.map((c) => (
+            <li>
+              <a
+                href={href(`courses/${c.slug}`)}
+                title={c.title}
+                class="inline-block font-mono text-[11px] leading-none px-2 py-1.5 rounded-md border hover:underline"
+                style={withCode.has(c.code)
+                  ? 'border-color: var(--ink); background: var(--ink); color: var(--paper)'
+                  : 'border-color: var(--line); color: var(--muted)'}
+              >{c.code.replace('CMSI ', '')}</a>
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ol>
+  <p class="mt-5 text-xs" style="color: var(--muted)">
+    Filled: the repository holds code for the course. Outlined: a README only.
+  </p>
+</section>

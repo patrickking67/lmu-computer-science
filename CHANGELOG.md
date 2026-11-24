@@ -69,6 +69,9 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Fixed
 
+- GitHub's language bar listed GSC and Rich Text Format. `.gitattributes` now
+  counts CloudScribe's `.csc` examples as text and the two instructor `.rtf`
+  files as documentation.
 - The recorded Swift command (`swift exercises.swift main.swift`) ran only the
   first file and never executed the 68 assertions. `docs/building.md` now
   compiles both with `swiftc`: 68 passed.

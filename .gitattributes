@@ -6,6 +6,13 @@
 # rewrite submitted work. See AGENTS.md.
 src/courses/** -text
 
+# GitHub's language bar. CloudScribe example programs end in .csc, which
+# linguist reads as GSC, a Call of Duty scripting language. They are CloudScribe
+# source and no GitHub language, so count them as plain text. The two .rtf files
+# are instructor grading notes, not code.
+*.csc linguist-language=Text
+*.rtf linguist-documentation
+
 # Binary assets.
 *.png binary
 *.PNG binary

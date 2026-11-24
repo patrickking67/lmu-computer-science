@@ -13,7 +13,7 @@ not an issue.
 
 ## Setup
 
-You need Node 22.18 or later and Python 3.10 or later.
+You need Node 22.23.4 or later and Python 3.10 or later.
 
 ```bash
 git clone https://github.com/patrickking67/lmu-computer-science.git

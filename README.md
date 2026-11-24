@@ -20,7 +20,7 @@ languages.
 
 **Live: [patrickking67.github.io/lmu-computer-science](https://patrickking67.github.io/lmu-computer-science/)**.
 The [front page](https://patrickking67.github.io/lmu-computer-science/#run) runs the
-CloudScribe compiler on whatever you type. Or locally, with Node 22.18+ and Python 3.10+:
+CloudScribe compiler on whatever you type. Or locally, with Node 22.23.4+ and Python 3.10+:
 
 ```bash
 git clone https://github.com/patrickking67/lmu-computer-science.git && cd lmu-computer-science

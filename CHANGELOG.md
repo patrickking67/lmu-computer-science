@@ -52,6 +52,13 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Changed
 
+- The documented Node floor is 22.23.4, set by Astro's integrations, and the
+  dashboard declares it in `engines`. `scripts/check.sh` still only needs 22.18
+  for the data tests.
+- `@astrojs/react` 6.0.6 to 7.1.9. 42 fewer transitive packages. No source
+  change; the playground island builds and the site-data tests pass.
+- `@astrojs/mdx` 7.0.8 to 8.1.6. The new major drops 123 transitive packages
+  from the lockfile and needs Node 22.23.4 or later. No source change.
 - Every workflow job has a `timeout-minutes`, so a hung runner fails in minutes
   instead of holding the queue for six hours.
 - README rewritten to open with the three projects, each with what was hard, a

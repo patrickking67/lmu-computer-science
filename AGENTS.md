@@ -29,7 +29,7 @@ that presents it. The code itself lives here; this is not an index of links.
 
 ## Commands
 
-Everything runs from the repository root. Needs Node 22.18+ and Python 3.10+.
+Everything runs from the repository root. Needs Node 22.23.4+ and Python 3.10+.
 
 | Task | Command |
 |---|---|

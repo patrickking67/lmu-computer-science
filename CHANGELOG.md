@@ -65,7 +65,8 @@ change; entries describe the site, the checks and the tooling around it.
 - Motion is limited to the opening sequence; scroll-in fades and card lifts are
   gone. Hover darkens a card's border.
 - The header drops the LMU lettering below 640px so every nav link fits at 375px.
-- Em dashes are gone from the site copy, `README.md`, `AGENTS.md` and `SECURITY.md`.
+- Em dashes are gone from the site copy, `README.md`, `AGENTS.md` and `SECURITY.md`,
+  and now also from `docs/`, the `lmucs` package and the site-data tests.
 
 ### Fixed
 

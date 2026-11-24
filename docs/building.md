@@ -261,7 +261,7 @@ here, next to the grade it earned.
 ## CMSI 3802: the compiler's back end is broken, and the tests do not show it
 
 Found 2026-08-22 while building the browser playground on `src/dashboard`. Recorded
-here, not repaired — the rule in `AGENTS.md` applies: a test suite that passes over a
+here, not repaired. The rule in `AGENTS.md` applies: a test suite that passes over a
 real defect is telling you something true about the submitted work.
 
 `npm test` reports 143 passing and 99.66% statement coverage, and that number is honest
@@ -307,9 +307,9 @@ handles are corrupted. Verified against the compiler on 2026-08-22:
 
 | Source | Generated JavaScript | |
 |---|---|---|
-| `t = t + i;` | `t_0 = t_0 + i_1;` | correct — no `Assignment` visitor |
-| `if x > 1 { … }` | `if (x_0 > 1) { … }` | correct — no `IfStatement` visitor |
-| `print(1 + 2);` | `console.log(3);` | correct — both operands are literals, so it folds |
+| `t = t + i;` | `t_0 = t_0 + i_1;` | correct, no `Assignment` visitor |
+| `if x > 1 { … }` | `if (x_0 > 1) { … }` | correct, no `IfStatement` visitor |
+| `print(1 + 2);` | `console.log(3);` | correct, both operands are literals, so it folds |
 | `print(x + 1);` | `console.log();` | argument dropped |
 | `let y = x + 1;` | `let y_1 = ;` | not valid JavaScript |
 | `let y = -x;` | `let y_1 = ;` | same, via `UnaryExpression` |

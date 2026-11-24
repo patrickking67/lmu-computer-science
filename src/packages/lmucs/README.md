@@ -1,6 +1,6 @@
 # lmucs
 
-Reads `docs/record.md` — the authoritative course record — and answers questions about it
+Reads `docs/record.md`, the authoritative course record, and answers questions about it
 without anyone re-typing the table into a second place.
 
 ```bash

@@ -16,7 +16,7 @@ not an issue.
 You need Node 22.18 or later and Python 3.10 or later.
 
 ```bash
-git clone git@github.com:patrickking67/lmu-computer-science.git
+git clone https://github.com/patrickking67/lmu-computer-science.git
 cd lmu-computer-science
 python3 -m venv .venv && . .venv/bin/activate
 python3 -m pip install -e src/packages/lmucs pytest

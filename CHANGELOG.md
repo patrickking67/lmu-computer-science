@@ -70,6 +70,8 @@ change; entries describe the site, the checks and the tooling around it.
 
 ### Fixed
 
+- The clone command in `README.md` and `CONTRIBUTING.md` used an SSH URL, which
+  fails for anyone without a GitHub SSH key. It now uses HTTPS.
 - GitHub's language bar listed GSC and Rich Text Format. `.gitattributes` now
   counts CloudScribe's `.csc` examples as text and the two instructor `.rtf`
   files as documentation.

@@ -3,7 +3,7 @@
 The record is a markdown table maintained by hand, so parsing is deliberately
 strict: a row that does not look like a course row is skipped, but a row that
 looks like one and does not parse is an error. Silently dropping a course is the
-failure mode that matters here — the repository's own history includes an
+failure mode that matters here: the repository's own history includes an
 inventory that undercounted the major by two courses.
 """
 

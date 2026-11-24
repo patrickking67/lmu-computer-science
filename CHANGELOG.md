@@ -73,6 +73,9 @@ change; entries describe the site, the checks and the tooling around it.
   five; the CMSI 3550 final project is a libp2p trading card network, not file
   transfer over raw sockets; Pathfinder is described as submitted.
 - A program note said this repository was not public.
+- Dashboard lockfile: transitive `devalue` 5.9.1 to 5.9.4 and `js-yaml` 4.3.1 to
+  4.3.2, which clears the two high severity `npm audit` advisories. Patch
+  releases only, no change to `package.json`.
 
 ## [1.0.0] - 2026-08-25
 
